@@ -2,14 +2,18 @@ import SwiftUI
 import ColorPicker
 
 struct ContentView: View {
+    @State var isPresented: Bool = false
+    
     var body: some View {
-        Text("ColorPicker Demo")
-            .sheet(isPresented: .constant(true)) {
-                ColorPicker()
-            }
+        Button(action: {
+            isPresented.toggle()
+        }, label: {
+            Text("Launch ColorPicker")
+        }).sheet(isPresented: $isPresented) {
+            ColorPicker()
+        }
     }
 }
-
 
 struct ColorPicker: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> ColorPickerViewController {
@@ -17,7 +21,7 @@ struct ColorPicker: UIViewControllerRepresentable {
     }
     
     func updateUIViewController(_ uiViewController: ColorPickerViewController, context: Context) {
-        uiViewController.selectedColor = .magenta
+        uiViewController.selectedColor = .white
         uiViewController.setDelegate(context.coordinator)
     }
     

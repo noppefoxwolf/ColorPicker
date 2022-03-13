@@ -26,8 +26,14 @@ class ColorPickerContentViewController: UIViewController {
         view.backgroundColor = .systemBackground
         navigationItem.title = "カラー"
         navigationItem.largeTitleDisplayMode = .always
-        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "eyedropper"))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close)
+        
+        // unimplemented
+//        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "eyedropper"))
+        navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [unowned self] _ in
+            self.dismiss(animated: true) {
+                self.delegate?.colorPickerViewControllerDidFinish(self)
+            }
+        })
         
         view.addSubview(colorPickerTabView)
         
