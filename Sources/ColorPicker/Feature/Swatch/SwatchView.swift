@@ -107,6 +107,7 @@ class SwatchView: UIControl {
     
     let pageControl: UIPageControl = .init(frame: .null)
     var snapshot = NSDiffableDataSourceSnapshot<Section, CellItem>()
+    var longPressedItem: CellItem? = nil
     var cancellables: Set<AnyCancellable> = []
     
     override init(frame: CGRect) {
@@ -167,6 +168,7 @@ class SwatchView: UIControl {
         guard dataSource.itemIdentifier(for: indexPath) != .add else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
         menu.showMenu(from: cell, rect: cell.bounds)
+        longPressedItem = dataSource.itemIdentifier(for: indexPath)
     }
     
     override var canBecomeFirstResponder: Bool {
@@ -180,7 +182,11 @@ class SwatchView: UIControl {
     }
     
     override func delete(_ sender: Any?) {
-        
+        if let longPressedItem = longPressedItem {
+            snapshot.deleteItems([longPressedItem])
+            self.longPressedItem = nil
+            apply(snapshot)
+        }
     }
     
     private func apply(_ snapshot: NSDiffableDataSourceSnapshot<Section, CellItem>) {
