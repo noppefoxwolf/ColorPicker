@@ -10,6 +10,7 @@ class GridColorPicker: UIControl {
     var color: UIColor {
         get { _color }
         set {
+            guard _color != newValue else { return }
             _color = newValue
         }
     }

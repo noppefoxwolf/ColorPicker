@@ -69,7 +69,15 @@ class ClassicColorPicker: UIControl {
 class ClassicColorMarkerView: UIView {
     
     @Invalidating(.display)
-    var color: UIColor = .white
+    private var _color: UIColor = .white
+    
+    var color: UIColor {
+        get { _color }
+        set {
+            guard _color != newValue else { return }
+            _color = newValue
+        }
+    }
     
     override init(frame: CGRect) {
         super.init(frame: frame)

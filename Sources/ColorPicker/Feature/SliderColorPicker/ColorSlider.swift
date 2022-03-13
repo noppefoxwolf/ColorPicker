@@ -142,7 +142,15 @@ class ThumbView: UIView {
     }
     
     @Invalidating(.display)
-    var color: UIColor = .white
+    private var _color: UIColor = .white
+    
+    var color: UIColor {
+        get { _color }
+        set {
+            guard _color != newValue else { return }
+            _color = newValue
+        }
+    }
     
     override func draw(_ rect: CGRect) {
         let padding: Double = 2.0
