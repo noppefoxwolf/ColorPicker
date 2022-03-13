@@ -31,11 +31,11 @@ struct ColorPicker: UIViewControllerRepresentable {
     
     class Coordinator: ColorPickerViewControllerDelegate {
         func colorPickerViewControllerDidFinish(_ viewController: ColorPickerViewController) {
-            
+            print("Finish:", viewController.selectedColor)
         }
         
         func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
-            print(color)
+            print("Continuously:", color)
         }
     }
 }

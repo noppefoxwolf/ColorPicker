@@ -172,18 +172,3 @@ extension SwatchView: UICollectionViewDelegate {
         }
     }
 }
-
-extension UIView.Invalidations {
-    public struct ReloadData: UIViewInvalidating {
-        public init() {}
-        
-        public func invalidate(view: UIView) {
-            view.subviews.lazy.compactMap({ $0 as? UICollectionView }).first?.reloadData()
-        }
-    }
-}
-
-extension UIViewInvalidating where Self == UIView.Invalidations.ReloadData {
-
-    public static var reloadData: UIView.Invalidations.ReloadData { Self.init() }
-}
