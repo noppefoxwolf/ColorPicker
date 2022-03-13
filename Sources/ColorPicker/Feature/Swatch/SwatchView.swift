@@ -9,11 +9,14 @@ class SwatchView: UIControl {
     enum Section {
         case items
     }
+    let debounceAction = DispatchQueue.global().debounce(delay: .milliseconds(500))
     
     private var _selectedColor: UIColor = .white {
         didSet {
-            snapshot.reconfigureItems(snapshot.itemIdentifiers)
-            dataSource.apply(snapshot)
+            /// 逐次実行だと重いので遅延させる
+            debounceAction { [weak self] in
+                self?.reconfigureCells()
+            }
         }
     }
     
@@ -138,6 +141,12 @@ class SwatchView: UIControl {
         }
         
         snapshot.appendSections([.items])
+        
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
+        collectionView.addGestureRecognizer(longPress)
+        
+        becomeFirstResponder()
+        
         let count = 3
         snapshot.appendItems((0..<count).map({ i in
                 .color(ColorItem(id: UUID(), color: UIColor(white: Double(i) / Double(count), alpha: 1)))
@@ -150,9 +159,38 @@ class SwatchView: UIControl {
         fatalError()
     }
     
+    @objc func onLongPress(_ gesture: UILongPressGestureRecognizer) {
+        guard gesture.state == .began else { return }
+        let menu = UIMenuController.shared
+        let location = gesture.location(in: gesture.view)
+        guard let indexPath = collectionView.indexPathForItem(at: location) else { return }
+        guard dataSource.itemIdentifier(for: indexPath) != .add else { return }
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return }
+        menu.showMenu(from: cell, rect: cell.bounds)
+    }
+    
+    override var canBecomeFirstResponder: Bool {
+        true
+    }
+    
+    override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
+        [
+            #selector(UIResponderStandardEditActions.delete)
+        ].contains(action)
+    }
+    
+    override func delete(_ sender: Any?) {
+        
+    }
+    
     private func apply(_ snapshot: NSDiffableDataSourceSnapshot<Section, CellItem>) {
         let itemCount = snapshot.numberOfItems(inSection: .items)
         pageControl.numberOfPages = Int(ceil(Double(itemCount) / 10.0))
+        dataSource.apply(snapshot)
+    }
+    
+    private func reconfigureCells() {
+        snapshot.reconfigureItems(snapshot.itemIdentifiers)
         dataSource.apply(snapshot)
     }
 }
@@ -171,6 +209,7 @@ extension SwatchView: UICollectionViewDelegate {
         switch item {
         case .color(let colorItem):
             selectedColor = colorItem.color
+            reconfigureCells()
             sendActions(for: .primaryActionTriggered)
         case .add:
             snapshot.insertItems([
