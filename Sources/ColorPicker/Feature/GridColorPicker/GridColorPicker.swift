@@ -74,6 +74,9 @@ class GridColorPicker: UIControl {
                 make.size.equalTo(newRect.size)
             }
             markerView.setNeedsDisplay()
+            markerView.isHidden = false
+        } else {
+            markerView.isHidden = true
         }
     }
 }
