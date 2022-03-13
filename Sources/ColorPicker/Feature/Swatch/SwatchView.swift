@@ -10,19 +10,12 @@ class SwatchView: UIControl {
         case items
     }
     
-    var selectedColor: UIColor = .white
-//    var selectedColor: UIColor? {
-//        let indexPaths = collectionView.indexPathsForSelectedItems ?? []
-//        let colors = indexPaths.compactMap(dataSource.itemIdentifier(for:)).compactMap({ cellItem -> UIColor? in
-//            switch cellItem {
-//            case .color(let colorItem):
-//                return colorItem.color
-//            case .add:
-//                return nil
-//            }
-//        })
-//        return colors.first
-//    }
+    var selectedColor: UIColor = .white {
+        didSet {
+            snapshot.reconfigureItems(snapshot.itemIdentifiers)
+            dataSource.apply(snapshot)
+        }
+    }
     
     let configuration: UICollectionViewCompositionalLayoutConfiguration = {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
@@ -64,10 +57,14 @@ class SwatchView: UIControl {
     )
     lazy var collectionView = UICollectionView(frame: .null, collectionViewLayout: layout)
     
+    struct ColorCellConfiguration {
+        let color: UIColor
+        let isSelected: Bool
+    }
     let colorCellRegistration = UICollectionView.CellRegistration(
-        handler: { (cell: ColorCell, indexPath, color: UIColor) in
-            cell.tintColor = color
-            cell.setNeedsDisplay()
+        handler: { (cell: ColorCell, indexPath, configuration: ColorCellConfiguration) in
+            cell.color = configuration.color
+            cell.style = configuration.isSelected ? .outlined : .normal
         }
     )
     let addColorCellRegistration = UICollectionView.CellRegistration(
@@ -88,7 +85,10 @@ class SwatchView: UIControl {
                 return collectionView.dequeueConfiguredReusableCell(
                     using: self.colorCellRegistration,
                     for: indexPath,
-                    item: cellItem.color
+                    item: ColorCellConfiguration(
+                        color: cellItem.color,
+                        isSelected: cellItem.color == self.selectedColor
+                    )
                 )
             }
         }
@@ -173,3 +173,17 @@ extension SwatchView: UICollectionViewDelegate {
     }
 }
 
+extension UIView.Invalidations {
+    public struct ReloadData: UIViewInvalidating {
+        public init() {}
+        
+        public func invalidate(view: UIView) {
+            view.subviews.lazy.compactMap({ $0 as? UICollectionView }).first?.reloadData()
+        }
+    }
+}
+
+extension UIViewInvalidating where Self == UIView.Invalidations.ReloadData {
+
+    public static var reloadData: UIView.Invalidations.ReloadData { Self.init() }
+}

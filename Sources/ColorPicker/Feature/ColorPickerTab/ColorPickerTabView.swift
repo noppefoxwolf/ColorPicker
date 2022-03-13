@@ -89,10 +89,22 @@ class ColorPickerTabView: UIControl {
         switch item {
         case .grid:
             vStack.addArrangedSubview(gridColorPicker)
+            // layout next frame
+            DispatchQueue.main.async { [weak self] in
+                self?.gridColorPicker.setNeedsUpdateConstraints()
+            }
         case .classic:
             vStack.addArrangedSubview(classicColorPicker)
+            // layout next frame
+            DispatchQueue.main.async { [weak self] in
+                self?.classicColorPicker.setNeedsUpdateConstraints()
+            }
         case .slider:
             vStack.addArrangedSubview(sliderColorPicker)
+            // layout next frame
+            DispatchQueue.main.async { [weak self] in
+                self?.sliderColorPicker.setNeedsUpdateConstraints()
+            }
         }
     }
 }

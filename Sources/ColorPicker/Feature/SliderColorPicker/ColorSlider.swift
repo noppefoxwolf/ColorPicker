@@ -4,11 +4,19 @@ import Combine
 open class ColorSlider: UIControl {
     
     @Invalidating(.constraints)
-    var color: UIColor = .white {
+    private var _color: UIColor = .white {
         didSet {
             thumbView.color = color
             trackView.grdient = configuration.gradientInvalidationHandler(color)
             value = configuration.colorToValue(color)
+        }
+    }
+    
+    var color: UIColor  {
+        get { _color }
+        set {
+            guard _color != newValue else { return }
+            _color = newValue
         }
     }
     
@@ -31,6 +39,8 @@ open class ColorSlider: UIControl {
     
     let thumbView = ThumbView()
     let trackView = TrackView()
+    let trackableLayoutGuide: UILayoutGuide = .init()
+    let trackValueLayoutGuide: UILayoutGuide = .init()
     var configuration: ColorSliderConfiguration = .noop
     var cancellables: Set<AnyCancellable> = []
     
@@ -45,9 +55,21 @@ open class ColorSlider: UIControl {
         trackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
+        trackView.addLayoutGuide(trackableLayoutGuide)
+        trackableLayoutGuide.snp.makeConstraints { make in
+            make.left.right.equalToSuperview().inset(34 / 2)
+            make.top.bottom.equalToSuperview()
+        }
+        trackView.addLayoutGuide(trackValueLayoutGuide)
+        trackValueLayoutGuide.snp.makeConstraints { make in
+            make.top.bottom.left.equalTo(trackableLayoutGuide)
+            make.width.equalTo(trackableLayoutGuide).multipliedBy(0)
+        }
+        
         addSubview(thumbView)
         thumbView.snp.makeConstraints { make in
-            make.centerX.equalTo(0)
+            make.centerY.equalToSuperview()
+            make.centerX.equalTo(trackValueLayoutGuide.snp.right)
             make.size.equalTo(snp.height)
         }
         
@@ -68,15 +90,11 @@ open class ColorSlider: UIControl {
     
     open override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
-        // タブの半径
-        let paddingX = bounds.height / 2
-        // 稼働幅
-        let movableWidth = bounds.width - (paddingX + paddingX) // left + right
-        let thumbCenterX = movableWidth * value + paddingX
-        
-        thumbView.snp.updateConstraints({ make in
-            make.centerX.equalTo(thumbCenterX)
-        })
+
+        trackValueLayoutGuide.snp.remakeConstraints { make in
+            make.top.bottom.left.equalTo(trackableLayoutGuide)
+            make.width.equalTo(trackableLayoutGuide).multipliedBy(value)
+        }
     }
 }
 

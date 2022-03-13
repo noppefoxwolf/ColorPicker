@@ -19,7 +19,14 @@ class ClassicColorView: UIView {
     func color(at location: CGPoint) -> UIColor {
         let saturation = location.x / bounds.width
         let brightness = 1.0 - (location.y / bounds.height)
-        return UIColor(hue: hue, saturation: saturation, brightness: brightness, alpha: 1)
+        let clampedSaturation = max(min(saturation, 1), 0)
+        let clampedBrightness = max(min(brightness, 1), 0)
+        return UIColor(
+            hue: hue,
+            saturation: clampedSaturation,
+            brightness: clampedBrightness,
+            alpha: 1
+        )
     }
     
     func location(by color: UIColor) -> CGPoint? {
