@@ -10,10 +10,18 @@ class SwatchView: UIControl {
         case items
     }
     
-    var selectedColor: UIColor = .white {
+    private var _selectedColor: UIColor = .white {
         didSet {
             snapshot.reconfigureItems(snapshot.itemIdentifiers)
             dataSource.apply(snapshot)
+        }
+    }
+    
+    var selectedColor: UIColor {
+        get { _selectedColor }
+        set {
+            guard _selectedColor != newValue else { return }
+            _selectedColor = newValue
         }
     }
     
