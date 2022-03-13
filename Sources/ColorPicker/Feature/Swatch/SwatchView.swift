@@ -9,7 +9,7 @@ class SwatchView: UIControl {
     enum Section {
         case items
     }
-    let debounceAction = DispatchQueue.global().debounce(delay: .milliseconds(500))
+    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(500))
     
     private var _selectedColor: UIColor = .white {
         didSet {
@@ -121,7 +121,8 @@ class SwatchView: UIControl {
         
         pageControl.pageIndicatorTintColor = .systemGray
         pageControl.currentPageIndicatorTintColor = .label
-        pageControl.hidesForSinglePage = true
+        // hiddenするとレイアウトに影響が出るのでしない
+        pageControl.hidesForSinglePage = false
         
         let stackView = UIStackView(arrangedSubviews: [collectionView, pageControl])
         stackView.axis = .vertical
@@ -129,10 +130,6 @@ class SwatchView: UIControl {
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        pageControl.addAction(UIAction { action in
-            let pageControl = action.sender as! UIPageControl
-            self.scrollTo(page: pageControl.currentPage, animated: true)
-        }, for: .valueChanged)
         
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(76)
@@ -141,10 +138,15 @@ class SwatchView: UIControl {
             make.height.equalTo(20)
         }
         
-        snapshot.appendSections([.items])
+        pageControl.addAction(UIAction { action in
+            let pageControl = action.sender as! UIPageControl
+            self.scrollTo(page: pageControl.currentPage, animated: true)
+        }, for: .valueChanged)
         
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
         collectionView.addGestureRecognizer(longPress)
+        
+        snapshot.appendSections([.items])
         
         becomeFirstResponder()
         
