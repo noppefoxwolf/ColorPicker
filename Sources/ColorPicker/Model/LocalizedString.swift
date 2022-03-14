@@ -6,6 +6,9 @@ enum LocalizedString {
     static func uikitLocalize(_ key: String) -> String {
         uikitBundle.localizedString(forKey: key, value: nil, table: nil)
     }
+    static func localize(_ key: String) -> String {
+        Bundle.module.localizedString(forKey: key, value: nil, table: nil)
+    }
     
     static var color: String { uikitLocalize("Color") }
     static var grid: String { uikitLocalize("Grid") }
@@ -13,4 +16,7 @@ enum LocalizedString {
     static var red: String { uikitLocalize("Red") }
     static var blue: String { uikitLocalize("Blue") }
     static var green: String { uikitLocalize("Green") }
+    static var hue: String { localize("Hue") }
+    static var brightness: String { localize("Brightness") }
+    static var saturation: String { localize("Saturation") }
 }

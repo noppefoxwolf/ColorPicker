@@ -22,15 +22,15 @@ class HSBColorSlidersView: UIControl {
         
         hueSlider.slider.configuration = .hue
         hueSlider.textField.configuration = .radius
-        hueSlider.titleLabel.text = "色合い"
+        hueSlider.titleLabel.text = LocalizedString.hue
         
         saturationSlider.slider.configuration = .saturation
         saturationSlider.textField.configuration = .percent
-        saturationSlider.titleLabel.text = "鮮やかさ"
+        saturationSlider.titleLabel.text = LocalizedString.saturation
         
         brightnessSlider.slider.configuration = .brightness
         brightnessSlider.textField.configuration = .percent
-        brightnessSlider.titleLabel.text = "明るさ"
+        brightnessSlider.titleLabel.text = LocalizedString.brightness
         
         let vStack = UIStackView(arrangedSubviews: [hueSlider, saturationSlider, brightnessSlider])
         vStack.axis = .vertical
