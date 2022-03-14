@@ -1,4 +1,5 @@
 import UIKit
+import SwiftUI
 
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool)
@@ -24,7 +25,7 @@ class ColorPickerContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
-        navigationItem.title = "カラー"
+        navigationItem.title = LocalizedString.color
         navigationItem.largeTitleDisplayMode = .always
         
         // unimplemented

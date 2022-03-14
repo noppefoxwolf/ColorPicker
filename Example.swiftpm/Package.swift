@@ -9,6 +9,7 @@ import AppleProductTypes
 
 let package = Package(
     name: "Example",
+    defaultLocalization: "ja",
     platforms: [
         .iOS("15.2")
     ],

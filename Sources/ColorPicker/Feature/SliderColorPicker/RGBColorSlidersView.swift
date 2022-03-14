@@ -22,15 +22,15 @@ class RGBColorSlidersView: UIControl {
         
         redSlider.slider.configuration = .red
         redSlider.textField.configuration = .hex
-        redSlider.titleLabel.text = "レッド"
+        redSlider.titleLabel.text = LocalizedString.red
         
         greenSlider.slider.configuration = .green
         greenSlider.textField.configuration = .hex
-        greenSlider.titleLabel.text = "グリーン"
+        greenSlider.titleLabel.text = LocalizedString.green
         
         blueSlider.slider.configuration = .blue
         blueSlider.textField.configuration = .hex
-        blueSlider.titleLabel.text = "ブルー"
+        blueSlider.titleLabel.text = LocalizedString.blue
         
         let vStack = UIStackView(arrangedSubviews: [redSlider, greenSlider, blueSlider])
         vStack.axis = .vertical
