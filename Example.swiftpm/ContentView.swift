@@ -10,7 +10,7 @@ struct ContentView: View {
         }, label: {
             Text("Launch ColorPicker")
         }).sheet(isPresented: $isPresented) {
-            ColorPicker()
+            ColorPicker().ignoresSafeArea()
         }
     }
 }
