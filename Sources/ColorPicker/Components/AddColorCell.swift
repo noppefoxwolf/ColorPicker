@@ -13,7 +13,7 @@ class AddColorCell: UICollectionViewCell {
             make.center.equalToSuperview()
             make.size.equalTo(30)
         }
-        backgroundColorView.backgroundColor = .systemGray5
+        backgroundColorView.backgroundColor = .lightGray
         backgroundColorView.layer.cornerRadius = 15
         
         backgroundColorView.addSubview(imageView)
@@ -21,9 +21,11 @@ class AddColorCell: UICollectionViewCell {
             make.center.equalToSuperview()
             make.size.equalTo(16)
         }
-        
-        imageView.image = UIImage(systemName: "plus")
-        imageView.tintColor = .systemGray2
+        imageView.image = UIImage(
+            systemName: "plus",
+            withConfiguration: UIImage.SymbolConfiguration(weight: .bold)
+        )
+        imageView.tintColor = .systemBackground
     }
     
     required init?(coder: NSCoder) {
