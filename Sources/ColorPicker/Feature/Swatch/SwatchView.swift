@@ -9,7 +9,7 @@ class SwatchView: UIControl {
     enum Section {
         case items
     }
-    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(500))
+    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
     
     private var _selectedColor: UIColor = .white {
         didSet {
