@@ -1,7 +1,11 @@
 import UIKit
 
 class ColorPickerTabView: UIControl {
-    let segmentControl = UISegmentedControl(items: [LocalizedString.grid, "クラシック", LocalizedString.sliders])
+    let segmentControl = UISegmentedControl(items: [
+        LocalizedString.grid,
+        LocalizedString.classic,
+        LocalizedString.sliders
+    ])
     let sliderColorPicker = SliderColorPicker(frame: .null)
     let classicColorPicker = ClassicColorPicker(frame: .null)
     let gridColorPicker = GridColorPicker(frame: .null)

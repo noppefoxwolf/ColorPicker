@@ -19,4 +19,5 @@ enum LocalizedString {
     static var hue: String { localize("Hue") }
     static var brightness: String { localize("Brightness") }
     static var saturation: String { localize("Saturation") }
+    static var classic: String { localize("Classic") }
 }
