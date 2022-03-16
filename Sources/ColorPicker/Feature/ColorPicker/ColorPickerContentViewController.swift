@@ -25,6 +25,7 @@ class ColorPickerContentViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
+        view.backgroundColor = .secondarySystemBackground
         navigationItem.title = LocalizedString.color
         navigationItem.largeTitleDisplayMode = .always
         
