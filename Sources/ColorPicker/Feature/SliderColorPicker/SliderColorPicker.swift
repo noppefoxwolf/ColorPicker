@@ -1,6 +1,8 @@
 import UIKit
 
-class SliderColorPicker: UIControl {
+class SliderColorPicker: UIControl, ColorPicker {
+    var title: String = LocalizedString.sliders
+    
     let rgbSlidersView = RGBColorSlidersView(frame: .null)
     let hsbSlidersView = HSBColorSlidersView(frame: .null)
     let hexInputView = HexInputView(frame: .null)

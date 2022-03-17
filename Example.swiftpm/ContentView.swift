@@ -23,6 +23,7 @@ class ContentViewController: UIViewController {
         }))
         let uiColorPickerButton = UIButton(primaryAction: UIAction(title: "apple/UIColorPicker", handler: { _ in
             let vc = UIColorPickerViewController()
+            vc.supportsAlpha = false
             vc.delegate = self
             self.present(vc, animated: true)
         }))

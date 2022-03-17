@@ -1,6 +1,8 @@
 import UIKit
 
-class ClassicColorPicker: UIControl {
+class ClassicColorPicker: UIControl, ColorPicker {
+    var title: String = LocalizedString.classic
+    
     let colorView: ClassicColorView = .init(frame: .null)
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
     let markerView: ClassicColorMarkerView = .init(frame: .null)

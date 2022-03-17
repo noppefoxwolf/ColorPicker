@@ -1,6 +1,8 @@
 import UIKit
 
-class GridColorPicker: UIControl {
+class GridColorPicker: UIControl, ColorPicker {
+    var title: String = LocalizedString.grid
+    
     let gridColorView: GridColorView = .init(frame: .null)
     let markerView: GridColorMarkerView = .init(frame: .null)
     
