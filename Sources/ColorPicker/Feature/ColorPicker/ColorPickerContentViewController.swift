@@ -50,6 +50,7 @@ class ColorPickerContentViewController: UIViewController {
         
         // unimplemented
         //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "eyedropper"))
+        
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [unowned self] _ in
             self.dismiss(animated: true) {
                 self.delegate?.colorPickerViewControllerDidFinish(self)
@@ -127,7 +128,7 @@ class ColorPickerContentViewController: UIViewController {
         }, for: .primaryActionTriggered)
         
         segmentControl.selectedSegmentIndex = 0
-        replaceView(0)
+        updateCurrentColorPicker()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -142,7 +143,8 @@ class ColorPickerContentViewController: UIViewController {
         }
     }
     
-    func replaceView(_ index: Int) {
+    func updateCurrentColorPicker() {
+        let index = segmentControl.selectedSegmentIndex
         colorPickersStackView
             .arrangedSubviews
             .filter({ ($0 is ColorPicker) })
