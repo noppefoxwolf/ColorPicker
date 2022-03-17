@@ -10,11 +10,6 @@ class ColorPickerContentViewController: UIViewController {
     weak var delegate: ColorPickerContentViewControllerDelegate? = nil
     let scrollView = UIScrollView()
     let segmentControl = UISegmentedControl(items: nil)
-    let colorPickers: [UIControl & ColorPicker] = [
-        GridColorPicker(frame: .null),
-        ClassicColorPicker(frame: .null),
-        SliderColorPicker(frame: .null),
-    ]
     let swatchAndPreviewView = SwatchAndPreviewView(frame: .null)
     
     /// segment - colorPickerAndSwatch
@@ -25,7 +20,7 @@ class ColorPickerContentViewController: UIViewController {
     private var _color: UIColor = .white {
         didSet {
             swatchAndPreviewView.color = _color
-            colorPickers.forEach({ $0.color = _color })
+            configuration.colorPickers.forEach({ $0.color = _color })
         }
     }
     
@@ -38,8 +33,14 @@ class ColorPickerContentViewController: UIViewController {
     }
     
     var continuously: Bool {
-        colorPickers.map(\.continuously).contains(true)
+        configuration.colorPickers.map(\.continuously).contains(true)
     }
+    
+    var colorItems: [ColorItem] {
+        swatchAndPreviewView.swatchView.colorItems
+    }
+    
+    var configuration: ColorPickerConfiguration = ColorPickerConfiguration()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,12 +94,11 @@ class ColorPickerContentViewController: UIViewController {
         tabStackView.addArrangedSubview(segmentControl)
         tabStackView.addArrangedSubview(colorPickersStackView)
         
-        for colorPicker in colorPickers {
+        for colorPicker in configuration.colorPickers {
             let segmentAction = UIAction(
                 title: colorPicker.title,
                 handler: { [unowned self] action in
-                    let segmentControl = (action.sender as! UISegmentedControl)
-                    self.replaceView(segmentControl.selectedSegmentIndex)
+                    self.updateCurrentColorPicker()
                 }
             )
             segmentControl.insertSegment(
@@ -127,7 +127,9 @@ class ColorPickerContentViewController: UIViewController {
             )
         }, for: .primaryActionTriggered)
         
+        _color = configuration.initialColor
         segmentControl.selectedSegmentIndex = 0
+        swatchAndPreviewView.swatchView.setColorItems(configuration.initialColorItems)
         updateCurrentColorPicker()
     }
     
@@ -149,6 +151,9 @@ class ColorPickerContentViewController: UIViewController {
             .arrangedSubviews
             .filter({ ($0 is ColorPicker) })
             .forEach({ $0.removeFromSuperview() })
-        colorPickersStackView.insertArrangedSubview(colorPickers[index], at: 0)
+        colorPickersStackView.insertArrangedSubview(
+            configuration.colorPickers[index],
+            at: 0
+        )
     }
 }

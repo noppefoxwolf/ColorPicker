@@ -18,6 +18,10 @@ class ContentViewController: UIViewController {
         
         let colorPickerButton = UIButton(primaryAction: UIAction(title: "noppefoxwolf/ColorPicker", handler: { _ in
             let vc = ColorPickerViewController()
+            var configuration = ColorPickerConfiguration.default
+            configuration.initialColor = .red
+            configuration.initialColorItems = [.init(id: UUID(), color: .red)]
+            vc.configuration = configuration
             vc.setDelegate(self)
             self.present(vc, animated: true)
         }))

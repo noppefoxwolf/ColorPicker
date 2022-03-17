@@ -25,6 +25,15 @@ public class ColorPickerViewController: UINavigationController {
         set { contentViewController.color = newValue }
     }
     
+    public var colorItems: [ColorItem] {
+        contentViewController.colorItems
+    }
+    
+    public var configuration: ColorPickerConfiguration {
+        get { contentViewController.configuration }
+        set { contentViewController.configuration = newValue }
+    }
+    
     private weak var _delegate: ColorPickerViewControllerDelegate? = nil
     
     public func setDelegate(_ delegate: ColorPickerViewControllerDelegate) {

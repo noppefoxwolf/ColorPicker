@@ -1,6 +1,11 @@
 import UIKit
 
-struct ColorItem: Hashable {
-    var id: UUID = UUID()
-    var color: UIColor = .white
+public struct ColorItem: Hashable {
+    public init(id: UUID, color: UIColor) {
+        self.id = id
+        self.color = color
+    }
+    
+    public var id: UUID
+    public var color: UIColor
 }

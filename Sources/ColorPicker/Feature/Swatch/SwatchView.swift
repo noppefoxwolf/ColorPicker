@@ -149,13 +149,6 @@ class SwatchView: UIControl {
         snapshot.appendSections([.items])
         
         becomeFirstResponder()
-        
-        let count = 3
-        snapshot.appendItems((0..<count).map({ i in
-                .color(ColorItem(id: UUID(), color: UIColor(white: Double(i) / Double(count), alpha: 1)))
-        }), toSection: .items)
-        snapshot.appendItems([.add], toSection: .items)
-        apply(snapshot)
     }
     
     required init?(coder: NSCoder) {
@@ -189,6 +182,19 @@ class SwatchView: UIControl {
             self.longPressedItem = nil
             apply(snapshot)
         }
+    }
+    
+    func setColorItems(_ colorItems: [ColorItem]) {
+        snapshot.appendItems(colorItems.map({ .color($0) }), toSection: .items)
+        snapshot.appendItems([.add], toSection: .items)
+        apply(snapshot)
+    }
+    
+    var colorItems: [ColorItem] {
+        snapshot.itemIdentifiers(inSection: .items).compactMap({
+            guard case let .color(colorItem) = $0 else { return nil }
+            return colorItem
+        })
     }
     
     private func apply(_ snapshot: NSDiffableDataSourceSnapshot<Section, CellItem>) {
