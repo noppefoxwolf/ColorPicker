@@ -2,6 +2,8 @@
 
 `ColorPicker` is a UI component for pick a color.
 
+![](https://github.com/henzai-apps/ColorPicker/blob/main/.github/Helo.jpeg)
+
 # Requirements
 
 - Swift5.6
