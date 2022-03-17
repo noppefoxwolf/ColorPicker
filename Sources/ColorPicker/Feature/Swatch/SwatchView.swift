@@ -74,12 +74,12 @@ class SwatchView: UIControl {
     }
     let colorCellRegistration = UICollectionView.CellRegistration(
         handler: { (cell: ColorCell, indexPath, configuration: ColorCellConfiguration) in
-            cell.color = configuration.color
-            cell.style = configuration.isSelected ? .outlined : .normal
+            cell.colorView.color = configuration.color
+            cell.colorView.style = configuration.isSelected ? .outlined : .normal
         }
     )
     let addColorCellRegistration = UICollectionView.CellRegistration(
-        handler: { (cell: AddColorCell, indexPath, color: Void) in
+        handler: { (cell: AddColorCell, indexPath, void: Void) in
         }
     )
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, CellItem> = .init(

@@ -2,6 +2,27 @@ import UIKit
 
 class ColorCell: UICollectionViewCell {
     
+    let colorView: ColorView = .init(frame: .null)
+    
+    override init(frame: CGRect) {
+        super.init(frame: frame)
+        backgroundColor = .clear
+        contentView.addSubview(colorView)
+        colorView.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+            make.size.equalTo(36)
+        }
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
+}
+
+class ColorView: UIView {
+    
     @Invalidating(.display)
     var color: UIColor = .white
     
