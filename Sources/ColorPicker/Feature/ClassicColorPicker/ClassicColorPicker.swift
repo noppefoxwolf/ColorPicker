@@ -18,6 +18,15 @@ class ClassicColorPicker: UIControl {
         }
     }
     
+    let panGestureRecognizer = UIPanGestureRecognizer()
+    
+    var continuously: Bool {
+        [
+            panGestureRecognizer.state,
+            hueSlider.slider.panGestureRecognizer.state,
+        ].contains(.changed)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         
@@ -43,8 +52,8 @@ class ClassicColorPicker: UIControl {
             sendActions(for: [.primaryActionTriggered, .valueChanged])
         }, for: .primaryActionTriggered)
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan))
-        colorView.addGestureRecognizer(panGesture)
+        panGestureRecognizer.addTarget(self, action: #selector(onPan))
+        colorView.addGestureRecognizer(panGestureRecognizer)
     }
     
     required init?(coder: NSCoder) {

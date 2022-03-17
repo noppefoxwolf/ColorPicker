@@ -17,6 +17,14 @@ class RGBColorSlidersView: UIControl {
         }
     }
     
+    var continuously: Bool {
+        [
+            redSlider.slider.panGestureRecognizer.state,
+            greenSlider.slider.panGestureRecognizer.state,
+            blueSlider.slider.panGestureRecognizer.state
+        ].contains(.changed)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

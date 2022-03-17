@@ -17,6 +17,13 @@ class SliderColorPicker: UIControl {
         }
     }
     
+    var continuously: Bool {
+        [
+            rgbSlidersView.continuously,
+            hsbSlidersView.continuously
+        ].contains(true)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

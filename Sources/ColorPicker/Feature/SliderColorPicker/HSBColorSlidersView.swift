@@ -17,6 +17,14 @@ class HSBColorSlidersView: UIControl {
         }
     }
     
+    var continuously: Bool {
+        [
+            hueSlider.slider.panGestureRecognizer.state,
+            saturationSlider.slider.panGestureRecognizer.state,
+            brightnessSlider.slider.panGestureRecognizer.state
+        ].contains(.changed)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

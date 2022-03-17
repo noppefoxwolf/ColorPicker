@@ -54,12 +54,20 @@ class ColorPickerContentViewController: UIViewController {
         
         colorPickerTabView.addAction(UIAction { [unowned self] _ in
             self.color = self.colorPickerTabView.color
-            self.delegate?.colorPickerViewController(self, didSelect: self.color, continuously: true)
+            self.delegate?.colorPickerViewController(
+                self,
+                didSelect: self.color,
+                continuously: self.colorPickerTabView.continuously
+            )
         }, for: .primaryActionTriggered)
         
         swatchAndPreviewView.addAction(UIAction { [unowned self] _ in
             self.color = self.swatchAndPreviewView.color
-            self.delegate?.colorPickerViewController(self, didSelect: self.color, continuously: true)
+            self.delegate?.colorPickerViewController(
+                self,
+                didSelect: self.color,
+                continuously: false
+            )
         }, for: .primaryActionTriggered)
     }
 }

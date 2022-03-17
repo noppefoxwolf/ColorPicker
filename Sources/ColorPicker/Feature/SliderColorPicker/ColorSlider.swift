@@ -41,6 +41,7 @@ open class ColorSlider: UIControl {
     let trackView = TrackView()
     let trackableLayoutGuide: UILayoutGuide = .init()
     let trackValueLayoutGuide: UILayoutGuide = .init()
+    let panGestureRecognizer = UIPanGestureRecognizer()
     var configuration: ColorSliderConfiguration = .noop
     var cancellables: Set<AnyCancellable> = []
     
@@ -74,8 +75,8 @@ open class ColorSlider: UIControl {
         }
         
         // touchesを使うとスクロールが干渉するのでPanGestureを使う
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan(_:)))
-        addGestureRecognizer(panGesture)
+        panGestureRecognizer.addTarget(self, action: #selector(onPan(_:)))
+        addGestureRecognizer(panGestureRecognizer)
     }
     
     public required init?(coder: NSCoder) {

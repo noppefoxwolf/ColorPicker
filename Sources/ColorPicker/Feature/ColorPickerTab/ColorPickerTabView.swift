@@ -30,6 +30,14 @@ class ColorPickerTabView: UIControl {
         }
     }
     
+    var continuously: Bool {
+        [
+            sliderColorPicker.continuously,
+            classicColorPicker.continuously,
+            gridColorPicker.continuously,
+        ].contains(true)
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         

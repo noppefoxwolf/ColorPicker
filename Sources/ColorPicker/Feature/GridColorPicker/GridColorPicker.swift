@@ -15,6 +15,12 @@ class GridColorPicker: UIControl {
         }
     }
     
+    let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan))
+    
+    var continuously: Bool {
+        panGestureRecognizer.state == .changed
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(gridColorView)
@@ -28,8 +34,8 @@ class GridColorPicker: UIControl {
             make.size.equalTo(0)
         }
         
-        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(onPan))
-        gridColorView.addGestureRecognizer(panGesture)
+        panGestureRecognizer.addTarget(self, action: #selector(onPan))
+        gridColorView.addGestureRecognizer(panGestureRecognizer)
         
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(onTap))
         gridColorView.addGestureRecognizer(tapGesture)
