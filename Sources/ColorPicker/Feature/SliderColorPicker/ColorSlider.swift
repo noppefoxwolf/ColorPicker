@@ -75,7 +75,7 @@ open class ColorSlider: UIControl {
         }
         
         // touchesを使うとスクロールが干渉するのでPanGestureを使う
-        panGestureRecognizer.addTarget(self, action: #selector(onPan(_:)))
+        panGestureRecognizer.addTarget(self, action: #selector(onPan))
         addGestureRecognizer(panGestureRecognizer)
     }
     

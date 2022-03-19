@@ -1,5 +1,4 @@
 import UIKit
-import Combine
 
 class SwatchView: UIControl {
     enum CellItem: Hashable {
@@ -34,7 +33,7 @@ class SwatchView: UIControl {
         return configuration
     }()
     lazy var layout: UICollectionViewLayout = UICollectionViewCompositionalLayout(
-        sectionProvider: { section, environment in
+        sectionProvider: { [unowned self] section, environment in
             let itemSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1)
@@ -84,7 +83,8 @@ class SwatchView: UIControl {
     )
     lazy var dataSource: UICollectionViewDiffableDataSource<Section, CellItem> = .init(
         collectionView: collectionView,
-        cellProvider: { (collectionView, indexPath, item) in
+        cellProvider: { [weak self] (collectionView, indexPath, item) in
+            guard let self = self else { return nil }
             switch item {
             case .add:
                 return collectionView.dequeueConfiguredReusableCell(
@@ -108,7 +108,6 @@ class SwatchView: UIControl {
     let pageControl: UIPageControl = .init(frame: .null)
     var snapshot = NSDiffableDataSourceSnapshot<Section, CellItem>()
     var longPressedItem: CellItem? = nil
-    var cancellables: Set<AnyCancellable> = []
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -138,7 +137,7 @@ class SwatchView: UIControl {
             make.height.equalTo(20)
         }
         
-        pageControl.addAction(UIAction { action in
+        pageControl.addAction(UIAction { [unowned self] action in
             let pageControl = action.sender as! UIPageControl
             self.scrollTo(page: pageControl.currentPage, animated: true)
         }, for: .valueChanged)

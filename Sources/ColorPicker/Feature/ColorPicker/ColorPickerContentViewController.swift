@@ -10,7 +10,7 @@ class ColorPickerContentViewController: UIViewController {
     weak var delegate: ColorPickerContentViewControllerDelegate? = nil
     let scrollView = UIScrollView()
     let segmentControl = UISegmentedControl(items: nil)
-    let swatchAndPreviewView = SwatchAndPreviewView(frame: .null)
+    let swatchAndPreviewView: SwatchAndPreviewView = SwatchAndPreviewView(frame: .null)
     
     /// segment - colorPickerAndSwatch
     let tabStackView: UIStackView = UIStackView()
@@ -44,6 +44,7 @@ class ColorPickerContentViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         view.backgroundColor = .systemBackground
         view.backgroundColor = .secondarySystemBackground
         navigationItem.title = LocalizedString.color
@@ -53,7 +54,7 @@ class ColorPickerContentViewController: UIViewController {
         //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "eyedropper"))
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [unowned self] _ in
-            self.dismiss(animated: true) {
+            self.dismiss(animated: true) { [unowned self] in
                 self.delegate?.colorPickerViewControllerDidFinish(self)
             }
         })
@@ -107,7 +108,7 @@ class ColorPickerContentViewController: UIViewController {
                 animated: false
             )
             
-            let colorPickerAction = UIAction { [unowned self] _ in
+            let colorPickerAction = UIAction { [unowned self, unowned colorPicker] _ in
                 self.color = colorPicker.color
                 self.delegate?.colorPickerViewController(
                     self,

@@ -17,7 +17,7 @@ class GridColorPicker: UIControl, ColorPicker {
         }
     }
     
-    let panGestureRecognizer = UIPanGestureRecognizer(target: self, action: #selector(onPan))
+    let panGestureRecognizer = UIPanGestureRecognizer()
     
     var continuously: Bool {
         panGestureRecognizer.state == .changed

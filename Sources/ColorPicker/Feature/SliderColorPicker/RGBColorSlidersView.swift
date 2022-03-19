@@ -49,7 +49,7 @@ class RGBColorSlidersView: UIControl {
             make.edges.equalToSuperview()
         }
         
-        let valueSyncAction = UIAction { action in
+        let valueSyncAction = UIAction { [unowned self] action in
             let slider = (action.sender as! ColorSliderWithInputView).slider
             self.color = slider.color
             self.sendActions(for: [.valueChanged, .primaryActionTriggered])
