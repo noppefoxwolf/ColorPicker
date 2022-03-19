@@ -12,4 +12,6 @@ public class ColorPickerConfiguration {
     ]
     
     public var initialColorItems: [ColorItem] = []
+    
+    public var usesSwatchTool: Bool = true
 }
