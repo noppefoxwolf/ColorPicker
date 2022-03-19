@@ -1,13 +1,12 @@
 import UIKit
-import UIColorHexSwift
 
 class HexInputView: UIControl {
     var color: UIColor {
         get {
-            UIColor(textField.text!)
+            ColorFormatter().color(from: textField.text!) ?? .white
         }
         set {
-            textField.text = newValue.hexString(false)
+            textField.text = ColorFormatter().string(from: newValue)
         }
     }
     
@@ -41,7 +40,7 @@ class HexInputView: UIControl {
         }
         
         textField.addAction(UIAction { [unowned self] _ in
-            self.color = UIColor(textField.text!)
+            self.color = ColorFormatter().color(from: textField.text!) ?? .white
             self.sendActions(for: [.editingDidEnd, .primaryActionTriggered])
         }, for: .editingDidEnd)
     }

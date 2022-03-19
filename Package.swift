@@ -15,14 +15,12 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/SnapKit/SnapKit", from: "5.0.1"),
-        .package(url: "https://github.com/yeahdongcn/UIColor-Hex-Swift", from: "5.1.8"),
     ],
     targets: [
         .target(
             name: "ColorPicker",
             dependencies: [
                 "SnapKit",
-                .product(name: "UIColorHexSwift", package: "UIColor-Hex-Swift")
             ]
         ),
         .testTarget(
