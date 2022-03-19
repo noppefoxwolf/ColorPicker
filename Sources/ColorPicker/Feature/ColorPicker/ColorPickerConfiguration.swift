@@ -1,6 +1,6 @@
 import UIKit
 
-public struct ColorPickerConfiguration {
+public class ColorPickerConfiguration {
     public static let `default`: ColorPickerConfiguration = .init()
     
     public var initialColor: UIColor = .white
