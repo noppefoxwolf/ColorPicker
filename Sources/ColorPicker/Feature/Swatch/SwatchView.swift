@@ -117,6 +117,9 @@ class SwatchView: UIControl {
         collectionView.allowsSelection = true
         collectionView.delegate = self
         collectionView.alwaysBounceVertical = false
+        collectionView.dragDelegate = self
+        collectionView.dropDelegate = self
+        collectionView.dragInteractionEnabled = true
         
         pageControl.pageIndicatorTintColor = .systemGray
         pageControl.currentPageIndicatorTintColor = .label
@@ -229,6 +232,92 @@ extension SwatchView: UICollectionViewDelegate {
                 .color(ColorItem(id: UUID(), color: selectedColor))
             ], beforeItem: .add)
             apply(snapshot)
+        }
+    }
+}
+
+extension SwatchView: UICollectionViewDragDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView, itemsForBeginning session: UIDragSession,
+        at indexPath: IndexPath
+    ) -> [UIDragItem] {
+        guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
+            return []
+        }
+        guard case let .color(colorItem) = itemIdentifier else {
+            return []
+        }
+        let itemProvider = NSItemProvider(
+            object: colorItem.id.uuidString as NSItemProviderWriting
+        )
+        let dragItem = UIDragItem(itemProvider: itemProvider)
+        return [dragItem]
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath
+    ) -> UIDragPreviewParameters? {
+        let parameters = UIDragPreviewParameters()
+        parameters.backgroundColor = .clear
+        return parameters
+    }
+}
+
+extension SwatchView: UICollectionViewDropDelegate {
+    func collectionView(
+        _ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession,
+        withDestinationIndexPath destinationIndexPath: IndexPath?
+    ) -> UICollectionViewDropProposal {
+        if session.localDragSession != nil {
+            if session.items.count > 1 {
+                return UICollectionViewDropProposal(
+                    operation: .move,
+                    intent: .insertIntoDestinationIndexPath
+                )
+            } else {
+                return UICollectionViewDropProposal(
+                    operation: .move,
+                    intent: .insertAtDestinationIndexPath
+                )
+            }
+        } else {
+            // 外部からのD&Dは受け付けない
+            return UICollectionViewDropProposal(
+                operation: .cancel
+            )
+        }
+    }
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        performDropWith coordinator: UICollectionViewDropCoordinator
+    ) {
+        switch coordinator.proposal.operation {
+        case .move:
+            guard let destinationIndexPath = coordinator.destinationIndexPath else {
+                return
+            }
+            guard let sourceIndexPath = coordinator.items.first?.sourceIndexPath else {
+                return
+            }
+            let sourceItem = snapshot.itemIdentifiers(inSection: .items)[sourceIndexPath.row]
+            let destItem = snapshot.itemIdentifiers(inSection: .items)[destinationIndexPath.row]
+            
+            if destinationIndexPath > sourceIndexPath {
+                snapshot.moveItem(sourceItem, afterItem: destItem)
+            } else {
+                snapshot.moveItem(sourceItem, beforeItem: destItem)
+            }
+            
+            apply(snapshot)
+            
+            coordinator.items.forEach { item in
+                coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
+            }
+        case .cancel, .forbidden, .copy:
+            return
+        @unknown default:
+            fatalError()
         }
     }
 }
