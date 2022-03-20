@@ -1,5 +1,4 @@
 import UIKit
-import Combine
 
 open class ColorSlider: UIControl {
     
@@ -42,8 +41,8 @@ open class ColorSlider: UIControl {
     let trackableLayoutGuide: UILayoutGuide = .init()
     let trackValueLayoutGuide: UILayoutGuide = .init()
     let panGestureRecognizer = UIPanGestureRecognizer()
+    let tapGestureRecognizer = UITapGestureRecognizer()
     var configuration: ColorSliderConfiguration = .noop
-    var cancellables: Set<AnyCancellable> = []
     
     public override init(frame: CGRect) {
         super.init(frame: frame)
@@ -77,6 +76,8 @@ open class ColorSlider: UIControl {
         // touchesを使うとスクロールが干渉するのでPanGestureを使う
         panGestureRecognizer.addTarget(self, action: #selector(onPan))
         addGestureRecognizer(panGestureRecognizer)
+        tapGestureRecognizer.addTarget(self, action: #selector(onTap))
+        addGestureRecognizer(tapGestureRecognizer)
     }
     
     public required init?(coder: NSCoder) {
@@ -84,6 +85,13 @@ open class ColorSlider: UIControl {
     }
     
     @objc func onPan(_ gesture: UIPanGestureRecognizer) {
+        let location = gesture.location(in: gesture.view)
+        self.value = location.x / bounds.width
+        self.sendActions(for: [.valueChanged, .primaryActionTriggered])
+    }
+    
+    @objc func onTap(_ gesture: UITapGestureRecognizer) {
+        guard gesture.state == .ended else { return }
         let location = gesture.location(in: gesture.view)
         self.value = location.x / bounds.width
         self.sendActions(for: [.valueChanged, .primaryActionTriggered])

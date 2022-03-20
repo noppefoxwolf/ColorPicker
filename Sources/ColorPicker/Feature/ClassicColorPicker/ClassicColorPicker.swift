@@ -21,6 +21,7 @@ class ClassicColorPicker: UIControl, ColorPicker {
     }
     
     let panGestureRecognizer = UIPanGestureRecognizer()
+    let tapGestureRecognizer = UITapGestureRecognizer()
     
     var continuously: Bool {
         [
@@ -56,6 +57,8 @@ class ClassicColorPicker: UIControl, ColorPicker {
         
         panGestureRecognizer.addTarget(self, action: #selector(onPan))
         colorView.addGestureRecognizer(panGestureRecognizer)
+        tapGestureRecognizer.addTarget(self, action: #selector(onTap))
+        colorView.addGestureRecognizer(tapGestureRecognizer)
     }
     
     required init?(coder: NSCoder) {
@@ -63,6 +66,13 @@ class ClassicColorPicker: UIControl, ColorPicker {
     }
     
     @objc func onPan(_ gesture: UIPanGestureRecognizer) {
+        let location = gesture.location(in: gesture.view)
+        color = colorView.color(at: location)
+        sendActions(for: [.primaryActionTriggered, .valueChanged])
+    }
+    
+    @objc func onTap(_ gesture: UITapGestureRecognizer) {
+        guard gesture.state == .ended else { return }
         let location = gesture.location(in: gesture.view)
         color = colorView.color(at: location)
         sendActions(for: [.primaryActionTriggered, .valueChanged])
