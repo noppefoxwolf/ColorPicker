@@ -188,6 +188,8 @@ class SwatchView: UIControl {
     }
     
     func setColorItems(_ colorItems: [ColorItem]) {
+        snapshot.deleteAllItems()
+        snapshot.appendSections([.items])
         snapshot.appendItems(colorItems.map({ .color($0) }), toSection: .items)
         snapshot.appendItems([.add], toSection: .items)
         apply(snapshot)
