@@ -30,7 +30,8 @@ public class ColorPickerViewController: UINavigationController {
     }
     
     public var colorItems: [ColorItem] {
-        contentViewController.colorItems
+        get { contentViewController.colorItems }
+        set { contentViewController.colorItems = newValue }
     }
     
     public var configuration: ColorPickerConfiguration {
