@@ -38,7 +38,8 @@ class ColorPickerContentViewController: UIViewController {
     }
     
     var colorItems: [ColorItem] {
-        swatchAndPreviewView.swatchView.colorItems
+        get { swatchAndPreviewView.swatchView.colorItems }
+        set { swatchAndPreviewView.swatchView.setColorItems(newValue) }
     }
     
     var configuration: ColorPickerConfiguration = ColorPickerConfiguration()
@@ -136,7 +137,7 @@ class ColorPickerContentViewController: UIViewController {
         swatchAndPreviewView.isHidden = !configuration.usesSwatchTool
         _color = configuration.initialColor
         segmentControl.selectedSegmentIndex = 0
-        swatchAndPreviewView.swatchView.setColorItems(configuration.initialColorItems)
+        self.colorItems = configuration.initialColorItems
         updateCurrentColorPicker()
     }
     
