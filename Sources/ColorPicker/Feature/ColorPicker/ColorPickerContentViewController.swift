@@ -4,6 +4,7 @@ import SwiftUI
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerContentViewController)
+    func colorPickerSwatchDidChanged(_ viewController: ColorPickerContentViewController)
 }
 
 class ColorPickerContentViewController: UIViewController {
@@ -127,6 +128,10 @@ class ColorPickerContentViewController: UIViewController {
                 continuously: false
             )
         }, for: .primaryActionTriggered)
+        
+        swatchAndPreviewView.swatchView.onChanged = { [unowned self] _ in
+            self.delegate?.colorPickerSwatchDidChanged(self)
+        }
         
         swatchAndPreviewView.isHidden = !configuration.usesSwatchTool
         _color = configuration.initialColor

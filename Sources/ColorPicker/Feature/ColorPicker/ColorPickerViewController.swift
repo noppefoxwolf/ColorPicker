@@ -5,6 +5,10 @@ public protocol ColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerViewController)
 }
 
+public protocol ColorPickerViewControllerSwatchDelegate: AnyObject {
+    func colorPickerViewControllerSwatchDidChanged(_ viewController: ColorPickerViewController)
+}
+
 public class ColorPickerViewController: UINavigationController {
     public init() {
         let vc = ColorPickerContentViewController()
@@ -35,6 +39,7 @@ public class ColorPickerViewController: UINavigationController {
     }
     
     private weak var _delegate: ColorPickerViewControllerDelegate? = nil
+    public weak var swatchDelegate: ColorPickerViewControllerSwatchDelegate? = nil
     
     public func setDelegate(_ delegate: ColorPickerViewControllerDelegate) {
         _delegate = delegate
@@ -48,5 +53,9 @@ extension ColorPickerViewController: ColorPickerContentViewControllerDelegate {
     
     func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool) {
         _delegate?.colorPickerViewController(self, didSelect: color, continuously: continuously)
+    }
+    
+    func colorPickerSwatchDidChanged(_ viewController: ColorPickerContentViewController) {
+        swatchDelegate?.colorPickerViewControllerSwatchDidChanged(self)
     }
 }

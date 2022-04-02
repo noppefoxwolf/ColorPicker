@@ -108,6 +108,7 @@ class SwatchView: UIControl {
     let pageControl: UIPageControl = .init(frame: .null)
     var snapshot = NSDiffableDataSourceSnapshot<Section, CellItem>()
     var longPressedItem: CellItem? = nil
+    var onChanged: (([ColorItem]) -> Void) = { _ in }
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -203,6 +204,16 @@ class SwatchView: UIControl {
         let itemCount = snapshot.numberOfItems(inSection: .items)
         pageControl.numberOfPages = Int(ceil(Double(itemCount) / 10.0))
         dataSource.apply(snapshot)
+        
+        let colorItems = snapshot.itemIdentifiers.compactMap({ (cellItem) -> ColorItem? in
+            switch cellItem {
+            case .add:
+                return nil
+            case .color(let colorItem):
+                return colorItem
+            }
+        })
+        onChanged(colorItems)
     }
     
     private func reconfigureCells() {
