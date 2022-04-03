@@ -11,7 +11,7 @@ public class ColorPickerConfiguration {
         SliderColorPicker(frame: .null),
     ]
     
-    public var initialColorItems: [ColorItem] = []
+    public var initialColorItems: [ColorItem]? = nil
     
     public var usesSwatchTool: Bool = true
 }
