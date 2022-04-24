@@ -8,7 +8,8 @@ public class ColorPickerConfiguration {
     public var colorPickers: [UIControl & ColorPicker] = [
         GridColorPicker(frame: .null),
         ClassicColorPicker(frame: .null),
-        SliderColorPicker(frame: .null),
+        RGBHexSliderColorPicker(frame: .null),
+        HSBHexSliderColorPicker(frame: .null),
     ]
     
     public var initialColorItems: [ColorItem]? = nil
