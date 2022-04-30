@@ -13,13 +13,16 @@ class ScopeColorPickerWindow: UIWindow {
     let viewSize: Double = 156
     weak var delegate: ScopeColorPickerDelegate? = nil
     weak var dataSource: ScopeColorPickerDataSource? = nil
+    var translationX: Double = 0
+    var translationY: Double = 0
     
     override init(windowScene: UIWindowScene) {
         super.init(windowScene: windowScene)
         
         addSubview(reticleView)
         reticleView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.centerX.equalToSuperview().offset(translationX)
+            make.centerY.equalToSuperview().offset(translationY)
             make.size.equalTo(viewSize)
         }
         
@@ -50,12 +53,15 @@ class ScopeColorPickerWindow: UIWindow {
             reticleView.isHidden = false
             fallthrough
         case .changed:
-            let location = gesture.location(in: gesture.view)
-            reticleView.snp.remakeConstraints { make in
-                make.center.equalTo(location)
-                make.size.equalTo(viewSize)
+            let translation = gesture.translation(in: gesture.view)
+            translationX = translation.x
+            translationY = translation.y
+            reticleView.snp.updateConstraints { make in
+                make.centerX.equalToSuperview().offset(translationX)
+                make.centerY.equalToSuperview().offset(translationY)
             }
-            updateScopeContent(at: location)
+            
+            updateScopeContent(at: reticleView.center)
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
             delegate?.scopePickerDidFinishColorPick(reticleView.color)
