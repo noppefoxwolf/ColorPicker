@@ -15,4 +15,6 @@ public class ColorPickerConfiguration {
     public var initialColorItems: [ColorItem]? = nil
     
     public var usesSwatchTool: Bool = true
+    
+    public var usesDropperTool: Bool = true
 }

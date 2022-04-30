@@ -55,12 +55,14 @@ class ColorPickerContentViewController: UIViewController {
         navigationItem.largeTitleDisplayMode = .always
         
         
-        navigationItem.leftBarButtonItem = UIBarButtonItem(
-            image: UIImage(systemName: "eyedropper"),
-            primaryAction: UIAction { [unowned self] _ in
-                self.delegate?.colorPickerDropperDidSelect(self)
-            }
-        )
+        if configuration.usesDropperTool {
+            navigationItem.leftBarButtonItem = UIBarButtonItem(
+                image: UIImage(systemName: "eyedropper"),
+                primaryAction: UIAction { [unowned self] _ in
+                    self.delegate?.colorPickerDropperDidSelect(self)
+                }
+            )
+        }
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [unowned self] _ in
             self.dismiss(animated: true) { [unowned self] in
