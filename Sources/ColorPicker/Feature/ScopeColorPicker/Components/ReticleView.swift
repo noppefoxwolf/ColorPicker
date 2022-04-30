@@ -29,7 +29,6 @@ class ReticleView: UIView {
         
         let shadowPath = UIBezierPath(ovalIn: bounds)
         layer.shadowPath = shadowPath.cgPath
-        layer.shouldRasterize = true
         layer.shadowColor = UIColor.black.cgColor
         layer.shadowOpacity = 0.3
         layer.shadowRadius = 30
