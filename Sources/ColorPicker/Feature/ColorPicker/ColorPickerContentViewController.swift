@@ -5,6 +5,8 @@ protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerContentViewController)
     func colorPickerSwatchDidChanged(_ viewController: ColorPickerContentViewController)
+    
+    func colorPickerDropperDidSelect(_ viewController: ColorPickerContentViewController)
 }
 
 class ColorPickerContentViewController: UIViewController {
@@ -52,8 +54,13 @@ class ColorPickerContentViewController: UIViewController {
         navigationItem.title = LocalizedString.color
         navigationItem.largeTitleDisplayMode = .always
         
-        // unimplemented
-        //        navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "eyedropper"))
+        
+        navigationItem.leftBarButtonItem = UIBarButtonItem(
+            image: UIImage(systemName: "eyedropper"),
+            primaryAction: UIAction { [unowned self] _ in
+                self.delegate?.colorPickerDropperDidSelect(self)
+            }
+        )
         
         navigationItem.rightBarButtonItem = UIBarButtonItem(systemItem: .close, primaryAction: UIAction { [unowned self] _ in
             self.dismiss(animated: true) { [unowned self] in

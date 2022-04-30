@@ -2,9 +2,13 @@ import SwiftUI
 
 @main
 struct App: SwiftUI.App {
+    
     var body: some Scene {
         WindowGroup {
-            ContentView().ignoresSafeArea()
+            HStack {
+                ContentView().ignoresSafeArea()
+                LinearGradient(colors: [.white, .black], startPoint: .top, endPoint: .bottom)
+            }
         }
     }
 }
