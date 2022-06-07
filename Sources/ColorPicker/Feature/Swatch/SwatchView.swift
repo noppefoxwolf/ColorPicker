@@ -44,8 +44,16 @@ class SwatchView: UIControl {
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1)
             )
+            
+            let count: Int
+            switch environment.traitCollection.horizontalSizeClass {
+            case .regular:
+                count = 8
+            default:
+                count = 5
+            }
             let hGroup = NSCollectionLayoutGroup.horizontal(
-                layoutSize: hGroupSize, subitem: item, count: 5)
+                layoutSize: hGroupSize, subitem: item, count: count)
             //            hGroup.interItemSpacing = .flexible(16)
             let vGroupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
