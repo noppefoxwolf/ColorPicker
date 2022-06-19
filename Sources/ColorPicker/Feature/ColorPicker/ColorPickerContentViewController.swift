@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
-    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool)
+    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: CGColor, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerContentViewController)
     func colorPickerSwatchDidChanged(_ viewController: ColorPickerContentViewController)
     
@@ -20,14 +20,14 @@ class ColorPickerContentViewController: UIViewController {
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
     
-    private var _color: UIColor = .white {
+    private var _color: CGColor = .white {
         didSet {
             swatchAndPreviewView.color = _color
             configuration.colorPickers.forEach({ $0.color = _color })
         }
     }
     
-    var color: UIColor {
+    var color: CGColor {
         get { _color }
         set {
             guard _color != newValue else { return }

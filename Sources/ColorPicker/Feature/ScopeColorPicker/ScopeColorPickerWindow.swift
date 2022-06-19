@@ -1,7 +1,7 @@
 import UIKit
 
 protocol ScopeColorPickerDelegate: AnyObject {
-    func scopePickerDidFinishColorPick(_ color: UIColor)
+    func scopePickerDidFinishColorPick(_ color: CGColor)
 }
 
 protocol ScopeColorPickerDataSource: AnyObject {

@@ -2,7 +2,7 @@ import UIKit
 
 public class ScopeColorPicker {
     let pickerWindow: ScopeColorPickerWindow
-    var continuation: CheckedContinuation<UIColor, Never>? = nil
+    var continuation: CheckedContinuation<CGColor, Never>? = nil
     
     public init(windowScene: UIWindowScene) {
         self.pickerWindow = .init(windowScene: windowScene)
@@ -10,7 +10,7 @@ public class ScopeColorPicker {
         pickerWindow.dataSource = self
     }
     
-    public func pickColor() async -> UIColor {
+    public func pickColor() async -> CGColor {
         await withCheckedContinuation { [weak self] continuation in
             self?.continuation = continuation
         }
@@ -18,7 +18,7 @@ public class ScopeColorPicker {
 }
 
 extension ScopeColorPicker: ScopeColorPickerDelegate {
-    func scopePickerDidFinishColorPick(_ color: UIColor) {
+    func scopePickerDidFinishColorPick(_ color: CGColor) {
         continuation?.resume(with: .success(color))
     }
 }

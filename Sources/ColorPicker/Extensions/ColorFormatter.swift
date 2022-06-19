@@ -3,7 +3,7 @@ import UIKit
 
 class ColorFormatter: Formatter {
     
-    func color(from string: String) -> UIColor? {
+    func color(from string: String) -> CGColor? {
         let hexString = string.trimmingCharacters(in: .whitespacesAndNewlines)
         let scanner = Scanner(string: hexString)
         
@@ -14,7 +14,7 @@ class ColorFormatter: Formatter {
         var rgbValue:UInt64 = 0
         scanner.scanHexInt64(&rgbValue)
         
-        return UIColor(
+        return CGColor(
             red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
             green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
             blue: Double(rgbValue & 0x0000FF) / 255.0,
@@ -22,7 +22,7 @@ class ColorFormatter: Formatter {
         )
     }
     
-    func string(from color: UIColor) -> String {
+    func string(from color: CGColor) -> String {
         var r: CGFloat = 0
         var g: CGFloat = 0
         var b: CGFloat = 0

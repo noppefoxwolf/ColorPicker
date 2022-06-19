@@ -5,9 +5,9 @@ class SwatchAndPreviewView: UIControl {
     let swatchView = SwatchView(frame: .null)
     let colorPreviewView = ColorPreviewView(frame: .null)
     
-    private var _color: UIColor = .white
+    private var _color: CGColor = .white
     
-    var color: UIColor {
+    var color: CGColor {
         get { _color }
         set {
             _color = newValue

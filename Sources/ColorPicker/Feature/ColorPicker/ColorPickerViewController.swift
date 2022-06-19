@@ -1,7 +1,7 @@
 import UIKit
 
 public protocol ColorPickerViewControllerDelegate: AnyObject {
-    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: UIColor, continuously: Bool)
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: CGColor, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerViewController)
 }
 
@@ -28,7 +28,7 @@ public class ColorPickerViewController: UINavigationController {
         fatalError()
     }
     
-    public var selectedColor: UIColor {
+    public var selectedColor: CGColor {
         get { contentViewController.color }
         set { contentViewController.color = newValue }
     }
@@ -57,7 +57,7 @@ extension ColorPickerViewController: ColorPickerContentViewControllerDelegate {
         _delegate?.colorPickerViewControllerDidFinish(self)
     }
     
-    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: UIColor, continuously: Bool) {
+    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: CGColor, continuously: Bool) {
         _delegate?.colorPickerViewController(self, didSelect: color, continuously: continuously)
     }
     

@@ -5,9 +5,9 @@ class RGBColorSlidersView: UIControl {
     let greenSlider = ColorSliderWithInputView()
     let blueSlider = ColorSliderWithInputView()
     
-    private var _color: UIColor = .white
+    private var _color: CGColor = .white
     
-    var color: UIColor {
+    var color: CGColor {
         get { _color }
         set {
             _color = newValue

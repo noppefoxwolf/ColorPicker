@@ -16,7 +16,9 @@ class ContentViewController: UIViewController {
         super.viewDidLoad()
         
         let colorPickerButton = UIButton(primaryAction: UIAction(title: "noppefoxwolf/ColorPicker", handler: { _ in
-            self.presentColorPicker(.red)
+            self.presentColorPicker(
+                CGColor(red: 1, green: 0, blue: 0, alpha: 1)
+            )
         }))
         let uiColorPickerButton = UIButton(primaryAction: UIAction(title: "apple/UIColorPicker", handler: { _ in
             let vc = UIColorPickerViewController()
@@ -41,11 +43,13 @@ class ContentViewController: UIViewController {
         }
     }
     
-    func presentColorPicker(_ color: UIColor) {
+    func presentColorPicker(_ color: CGColor) {
         let vc = ColorPickerViewController()
         let configuration = ColorPickerConfiguration.default
         configuration.initialColor = color
-        configuration.initialColorItems = [.init(id: UUID(), color: .red)]
+        configuration.initialColorItems = [
+            .init(id: UUID(), color: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+        ]
         vc.configuration = configuration
         vc.setDelegate(self)
         vc.actionDelegate = self
@@ -58,7 +62,7 @@ extension ContentViewController: ColorPickerViewControllerDelegate {
         print(#function, viewController.selectedColor)
     }
     
-    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: CGColor, continuously: Bool) {
         print(#function, color, continuously)
     }
 }

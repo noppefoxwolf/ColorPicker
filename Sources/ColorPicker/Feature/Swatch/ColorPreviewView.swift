@@ -3,7 +3,7 @@ import UIKit
 class ColorPreviewView: UIView {
     
     @Invalidating(.display)
-    var color: UIColor = .white
+    var color: CGColor = .white
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -22,7 +22,7 @@ class ColorPreviewView: UIView {
         let path = UIBezierPath(roundedRect: rect, cornerRadius: 10).cgPath
         context.addPath(path)
         context.clip()
-        context.setFillColor(color.cgColor)
+        context.setFillColor(color)
         context.fill(rect)
     }
 }

@@ -3,7 +3,7 @@ import UIKit
 public class ColorPickerConfiguration {
     public static var `default`: ColorPickerConfiguration { ColorPickerConfiguration() }
     
-    public var initialColor: UIColor = .white
+    public var initialColor: CGColor = .white
     
     public var colorPickers: [UIControl & ColorPicker] = [
         GridColorPicker(frame: .null),

@@ -10,7 +10,7 @@ class SwatchView: UIControl {
     }
     let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
     
-    private var _selectedColor: UIColor = .white {
+    private var _selectedColor: CGColor = .white {
         didSet {
             /// 逐次実行だと重いので遅延させる
             debounceAction { [weak self] in
@@ -19,7 +19,7 @@ class SwatchView: UIControl {
         }
     }
     
-    var selectedColor: UIColor {
+    var selectedColor: CGColor {
         get { _selectedColor }
         set {
             guard _selectedColor != newValue else { return }
@@ -76,7 +76,7 @@ class SwatchView: UIControl {
     lazy var collectionView = UICollectionView(frame: .null, collectionViewLayout: layout)
     
     struct ColorCellConfiguration {
-        let color: UIColor
+        let color: CGColor
         let isSelected: Bool
     }
     let colorCellRegistration = UICollectionView.CellRegistration(
