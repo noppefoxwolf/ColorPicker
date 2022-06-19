@@ -171,7 +171,7 @@ class ThumbView: UIView {
             let y = padding
             let h = rect.height - (padding + padding) // top + bottom
             let w = h
-            context.setShadow(offset: .zero, blur: padding, color: CGColor(gray: 0, alpha: 1))
+            context.setShadow(offset: .zero, blur: padding, color: .white)
             context.setFillColor(UIColor.white.cgColor)
             context.addEllipse(in: CGRect(x: x, y: y, width: w, height: h))
             context.fillPath()

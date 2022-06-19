@@ -51,7 +51,7 @@ extension CGColor {
 }
 
 extension CGColor {
-    static let white: CGColor = CGColor(gray: 0, alpha: 1)
+    static let white: CGColor = CGColor(red: 0, green: 0, blue: 0, alpha: 1)
 }
 
 // https://www.cs.rit.edu/~ncs/color/t_convert.html
