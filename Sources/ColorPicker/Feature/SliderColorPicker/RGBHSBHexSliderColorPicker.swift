@@ -2,6 +2,7 @@ import UIKit
 
 /// RGBHSBHextSliderColorPicker
 class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
+    let id: String = #function
     var title: String = LocalizedString.sliders
     
     let rgbSlidersView = RGBColorSlidersView(frame: .null)

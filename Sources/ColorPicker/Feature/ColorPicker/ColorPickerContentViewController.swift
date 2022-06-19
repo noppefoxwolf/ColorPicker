@@ -149,7 +149,8 @@ class ColorPickerContentViewController: UIViewController {
         if let initialColorItems = configuration.initialColorItems {
             self.colorItems = initialColorItems
         }
-        updateCurrentColorPicker()
+        
+        selectLatestUseOrInitialColorPicker()
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -164,15 +165,23 @@ class ColorPickerContentViewController: UIViewController {
         }
     }
     
+    func selectLatestUseOrInitialColorPicker() {
+        let index = configuration.colorPickers.firstIndex(where: { $0.id == UserDefaults.standard.latestColorPickerID })
+        segmentControl.selectedSegmentIndex = index ?? 0
+        updateCurrentColorPicker()
+    }
+    
     func updateCurrentColorPicker() {
         let index = segmentControl.selectedSegmentIndex
         colorPickersStackView
             .arrangedSubviews
             .filter({ ($0 is ColorPicker) })
             .forEach({ $0.removeFromSuperview() })
+        let colorPicker = configuration.colorPickers[index]
         colorPickersStackView.insertArrangedSubview(
-            configuration.colorPickers[index],
+            colorPicker,
             at: 0
         )
+        UserDefaults.standard.latestColorPickerID = colorPicker.id
     }
 }

@@ -1,6 +1,7 @@
 import UIKit
 
 class HSBHexSliderColorPicker: UIControl, ColorPicker {
+    let id: String = #function
     var title: String = LocalizedString.hsb
     
     let hsbSlidersView = HSBColorSlidersView(frame: .null)

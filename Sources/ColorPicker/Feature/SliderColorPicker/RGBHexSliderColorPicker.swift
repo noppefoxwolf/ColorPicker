@@ -1,6 +1,7 @@
 import UIKit
 
 class RGBHexSliderColorPicker: UIControl, ColorPicker {
+    let id: String = #function
     var title: String = LocalizedString.rgb
     
     let rgbSlidersView = RGBColorSlidersView(frame: .null)

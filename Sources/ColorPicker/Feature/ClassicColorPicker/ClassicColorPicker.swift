@@ -1,6 +1,7 @@
 import UIKit
 
 class ClassicColorPicker: UIControl, ColorPicker {
+    let id: String = #function
     var title: String = LocalizedString.classic
     
     let colorView: ClassicColorView = .init(frame: .null)
