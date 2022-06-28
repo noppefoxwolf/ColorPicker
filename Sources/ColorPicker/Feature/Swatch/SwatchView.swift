@@ -129,6 +129,8 @@ class SwatchView: UIControl {
         collectionView.dragDelegate = self
         collectionView.dropDelegate = self
         collectionView.dragInteractionEnabled = true
+        // FIXME: ドラッグ時の影がクリップされてしまう
+        // collectionView.clipsToBounds = false
         
         pageControl.pageIndicatorTintColor = .systemGray
         pageControl.currentPageIndicatorTintColor = .label
@@ -278,7 +280,11 @@ extension SwatchView: UICollectionViewDragDelegate {
     func collectionView(
         _ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath
     ) -> UIDragPreviewParameters? {
+        guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCell else {
+            return nil
+        }
         let parameters = UIDragPreviewParameters()
+        parameters.visiblePath = UIBezierPath(ovalIn: cell.contentRect())
         parameters.backgroundColor = .clear
         return parameters
     }
