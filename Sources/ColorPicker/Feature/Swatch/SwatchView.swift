@@ -285,20 +285,34 @@ extension SwatchView: UICollectionViewDragDelegate {
 }
 
 extension SwatchView: UICollectionViewDropDelegate {
+    
     func collectionView(
         _ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession,
         withDestinationIndexPath destinationIndexPath: IndexPath?
     ) -> UICollectionViewDropProposal {
         if session.localDragSession != nil {
-            if session.items.count > 1 {
-                return UICollectionViewDropProposal(
-                    operation: .move,
-                    intent: .insertIntoDestinationIndexPath
-                )
+            if let destinationIndexPath = destinationIndexPath {
+                if let item = dataSource.itemIdentifier(for: destinationIndexPath),
+                   case .add = item {
+                    return UICollectionViewDropProposal(
+                        operation: .cancel
+                    )
+                } else {
+                    if session.items.count > 1 {
+                        return UICollectionViewDropProposal(
+                            operation: .move,
+                            intent: .insertIntoDestinationIndexPath
+                        )
+                    } else {
+                        return UICollectionViewDropProposal(
+                            operation: .move,
+                            intent: .insertAtDestinationIndexPath
+                        )
+                    }
+                }
             } else {
                 return UICollectionViewDropProposal(
-                    operation: .move,
-                    intent: .insertAtDestinationIndexPath
+                    operation: .cancel
                 )
             }
         } else {
