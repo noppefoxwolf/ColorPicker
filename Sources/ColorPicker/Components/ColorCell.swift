@@ -18,7 +18,14 @@ class ColorCell: UICollectionViewCell {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
+    func contentRect() -> CGRect {
+        let size = CGSize(width: 36, height: 36)
+        let origin = CGPoint(
+            x: (bounds.width - size.width) / 2,
+            y: (bounds.height - size.height) / 2
+        )
+        return CGRect(origin: origin, size: size)
+    }
 }
 
 class ColorView: UIView {
