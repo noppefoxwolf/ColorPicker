@@ -45,7 +45,9 @@ class ClassicColorPicker: UIControl, ColorPicker {
         }
         colorView.addSubview(markerView)
         markerView.snp.makeConstraints { make in
-            make.center.equalTo(CGPoint.zero)
+            make.centerX.equalTo(colorView.snp.right).multipliedBy(1.0)
+            make.centerY.equalTo(colorView.snp.bottom).multipliedBy(1.0)
+            make.size.equalTo(36)
         }
         
         hueSlider.addAction(UIAction { [unowned self] _ in
@@ -81,9 +83,13 @@ class ClassicColorPicker: UIControl, ColorPicker {
     
     override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
-        let location = colorView.location(by: color)!
-        markerView.snp.updateConstraints { make in
-            make.center.equalTo(location)
+        let multiply = colorView.locationMultiply(by: color)
+        let multiplyX = max(multiply.width, .leastNonzeroMagnitude)
+        let multiplyY = max(multiply.height, .leastNonzeroMagnitude)
+        markerView.snp.remakeConstraints { make in
+            make.centerX.equalTo(colorView.snp.right).multipliedBy(multiplyX)
+            make.centerY.equalTo(colorView.snp.bottom).multipliedBy(multiplyY)
+            make.size.equalTo(36)
         }
     }
 }
@@ -104,9 +110,6 @@ class ClassicColorMarkerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
-        self.snp.makeConstraints { make in
-            make.size.equalTo(36)
-        }
     }
     
     required init?(coder: NSCoder) {

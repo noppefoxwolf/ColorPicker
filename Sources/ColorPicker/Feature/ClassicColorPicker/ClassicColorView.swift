@@ -34,6 +34,11 @@ class ClassicColorView: UIView {
         return CGPoint(x: hsb.s * bounds.width, y: (1.0 - hsb.v) * bounds.height)
     }
     
+    func locationMultiply(by color: CGColor) -> CGSize {
+        let hsb = color.hsb
+        return CGSize(width: hsb.s, height: (1.0 - hsb.v))
+    }
+    
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
         let maskPath = UIBezierPath(roundedRect: rect, cornerRadius: 8).cgPath
