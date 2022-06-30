@@ -15,7 +15,9 @@ class ScopeColorPickerWindow: UIWindow {
     weak var dataSource: ScopeColorPickerDataSource? = nil
     var translationX: Double = 0
     var translationY: Double = 0
+    
     let isContinuePan: Bool
+    let continuePanOffsetY: Double = -44
     weak var panGestureRecognizer: UIPanGestureRecognizer? = nil
     
     init(
@@ -52,7 +54,8 @@ class ScopeColorPickerWindow: UIWindow {
             let center = self.center
             let x = location.x - center.x
             let y = location.y - center.y
-            let initialTranslation = CGPoint(x: x, y: y)
+            var initialTranslation = CGPoint(x: x, y: y)
+            initialTranslation.y += continuePanOffsetY
             self.translationX = initialTranslation.x
             self.translationY = initialTranslation.y
             panGestureRecognizer.setTranslation(initialTranslation, in: panGestureRecognizer.view)
