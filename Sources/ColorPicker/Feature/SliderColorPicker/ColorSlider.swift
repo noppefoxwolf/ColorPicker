@@ -57,12 +57,12 @@ open class ColorSlider: UIControl {
         }
         trackView.addLayoutGuide(trackableLayoutGuide)
         trackableLayoutGuide.snp.makeConstraints { make in
-            make.left.right.equalToSuperview().inset(34 / 2)
-            make.top.bottom.equalToSuperview()
+            make.horizontalEdges.equalToSuperview().inset(34 / 2)
+            make.verticalEdges.equalToSuperview()
         }
         trackView.addLayoutGuide(trackValueLayoutGuide)
         trackValueLayoutGuide.snp.makeConstraints { make in
-            make.top.bottom.left.equalTo(trackableLayoutGuide)
+            make.verticalEdges.left.equalTo(trackableLayoutGuide)
             make.width.equalTo(trackableLayoutGuide).multipliedBy(0)
         }
         
@@ -101,7 +101,7 @@ open class ColorSlider: UIControl {
         super.setNeedsUpdateConstraints()
 
         trackValueLayoutGuide.snp.remakeConstraints { make in
-            make.top.bottom.left.equalTo(trackableLayoutGuide)
+            make.verticalEdges.left.equalTo(trackableLayoutGuide)
             make.width.equalTo(trackableLayoutGuide).multipliedBy(value)
         }
     }

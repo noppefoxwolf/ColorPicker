@@ -1,6 +1,7 @@
 import SwiftUI
 import ColorPicker
 import SnapKit
+import Combine
 
 struct ContentView: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> some UIViewController {
@@ -12,6 +13,8 @@ struct ContentView: UIViewControllerRepresentable {
 }
 
 class ContentViewController: UIViewController {
+    var cancellables: Set<AnyCancellable> = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -28,10 +31,37 @@ class ContentViewController: UIViewController {
         }))
         let imageView = UIImageView(image: UIImage(named: "image"))
         imageView.contentMode = .scaleAspectFit
+        let eyeDropperButton = UIButton(configuration: .filled())
+        eyeDropperButton.configuration?.image = UIImage(systemName: "eyedropper")
+        eyeDropperButton.configuration?.title = "Tap or drag here"
+        eyeDropperButton.addAction(UIAction { [unowned self] _ in
+            let picker = ScopeColorPicker(windowScene: self.view.window!.windowScene!)
+            Task {
+                let color = await picker.pickColor()
+                print(color)
+            }
+        }, for: .primaryActionTriggered)
+        let goOut = GoOutPanGestureRecognizer()
+        goOut
+            .publisher(for: \.state)
+            .filter({ $0 == .began })
+            .sink { [unowned self] state in
+                print("GO")
+                let picker = ScopeColorPicker(
+                    windowScene: self.view.window!.windowScene!,
+                    panGestureRecognizer: goOut
+                )
+                Task {
+                    let color = await picker.pickColor()
+                    print(color)
+                }
+            }.store(in: &cancellables)
+        eyeDropperButton.addGestureRecognizer(goOut)
         let stackView = UIStackView(arrangedSubviews: [
             imageView,
             colorPickerButton,
-            uiColorPickerButton
+            uiColorPickerButton,
+            eyeDropperButton
         ])
         stackView.axis = .vertical
         view.addSubview(stackView)

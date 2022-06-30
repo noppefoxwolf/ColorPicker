@@ -4,8 +4,11 @@ public class ScopeColorPicker {
     let pickerWindow: ScopeColorPickerWindow
     var continuation: CheckedContinuation<CGColor, Never>? = nil
     
-    public init(windowScene: UIWindowScene) {
-        self.pickerWindow = .init(windowScene: windowScene)
+    public init(
+        windowScene: UIWindowScene,
+        panGestureRecognizer: UIPanGestureRecognizer? = nil
+    ) {
+        self.pickerWindow = .init(windowScene: windowScene, panGestureRecognizer: panGestureRecognizer)
         pickerWindow.delegate = self
         pickerWindow.dataSource = self
     }

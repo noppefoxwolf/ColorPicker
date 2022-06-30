@@ -15,8 +15,14 @@ class ScopeColorPickerWindow: UIWindow {
     weak var dataSource: ScopeColorPickerDataSource? = nil
     var translationX: Double = 0
     var translationY: Double = 0
+    let isContinuePan: Bool
+    weak var panGestureRecognizer: UIPanGestureRecognizer? = nil
     
-    override init(windowScene: UIWindowScene) {
+    init(
+        windowScene: UIWindowScene,
+        panGestureRecognizer: UIPanGestureRecognizer? = nil
+    ) {
+        isContinuePan = panGestureRecognizer != nil
         super.init(windowScene: windowScene)
         
         addSubview(reticleView)
@@ -26,15 +32,34 @@ class ScopeColorPickerWindow: UIWindow {
             make.size.equalTo(viewSize)
         }
         
-        let panGesture = UIPanGestureRecognizer()
-        panGesture.addTarget(self, action: #selector(onPan(_:)))
-        addGestureRecognizer(panGesture)
+        let panGestureRecognizer = panGestureRecognizer ?? UIPanGestureRecognizer()
+        panGestureRecognizer.addTarget(self, action: #selector(onPan(_:)))
+        if !isContinuePan {
+            addGestureRecognizer(panGestureRecognizer)
+        }
+        self.panGestureRecognizer = panGestureRecognizer
         
         isHidden = false
         
         DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return } 
+            guard let self = self else { return }
             self.updateScopeContent(at: self.center)
+        }
+        
+        if isContinuePan {
+            /// continue pan translation
+            let location = panGestureRecognizer.location(in: self)
+            let center = self.center
+            let x = location.x - center.x
+            let y = location.y - center.y
+            let initialTranslation = CGPoint(x: x, y: y)
+            self.translationX = initialTranslation.x
+            self.translationY = initialTranslation.y
+            panGestureRecognizer.setTranslation(initialTranslation, in: panGestureRecognizer.view)
+            reticleView.snp.updateConstraints { make in
+                make.centerX.equalToSuperview().offset(translationX)
+                make.centerY.equalToSuperview().offset(translationY)
+            }
         }
     }
     
@@ -64,6 +89,7 @@ class ScopeColorPickerWindow: UIWindow {
             updateScopeContent(at: reticleView.center)
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
+            panGestureRecognizer?.removeTarget(self, action: #selector(onPan))
             delegate?.scopePickerDidFinishColorPick(reticleView.color)
         default:
             break
@@ -71,8 +97,8 @@ class ScopeColorPickerWindow: UIWindow {
     }
     
     func updateScopeContent(at location: CGPoint) {
-        reticleView.render { [weak self] context in
-            self?.dataSource?.colors(at: location, context: context)
+        reticleView.render { context in
+            dataSource?.colors(at: location, context: context)
         }
     }
 }
