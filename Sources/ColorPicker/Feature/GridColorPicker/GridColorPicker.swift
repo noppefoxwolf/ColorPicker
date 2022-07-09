@@ -1,8 +1,8 @@
 import UIKit
 
-class GridColorPicker: UIControl, ColorPicker {
-    let id: String = #function
-    var title: String = LocalizedString.grid
+public class GridColorPicker: UIControl, ColorPicker {
+    public let id: String = #function
+    public var title: String = LocalizedString.grid
     
     let gridColorView: GridColorView = .init(frame: .null)
     let markerView: GridColorMarkerView = .init(frame: .null)
@@ -10,7 +10,7 @@ class GridColorPicker: UIControl, ColorPicker {
     @Invalidating(.constraints)
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             guard _color != newValue else { return }
@@ -20,11 +20,11 @@ class GridColorPicker: UIControl, ColorPicker {
     
     let panGestureRecognizer = UIPanGestureRecognizer()
     
-    var continuously: Bool {
+    public var continuously: Bool {
         panGestureRecognizer.state == .changed
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(gridColorView)
         gridColorView.snp.makeConstraints { make in
@@ -44,6 +44,7 @@ class GridColorPicker: UIControl, ColorPicker {
         gridColorView.addGestureRecognizer(tapGesture)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
@@ -62,7 +63,7 @@ class GridColorPicker: UIControl, ColorPicker {
         sendActions(for: [.primaryActionTriggered, .valueChanged])
     }
     
-    override func setNeedsUpdateConstraints() {
+    public override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
         
         // move marker

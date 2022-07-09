@@ -96,8 +96,13 @@ class ContentViewController: UIViewController {
         let configuration = ColorPickerConfiguration.default
         configuration.initialColor = color
         configuration.initialColorItems = [
-            .init(id: UUID(), color: CGColor(red: 1, green: 0, blue: 0, alpha: 1))
+            .init(id: UUID(), color: CGColor(red: 1, green: 0, blue: 0, alpha: 1)),
+            .init(id: UUID(), color: CGColor(red: 0, green: 1, blue: 0, alpha: 1)),
+            .init(id: UUID(), color: CGColor(red: 0, green: 0, blue: 1, alpha: 1)),
         ]
+//        configuration.colorPickers = [HSBHexSliderColorPicker(frame: .null)]
+//        configuration.usesSwatchTool = false
+//        configuration.usesDropperTool = false
         vc.configuration = configuration
         vc.setDelegate(self)
         vc.actionDelegate = self

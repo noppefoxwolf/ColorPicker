@@ -1,15 +1,15 @@
 import UIKit
 
-class HSBHexSliderColorPicker: UIControl, ColorPicker {
-    let id: String = #function
-    var title: String = LocalizedString.hsb
+public class HSBHexSliderColorPicker: UIControl, ColorPicker {
+    public let id: String = #function
+    public var title: String = LocalizedString.hsb
     
     let hsbSlidersView = HSBColorSlidersView(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -18,13 +18,13 @@ class HSBHexSliderColorPicker: UIControl, ColorPicker {
         }
     }
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             hsbSlidersView.continuously
         ].contains(true)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         
@@ -49,6 +49,7 @@ class HSBHexSliderColorPicker: UIControl, ColorPicker {
         }, for: .primaryActionTriggered)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }

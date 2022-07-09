@@ -145,6 +145,7 @@ class ColorPickerContentViewController: UIViewController {
         
         swatchAndPreviewView.isHidden = !configuration.usesSwatchTool
         _color = configuration.initialColor
+        segmentControl.isHidden = configuration.colorPickers.count == 1
         segmentControl.selectedSegmentIndex = 0
         if let initialColorItems = configuration.initialColorItems {
             self.colorItems = initialColorItems

@@ -1,8 +1,8 @@
 import UIKit
 
-class ClassicColorPicker: UIControl, ColorPicker {
-    let id: String = #function
-    var title: String = LocalizedString.classic
+public class ClassicColorPicker: UIControl, ColorPicker {
+    public let id: String = #function
+    public var title: String = LocalizedString.classic
     
     let colorView: ClassicColorView = .init(frame: .null)
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
@@ -11,7 +11,7 @@ class ClassicColorPicker: UIControl, ColorPicker {
     @Invalidating(.constraints)
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -24,14 +24,14 @@ class ClassicColorPicker: UIControl, ColorPicker {
     let panGestureRecognizer = UIPanGestureRecognizer()
     let tapGestureRecognizer = UITapGestureRecognizer()
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             panGestureRecognizer.state,
             hueSlider.slider.panGestureRecognizer.state,
         ].contains(.changed)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         hueSlider.slider.configuration = .hue
@@ -64,6 +64,7 @@ class ClassicColorPicker: UIControl, ColorPicker {
         colorView.addGestureRecognizer(tapGestureRecognizer)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -81,7 +82,7 @@ class ClassicColorPicker: UIControl, ColorPicker {
         sendActions(for: [.primaryActionTriggered, .valueChanged])
     }
     
-    override func setNeedsUpdateConstraints() {
+    public override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
         let multiply = colorView.locationMultiply(by: color)
         let multiplyX = max(multiply.width, .leastNonzeroMagnitude)

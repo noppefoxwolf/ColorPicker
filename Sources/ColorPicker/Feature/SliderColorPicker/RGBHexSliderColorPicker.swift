@@ -1,15 +1,15 @@
 import UIKit
 
-class RGBHexSliderColorPicker: UIControl, ColorPicker {
-    let id: String = #function
-    var title: String = LocalizedString.rgb
+public class RGBHexSliderColorPicker: UIControl, ColorPicker {
+    public let id: String = #function
+    public var title: String = LocalizedString.rgb
     
     let rgbSlidersView = RGBColorSlidersView(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -18,13 +18,13 @@ class RGBHexSliderColorPicker: UIControl, ColorPicker {
         }
     }
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             rgbSlidersView.continuously,
         ].contains(true)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         
@@ -47,6 +47,7 @@ class RGBHexSliderColorPicker: UIControl, ColorPicker {
         }, for: .primaryActionTriggered)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }

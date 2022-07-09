@@ -1,9 +1,9 @@
 import UIKit
 
 /// RGBHSBHextSliderColorPicker
-class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
-    let id: String = #function
-    var title: String = LocalizedString.sliders
+public class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
+    public let id: String = #function
+    public var title: String = LocalizedString.sliders
     
     let rgbSlidersView = RGBColorSlidersView(frame: .null)
     let hsbSlidersView = HSBColorSlidersView(frame: .null)
@@ -11,7 +11,7 @@ class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
     
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -21,14 +21,14 @@ class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
         }
     }
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             rgbSlidersView.continuously,
             hsbSlidersView.continuously
         ].contains(true)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         
@@ -56,6 +56,7 @@ class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
         }, for: .primaryActionTriggered)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
     }
