@@ -56,6 +56,8 @@ class ScopeColorPickerWindow: UIWindow {
             let offsetX = self.initialLocation.x - self.center.x
             let offsetY = self.initialLocation.y - self.center.y + continuePanOffsetY
             self.offset = CGPoint(x: offsetX, y: offsetY)
+            
+            reticleView.isHidden = true
         }
     }
     
@@ -72,11 +74,11 @@ class ScopeColorPickerWindow: UIWindow {
         switch gesture.state {
         case .began:
             initialLocation = gesture.location(in: self)
-            reticleView.isHidden = false
             fallthrough
         case .changed:
+            
+            reticleView.isHidden = false
             let translation = translationInView(gesture)
-            print(translation)
             let translationX = translation.x + offset.x
             let translationY = translation.y + offset.y
             reticleView.snp.updateConstraints { make in
