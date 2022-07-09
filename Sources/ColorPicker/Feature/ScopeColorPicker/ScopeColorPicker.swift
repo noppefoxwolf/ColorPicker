@@ -6,9 +6,12 @@ public class ScopeColorPicker {
     
     public init(
         windowScene: UIWindowScene,
-        panGestureRecognizer: UIPanGestureRecognizer? = nil
+        gestureRecognizer: UIGestureRecognizer? = nil
     ) {
-        self.pickerWindow = .init(windowScene: windowScene, panGestureRecognizer: panGestureRecognizer)
+        self.pickerWindow = .init(
+            windowScene: windowScene,
+            gestureRecognizer: gestureRecognizer
+        )
         pickerWindow.delegate = self
         pickerWindow.dataSource = self
     }

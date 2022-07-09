@@ -41,15 +41,16 @@ class ContentViewController: UIViewController {
                 print(color)
             }
         }, for: .primaryActionTriggered)
+        
+        
         let goOut = GoOutPanGestureRecognizer()
         goOut
             .publisher(for: \.state)
             .filter({ $0 == .began })
             .sink { [unowned self] state in
-                print("GO")
                 let picker = ScopeColorPicker(
                     windowScene: self.view.window!.windowScene!,
-                    panGestureRecognizer: goOut
+                    gestureRecognizer: goOut
                 )
                 Task {
                     let color = await picker.pickColor()
@@ -57,6 +58,23 @@ class ContentViewController: UIViewController {
                 }
             }.store(in: &cancellables)
         eyeDropperButton.addGestureRecognizer(goOut)
+        
+        let longpress = UILongPressGestureRecognizer()
+        longpress.publisher(for: \.state)
+            .filter({ $0 == .began })
+            .sink { [unowned self] state in
+                let picker = ScopeColorPicker(
+                    windowScene: self.view.window!.windowScene!,
+                    gestureRecognizer: longpress
+                )
+                Task {
+                    let color = await picker.pickColor()
+                    print(color)
+                }
+            }.store(in: &cancellables)
+        imageView.addGestureRecognizer(longpress)
+        imageView.isUserInteractionEnabled = true
+        
         let stackView = UIStackView(arrangedSubviews: [
             imageView,
             colorPickerButton,

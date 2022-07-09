@@ -13,33 +13,35 @@ class ScopeColorPickerWindow: UIWindow {
     let viewSize: Double = 156
     weak var delegate: ScopeColorPickerDelegate? = nil
     weak var dataSource: ScopeColorPickerDataSource? = nil
-    var translationX: Double = 0
-    var translationY: Double = 0
+    
+    var initialLocation: CGPoint = .zero
+    var offset: CGPoint = .zero
     
     let isContinuePan: Bool
     let continuePanOffsetY: Double = -44
-    weak var panGestureRecognizer: UIPanGestureRecognizer? = nil
+    weak var gestureRecognizer: UIGestureRecognizer? = nil
     
     init(
         windowScene: UIWindowScene,
-        panGestureRecognizer: UIPanGestureRecognizer? = nil
+        gestureRecognizer: UIGestureRecognizer? = nil
     ) {
-        isContinuePan = panGestureRecognizer != nil
+        isContinuePan = gestureRecognizer != nil
         super.init(windowScene: windowScene)
         
         addSubview(reticleView)
         reticleView.snp.makeConstraints { make in
-            make.centerX.equalToSuperview().offset(translationX)
-            make.centerY.equalToSuperview().offset(translationY)
+            // タップで出した時はpanではなくdragで移動するためtranslationを扱う
+            make.centerX.equalToSuperview()
+            make.centerY.equalToSuperview()
             make.size.equalTo(viewSize)
         }
         
-        let panGestureRecognizer = panGestureRecognizer ?? UIPanGestureRecognizer()
-        panGestureRecognizer.addTarget(self, action: #selector(onPan(_:)))
+        let gestureRecognizer: UIGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
+        gestureRecognizer.addTarget(self, action: #selector(onChangedLocation(_:)))
         if !isContinuePan {
-            addGestureRecognizer(panGestureRecognizer)
+            addGestureRecognizer(gestureRecognizer)
         }
-        self.panGestureRecognizer = panGestureRecognizer
+        self.gestureRecognizer = gestureRecognizer
         
         isHidden = false
         
@@ -49,20 +51,13 @@ class ScopeColorPickerWindow: UIWindow {
         }
         
         if isContinuePan {
-            /// continue pan translation
-            let location = panGestureRecognizer.location(in: self)
-            let center = self.center
-            let x = location.x - center.x
-            let y = location.y - center.y
-            var initialTranslation = CGPoint(x: x, y: y)
-            initialTranslation.y += continuePanOffsetY
-            self.translationX = initialTranslation.x
-            self.translationY = initialTranslation.y
-            panGestureRecognizer.setTranslation(initialTranslation, in: panGestureRecognizer.view)
-            reticleView.snp.updateConstraints { make in
-                make.centerX.equalToSuperview().offset(translationX)
-                make.centerY.equalToSuperview().offset(translationY)
-            }
+            self.initialLocation = gestureRecognizer.location(in: self)
+            
+            let offsetX = self.initialLocation.x - self.center.x
+            let offsetY = self.initialLocation.y - self.center.y + continuePanOffsetY
+            self.offset = CGPoint(x: offsetX, y: offsetY)
+            
+            reticleView.isHidden = true
         }
     }
     
@@ -75,15 +70,17 @@ class ScopeColorPickerWindow: UIWindow {
         // https://stackoverflow.com/a/64758605/1131587
     }
     
-    @objc private func onPan(_ gesture: UIPanGestureRecognizer) {
+    @objc private func onChangedLocation(_ gesture: UIGestureRecognizer) {
         switch gesture.state {
         case .began:
-            reticleView.isHidden = false
+            initialLocation = gesture.location(in: self)
             fallthrough
         case .changed:
-            let translation = gesture.translation(in: gesture.view)
-            translationX = translation.x
-            translationY = translation.y
+            
+            reticleView.isHidden = false
+            let translation = translationInView(gesture)
+            let translationX = translation.x + offset.x
+            let translationY = translation.y + offset.y
             reticleView.snp.updateConstraints { make in
                 make.centerX.equalToSuperview().offset(translationX)
                 make.centerY.equalToSuperview().offset(translationY)
@@ -92,7 +89,7 @@ class ScopeColorPickerWindow: UIWindow {
             updateScopeContent(at: reticleView.center)
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
-            panGestureRecognizer?.removeTarget(self, action: #selector(onPan))
+            gestureRecognizer?.removeTarget(self, action: #selector(onChangedLocation))
             delegate?.scopePickerDidFinishColorPick(reticleView.color)
         default:
             break
@@ -103,5 +100,14 @@ class ScopeColorPickerWindow: UIWindow {
         reticleView.render { context in
             dataSource?.colors(at: location, context: context)
         }
+    }
+    
+    // UIPanGestureRecognizerとUILongPressGestureRecognizerを受け入れるために自作のtranslationを使う
+    private func translationInView(_ gesture: UIGestureRecognizer) -> CGPoint {
+        let newLocation = gesture.location(in: self)
+        return CGPoint(
+            x: newLocation.x - initialLocation.x,
+            y: newLocation.y - initialLocation.y
+        )
     }
 }
