@@ -4,7 +4,7 @@ public class HSBHexSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.hsb
     
-    let hsbSlidersView = HSBColorSlidersView(frame: .null)
+    let hsbSlidersView = HSBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
     private var _color: CGColor = .white

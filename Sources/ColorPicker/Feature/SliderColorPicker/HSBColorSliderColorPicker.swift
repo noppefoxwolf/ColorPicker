@@ -1,6 +1,6 @@
 import UIKit
 
-public class HSBColorSlidersView: UIControl, ColorPicker {
+public class HSBColorSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.hsb
     

@@ -1,6 +1,6 @@
 import UIKit
 
-public class RGBColorSlidersView: UIControl, ColorPicker {
+public class RGBColorSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
     

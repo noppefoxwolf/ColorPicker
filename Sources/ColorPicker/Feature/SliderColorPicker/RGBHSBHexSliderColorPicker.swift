@@ -5,8 +5,8 @@ public class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public var title: String = LocalizedString.sliders
     
-    let rgbSlidersView = RGBColorSlidersView(frame: .null)
-    let hsbSlidersView = HSBColorSlidersView(frame: .null)
+    let rgbSlidersView = RGBColorSliderColorPicker(frame: .null)
+    let hsbSlidersView = HSBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
     private var _color: CGColor = .white
