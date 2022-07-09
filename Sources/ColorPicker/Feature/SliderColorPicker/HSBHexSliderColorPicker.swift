@@ -2,7 +2,7 @@ import UIKit
 
 public class HSBHexSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
-    public var title: String = LocalizedString.hsb
+    public let title: String = LocalizedString.hsb
     
     let hsbSlidersView = HSBColorSlidersView(frame: .null)
     let hexInputView = HexInputView(frame: .null)

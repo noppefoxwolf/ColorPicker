@@ -1,13 +1,16 @@
 import UIKit
 
-class RGBColorSlidersView: UIControl {
+public class RGBColorSlidersView: UIControl, ColorPicker {
+    public let id: String = #function
+    public let title: String = LocalizedString.rgb
+    
     let redSlider = ColorSliderWithInputView()
     let greenSlider = ColorSliderWithInputView()
     let blueSlider = ColorSliderWithInputView()
     
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -17,7 +20,7 @@ class RGBColorSlidersView: UIControl {
         }
     }
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             redSlider.slider.panGestureRecognizer.state,
             greenSlider.slider.panGestureRecognizer.state,
@@ -25,7 +28,7 @@ class RGBColorSlidersView: UIControl {
         ].contains(.changed)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         redSlider.slider.configuration = .red
@@ -59,6 +62,7 @@ class RGBColorSlidersView: UIControl {
         blueSlider.addAction(valueSyncAction, for: .primaryActionTriggered)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

@@ -1,13 +1,16 @@
 import UIKit
 
-class HSBColorSlidersView: UIControl {
+public class HSBColorSlidersView: UIControl, ColorPicker {
+    public let id: String = #function
+    public let title: String = LocalizedString.hsb
+    
     let hueSlider = ColorSliderWithInputView()
     let saturationSlider = ColorSliderWithInputView()
     let brightnessSlider = ColorSliderWithInputView()
     
     private var _color: CGColor = .white
     
-    var color: CGColor {
+    public var color: CGColor {
         get { _color }
         set {
             _color = newValue
@@ -17,7 +20,7 @@ class HSBColorSlidersView: UIControl {
         }
     }
     
-    var continuously: Bool {
+    public var continuously: Bool {
         [
             hueSlider.slider.panGestureRecognizer.state,
             saturationSlider.slider.panGestureRecognizer.state,
@@ -25,7 +28,7 @@ class HSBColorSlidersView: UIControl {
         ].contains(.changed)
     }
     
-    override init(frame: CGRect) {
+    public override init(frame: CGRect) {
         super.init(frame: frame)
         
         hueSlider.slider.configuration = .hue
@@ -59,6 +62,7 @@ class HSBColorSlidersView: UIControl {
         brightnessSlider.addAction(valueSyncAction, for: .primaryActionTriggered)
     }
     
+    @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
