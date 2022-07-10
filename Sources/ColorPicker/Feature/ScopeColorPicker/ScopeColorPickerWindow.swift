@@ -88,9 +88,7 @@ class ScopeColorPickerWindow: UIWindow {
                 make.centerY.equalToSuperview().offset(translationY)
             }
 
-            DispatchQueue.main.async {
-                self.updateScopeContent(at: self.reticleView.center)
-            }
+            
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
             gestureRecognizer?.removeTarget(self, action: #selector(onChangedLocation))
@@ -98,6 +96,11 @@ class ScopeColorPickerWindow: UIWindow {
         default:
             break
         }
+    }
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        updateScopeContent(at: reticleView.center)
     }
     
     func updateScopeContent(at location: CGPoint) {
