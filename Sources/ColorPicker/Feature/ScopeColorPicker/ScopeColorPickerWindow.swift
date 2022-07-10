@@ -58,6 +58,9 @@ class ScopeColorPickerWindow: UIWindow {
             self.offset = CGPoint(x: offsetX, y: offsetY)
             
             reticleView.isHidden = true
+            
+            gestureRecognizer.state = .began
+            onChangedLocation(gestureRecognizer)
         }
     }
     
@@ -76,7 +79,6 @@ class ScopeColorPickerWindow: UIWindow {
             initialLocation = gesture.location(in: self)
             fallthrough
         case .changed:
-            
             reticleView.isHidden = false
             let translation = translationInView(gesture)
             let translationX = translation.x + offset.x
@@ -85,8 +87,10 @@ class ScopeColorPickerWindow: UIWindow {
                 make.centerX.equalToSuperview().offset(translationX)
                 make.centerY.equalToSuperview().offset(translationY)
             }
-            
-            updateScopeContent(at: reticleView.center)
+
+            DispatchQueue.main.async {
+                self.updateScopeContent(at: self.reticleView.center)
+            }
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
             gestureRecognizer?.removeTarget(self, action: #selector(onChangedLocation))
