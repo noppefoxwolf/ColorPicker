@@ -28,6 +28,11 @@ public class ColorPickerViewController: UINavigationController {
         fatalError()
     }
     
+    public var supportsAlpha: Bool {
+        get { contentViewController.supportsAlpha }
+        set { contentViewController.supportsAlpha = newValue }
+    }
+    
     public var selectedColor: CGColor {
         get { contentViewController.color }
         set { contentViewController.color = newValue }

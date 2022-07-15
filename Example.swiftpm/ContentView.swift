@@ -24,10 +24,7 @@ class ContentViewController: UIViewController {
             )
         }))
         let uiColorPickerButton = UIButton(primaryAction: UIAction(title: "apple/UIColorPicker", handler: { _ in
-            let vc = UIColorPickerViewController()
-            vc.supportsAlpha = false
-            vc.delegate = self
-            self.present(vc, animated: true)
+            self.presentUIColorPicker()
         }))
         let imageView = UIImageView(image: UIImage(named: "image"))
         imageView.contentMode = .scaleAspectFit
@@ -93,6 +90,7 @@ class ContentViewController: UIViewController {
     
     func presentColorPicker(_ color: CGColor) {
         let vc = ColorPickerViewController()
+        vc.supportsAlpha = true
         let configuration = ColorPickerConfiguration.default
         configuration.initialColor = color
         configuration.initialColorItems = [
@@ -107,6 +105,13 @@ class ContentViewController: UIViewController {
         vc.setDelegate(self)
         vc.actionDelegate = self
         present(vc, animated: true)
+    }
+    
+    func presentUIColorPicker() {
+        let vc = UIColorPickerViewController()
+        vc.supportsAlpha = true
+        vc.delegate = self
+        self.present(vc, animated: true)
     }
 }
 

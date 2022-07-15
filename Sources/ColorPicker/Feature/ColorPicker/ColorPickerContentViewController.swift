@@ -14,8 +14,9 @@ class ColorPickerContentViewController: UIViewController {
     let scrollView = UIScrollView()
     let segmentControl = UISegmentedControl(items: nil)
     let swatchAndPreviewView: SwatchAndPreviewView = SwatchAndPreviewView(frame: .null)
+    let alphaColorPicker: AlphaColorPicker = .init(frame: .null)
     
-    /// segment - colorPickerAndSwatch
+    /// segment - colorPickerAndSwatch - alphaPicker(Optional)
     let tabStackView: UIStackView = UIStackView()
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
@@ -43,6 +44,8 @@ class ColorPickerContentViewController: UIViewController {
         get { swatchAndPreviewView.swatchView.colorItems }
         set { swatchAndPreviewView.swatchView.setColorItems(newValue) }
     }
+    
+    var supportsAlpha: Bool = false
     
     var configuration: ColorPickerConfiguration = ColorPickerConfiguration()
     
@@ -92,6 +95,9 @@ class ColorPickerContentViewController: UIViewController {
         
         colorPickersStackView.spacing = 26
         colorPickersStackView.addArrangedSubview(tabStackView)
+        if supportsAlpha {
+            colorPickersStackView.addArrangedSubview(alphaColorPicker)
+        }
         colorPickersStackView.addArrangedSubview(swatchStack)
         colorPickersStackView.axis = .vertical
         
@@ -105,6 +111,7 @@ class ColorPickerContentViewController: UIViewController {
         }
         tabStackView.addArrangedSubview(segmentControl)
         tabStackView.addArrangedSubview(colorPickersStackView)
+        
         
         for colorPicker in configuration.colorPickers {
             let segmentAction = UIAction(
