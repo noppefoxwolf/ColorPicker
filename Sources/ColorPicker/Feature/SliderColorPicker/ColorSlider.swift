@@ -48,7 +48,7 @@ open class ColorSlider: UIControl {
         super.init(frame: frame)
         
         self.snp.makeConstraints { make in
-            make.height.equalTo(34)
+            make.height.equalTo(33)
         }
         
         addSubview(trackView)
@@ -131,12 +131,50 @@ class TrackView: UIView {
     
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
+        
+        context.draw(
+            checkerboardImage(),
+            in: CGRect(x: 0, y: 0, width: 22, height: 22),
+            byTiling: true
+        )
+        
         context.drawLinearGradient(
             grdient,
             start: CGPoint(x: rect.minX, y: rect.midY),
             end: CGPoint(x: rect.maxX, y: rect.midY),
             options: .drawsAfterEndLocation
         )
+    }
+    
+    func checkerboardImage() -> CGImage {
+        let length: Int = 22
+        let context = CGContext(
+            data: nil,
+            width: length,
+            height: length,
+            bitsPerComponent: 8,
+            bytesPerRow: 0,
+            space: CGColorSpaceCreateDeviceGray(),
+            bitmapInfo: CGImageAlphaInfo.none.rawValue
+        )!
+        context.setFillColor(CGColor(gray: 1, alpha: 1))
+        context.fill(CGRect(x: 0, y: 0, width: length, height: length))
+        context.setFillColor(CGColor(gray: 0.5, alpha: 1))
+        context.fill([
+            CGRect(
+                x: 0,
+                y: 0,
+                width: length / 2,
+                height: length / 2
+            ),
+            CGRect(
+                x: length / 2,
+                y: length / 2,
+                width: length / 2,
+                height: length / 2
+            ),
+        ])
+        return context.makeImage()!
     }
 }
 

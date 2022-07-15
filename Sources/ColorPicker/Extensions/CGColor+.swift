@@ -143,3 +143,15 @@ struct HSV {
         return HSV.rgb(hsv: self)
     }
 }
+
+extension CGColor {
+    func withAlphaComponent(_ alpha: Double) -> CGColor {
+        let rgb = rgb
+        return CGColor(
+            red: rgb.r,
+            green: rgb.g,
+            blue: rgb.b,
+            alpha: alpha
+        )
+    }
+}

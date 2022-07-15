@@ -170,5 +170,31 @@ extension ColorSliderConfiguration {
             return CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: value, alpha: 1)
         }
     )
+    
+    static var alpha: Self = .init(
+        gradientInvalidationHandler: { color in
+            let hsb = color.hsb
+            return CGGradient(
+                colorsSpace: CGColorSpaceCreateDeviceRGB(),
+                colors: [
+                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 0),
+                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 1)
+                ] as CFArray,
+                locations: [0, 1]
+            )!
+        },
+        colorToValue: { color in
+            color.alpha
+        },
+        valueToColor: { (value, color) in
+            let hsb = color.hsb
+            return CGColor.make(
+                hue: hsb.h,
+                saturation: hsb.s,
+                brightness: hsb.v,
+                alpha: value
+            )
+        }
+    )
 
 }

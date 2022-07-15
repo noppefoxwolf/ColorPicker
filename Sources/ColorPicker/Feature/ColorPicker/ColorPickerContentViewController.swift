@@ -14,8 +14,9 @@ class ColorPickerContentViewController: UIViewController {
     let scrollView = UIScrollView()
     let segmentControl = UISegmentedControl(items: nil)
     let swatchAndPreviewView: SwatchAndPreviewView = SwatchAndPreviewView(frame: .null)
+    let alphaColorPicker: AlphaColorPicker = .init(frame: .null)
     
-    /// segment - colorPickerAndSwatch
+    /// segment - colorPickerAndSwatch - alphaPicker(Optional)
     let tabStackView: UIStackView = UIStackView()
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
@@ -23,6 +24,7 @@ class ColorPickerContentViewController: UIViewController {
     private var _color: CGColor = .white {
         didSet {
             swatchAndPreviewView.color = _color
+            alphaColorPicker.color = _color
             configuration.colorPickers.forEach({ $0.color = _color })
         }
     }
@@ -44,6 +46,8 @@ class ColorPickerContentViewController: UIViewController {
         set { swatchAndPreviewView.swatchView.setColorItems(newValue) }
     }
     
+    var supportsAlpha: Bool = false
+    
     var configuration: ColorPickerConfiguration = ColorPickerConfiguration()
     
     override func viewDidLoad() {
@@ -53,7 +57,6 @@ class ColorPickerContentViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         navigationItem.title = LocalizedString.color
         navigationItem.largeTitleDisplayMode = .always
-        
         
         if configuration.usesDropperTool {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -92,6 +95,9 @@ class ColorPickerContentViewController: UIViewController {
         
         colorPickersStackView.spacing = 26
         colorPickersStackView.addArrangedSubview(tabStackView)
+        if supportsAlpha {
+            colorPickersStackView.addArrangedSubview(alphaColorPicker)
+        }
         colorPickersStackView.addArrangedSubview(swatchStack)
         colorPickersStackView.axis = .vertical
         
@@ -106,6 +112,7 @@ class ColorPickerContentViewController: UIViewController {
         tabStackView.addArrangedSubview(segmentControl)
         tabStackView.addArrangedSubview(colorPickersStackView)
         
+        
         for colorPicker in configuration.colorPickers {
             let segmentAction = UIAction(
                 title: colorPicker.title,
@@ -119,8 +126,8 @@ class ColorPickerContentViewController: UIViewController {
                 animated: false
             )
             
-            let colorPickerAction = UIAction { [unowned self, unowned colorPicker] _ in
-                self.color = colorPicker.color
+            let colorPickerAction = UIAction { [unowned self, unowned colorPicker, unowned alphaColorPicker] _ in
+                self.color = colorPicker.color.withAlphaComponent(alphaColorPicker.color.alpha)
                 self.delegate?.colorPickerViewController(
                     self,
                     didSelect: self.color,
@@ -129,6 +136,15 @@ class ColorPickerContentViewController: UIViewController {
             }
             colorPicker.addAction(colorPickerAction, for: .primaryActionTriggered)
         }
+        
+        alphaColorPicker.addAction(UIAction { [unowned self, unowned alphaColorPicker] _ in
+            self.color = alphaColorPicker.color
+            self.delegate?.colorPickerViewController(
+                self,
+                didSelect: self.color,
+                continuously: self.continuously
+            )
+        }, for: .primaryActionTriggered)
         
         swatchAndPreviewView.addAction(UIAction { [unowned self] _ in
             self.color = self.swatchAndPreviewView.color
