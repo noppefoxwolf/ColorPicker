@@ -147,21 +147,32 @@ class TrackView: UIView {
     }
     
     func checkerboardImage() -> CGImage {
+        let length: Int = 22
         let context = CGContext(
             data: nil,
-            width: 22,
-            height: 22,
+            width: length,
+            height: length,
             bitsPerComponent: 8,
             bytesPerRow: 0,
             space: CGColorSpaceCreateDeviceGray(),
             bitmapInfo: CGImageAlphaInfo.none.rawValue
         )!
         context.setFillColor(CGColor(gray: 1, alpha: 1))
-        context.fill(CGRect(x: 0, y: 0, width: 22, height: 22))
+        context.fill(CGRect(x: 0, y: 0, width: length, height: length))
         context.setFillColor(CGColor(gray: 0.5, alpha: 1))
         context.fill([
-            CGRect(x: 0, y: 0, width: 11, height: 11),
-            CGRect(x: 11, y: 11, width: 11, height: 11),
+            CGRect(
+                x: 0,
+                y: 0,
+                width: length / 2,
+                height: length / 2
+            ),
+            CGRect(
+                x: length / 2,
+                y: length / 2,
+                width: length / 2,
+                height: length / 2
+            ),
         ])
         return context.makeImage()!
     }

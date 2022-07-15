@@ -24,6 +24,7 @@ class ColorPickerContentViewController: UIViewController {
     private var _color: CGColor = .white {
         didSet {
             swatchAndPreviewView.color = _color
+            alphaColorPicker.color = _color
             configuration.colorPickers.forEach({ $0.color = _color })
         }
     }
@@ -56,7 +57,6 @@ class ColorPickerContentViewController: UIViewController {
         view.backgroundColor = .secondarySystemBackground
         navigationItem.title = LocalizedString.color
         navigationItem.largeTitleDisplayMode = .always
-        
         
         if configuration.usesDropperTool {
             navigationItem.leftBarButtonItem = UIBarButtonItem(
@@ -136,6 +136,15 @@ class ColorPickerContentViewController: UIViewController {
             }
             colorPicker.addAction(colorPickerAction, for: .primaryActionTriggered)
         }
+        
+        alphaColorPicker.addAction(UIAction { [unowned self, unowned alphaColorPicker] _ in
+            self.color = alphaColorPicker.color
+            self.delegate?.colorPickerViewController(
+                self,
+                didSelect: self.color,
+                continuously: self.continuously
+            )
+        }, for: .primaryActionTriggered)
         
         swatchAndPreviewView.addAction(UIAction { [unowned self] _ in
             self.color = self.swatchAndPreviewView.color

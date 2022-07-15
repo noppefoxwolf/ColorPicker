@@ -6,7 +6,6 @@ public class AlphaColorPicker: UIControl {
     
     let alphaSlider = ColorSliderWithInputView()
     
-    @Invalidating(.constraints)
     private var _color: CGColor = .white
     
     public var color: CGColor {
@@ -14,6 +13,7 @@ public class AlphaColorPicker: UIControl {
         set {
             guard _color != newValue else { return }
             _color = newValue
+            alphaSlider.color = newValue
         }
     }
     
