@@ -126,8 +126,8 @@ class ColorPickerContentViewController: UIViewController {
                 animated: false
             )
             
-            let colorPickerAction = UIAction { [unowned self, unowned colorPicker] _ in
-                self.color = colorPicker.color
+            let colorPickerAction = UIAction { [unowned self, unowned colorPicker, unowned alphaColorPicker] _ in
+                self.color = colorPicker.color.withAlphaComponent(alphaColorPicker.color.alpha)
                 self.delegate?.colorPickerViewController(
                     self,
                     didSelect: self.color,
