@@ -6,7 +6,7 @@ public class ClassicColorPicker: UIControl, ColorPicker {
     
     let colorView: ClassicColorView = .init(frame: .null)
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
-    let markerView: ClassicColorMarkerView = .init(frame: .null)
+    let thumbView: ThumbView = .init(frame: .null)
     
     @Invalidating(.constraints)
     private var _color: CGColor = .white
@@ -15,7 +15,7 @@ public class ClassicColorPicker: UIControl, ColorPicker {
         get { _color }
         set {
             _color = newValue
-            markerView.color = newValue
+            thumbView.color = newValue
             hueSlider.color = newValue
             colorView.hue = newValue.hsb.h
         }
@@ -43,8 +43,8 @@ public class ClassicColorPicker: UIControl, ColorPicker {
         vStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        colorView.addSubview(markerView)
-        markerView.snp.makeConstraints { make in
+        colorView.addSubview(thumbView)
+        thumbView.snp.makeConstraints { make in
             make.centerX.equalTo(colorView.snp.right).multipliedBy(1.0)
             make.centerY.equalTo(colorView.snp.bottom).multipliedBy(1.0)
             make.size.equalTo(36)
@@ -87,7 +87,7 @@ public class ClassicColorPicker: UIControl, ColorPicker {
         let multiply = colorView.locationMultiply(by: color)
         let multiplyX = max(multiply.width, .leastNonzeroMagnitude)
         let multiplyY = max(multiply.height, .leastNonzeroMagnitude)
-        markerView.snp.remakeConstraints { make in
+        thumbView.snp.remakeConstraints { make in
             make.centerX.equalTo(colorView.snp.right).multipliedBy(multiplyX)
             make.centerY.equalTo(colorView.snp.bottom).multipliedBy(multiplyY)
             make.size.equalTo(36)
@@ -95,38 +95,3 @@ public class ClassicColorPicker: UIControl, ColorPicker {
     }
 }
 
-class ClassicColorMarkerView: UIView {
-    
-    @Invalidating(.display)
-    private var _color: CGColor = .white
-    
-    var color: CGColor {
-        get { _color }
-        set {
-            guard _color != newValue else { return }
-            _color = newValue
-        }
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        backgroundColor = .clear
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-    
-    override func draw(_ rect: CGRect) {
-        let context = UIGraphicsGetCurrentContext()!
-        let padding: CGFloat = 2
-        let x = padding
-        let y = padding
-        let h = rect.height - (padding + padding) // top + bottom
-        let w = h
-        context.setShadow(offset: .zero, blur: padding, color: CGColor(gray: 0, alpha: 0.5))
-        context.setFillColor(color)
-        context.addEllipse(in: CGRect(x: x, y: y, width: w, height: h))
-        context.fillPath()
-    }
-}
