@@ -23,9 +23,7 @@ class ColorPickerContentViewController: UIViewController {
     
     private var _color: CGColor = .white {
         didSet {
-            swatchAndPreviewView.color = _color
-            alphaColorPicker.color = _color
-            configuration.colorPickers.forEach({ $0.color = _color })
+            onUpdate(_color)
         }
     }
     
@@ -161,7 +159,6 @@ class ColorPickerContentViewController: UIViewController {
         
         swatchAndPreviewView.isHidden = !configuration.usesSwatchTool
         hairlineView.isHidden = !configuration.usesSwatchTool
-        _color = configuration.initialColor
         segmentControl.isHidden = configuration.colorPickers.count == 1
         
         segmentControl.selectedSegmentIndex = 0
@@ -170,6 +167,7 @@ class ColorPickerContentViewController: UIViewController {
         }
         
         selectLatestUseOrInitialColorPicker()
+        onUpdate(_color)
     }
     
     override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
@@ -202,5 +200,11 @@ class ColorPickerContentViewController: UIViewController {
             at: 0
         )
         UserDefaults.standard.latestColorPickerID = colorPicker.id
+    }
+    
+    func onUpdate(_ color: CGColor) {
+        swatchAndPreviewView.color = color
+        alphaColorPicker.color = color
+        configuration.colorPickers.forEach({ $0.color = color })
     }
 }

@@ -20,7 +20,7 @@ class ContentViewController: UIViewController {
         
         let colorPickerButton = UIButton(primaryAction: UIAction(title: "noppefoxwolf/ColorPicker", handler: { _ in
             self.presentColorPicker(
-                CGColor(red: 1, green: 0, blue: 0, alpha: 1)
+                CGColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             )
         }))
         let uiColorPickerButton = UIButton(primaryAction: UIAction(title: "apple/UIColorPicker", handler: { _ in
@@ -92,7 +92,6 @@ class ContentViewController: UIViewController {
         let vc = ColorPickerViewController()
         vc.supportsAlpha = true
         let configuration = ColorPickerConfiguration.default
-        configuration.initialColor = color
         configuration.initialColorItems = [
             .init(id: UUID(), color: CGColor(red: 1, green: 0, blue: 0, alpha: 1)),
             .init(id: UUID(), color: CGColor(red: 0, green: 1, blue: 0, alpha: 1)),
@@ -101,6 +100,7 @@ class ContentViewController: UIViewController {
 //        configuration.colorPickers = [HSBHexSliderColorPicker(frame: .null)]
 //        configuration.usesSwatchTool = false
 //        configuration.usesDropperTool = false
+        vc.selectedColor = color
         vc.configuration = configuration
         vc.setDelegate(self)
         vc.actionDelegate = self
@@ -109,6 +109,7 @@ class ContentViewController: UIViewController {
     
     func presentUIColorPicker() {
         let vc = UIColorPickerViewController()
+        vc.selectedColor = .red
         vc.supportsAlpha = true
         vc.delegate = self
         self.present(vc, animated: true)
