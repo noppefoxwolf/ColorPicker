@@ -7,7 +7,7 @@ public class ColorPickerConfiguration {
         GridColorPicker(frame: .null),
         ClassicColorPicker(frame: .null),
         RGBHexSliderColorPicker(frame: .null),
-        HSBHexSliderColorPicker(frame: .null),
+        HSBColorSliderColorPicker(frame: .null),
     ]
     
     public var initialColorItems: [ColorItem]? = nil
