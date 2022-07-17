@@ -61,7 +61,7 @@ extension HSVA {
         self.a = a
     }
     
-    func makeColor() -> UIColor {
+    public func makeColor() -> UIColor {
         UIColor(hue: hsv.h, saturation: hsv.s, brightness: hsv.v, alpha: a)
     }
 }
