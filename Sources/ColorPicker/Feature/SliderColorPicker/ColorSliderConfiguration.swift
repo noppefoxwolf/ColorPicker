@@ -107,9 +107,7 @@ extension ColorSliderConfiguration {
             let locations = stride(from: 0, to: 1, by: 1.0 / 12.0)
             let colors = locations.map { hue in
                 CGColor.make(
-                    hue: hue,
-                    saturation: 1,
-                    brightness: 1,
+                    hsv: HSV(h: hue, s: 1, v: 1),
                     alpha: 1
                 )
             }
@@ -125,7 +123,10 @@ extension ColorSliderConfiguration {
         },
         valueToColor: { (value, color) in
             let hsb = color.hsb
-            return CGColor.make(hue: value, saturation: hsb.s, brightness: hsb.v, alpha: 1)
+            return CGColor.make(
+                hsv: HSV(h: value, s: hsb.s, v: hsb.v),
+                alpha: 1
+            )
         }
     )
     
@@ -135,8 +136,14 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hue, saturation: 0, brightness: 1, alpha: 1),
-                    CGColor.make(hue: hue, saturation: 1, brightness: 1, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hue, s: 0, v: 1),
+                        alpha: 1
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hue, s: 1, v: 1),
+                        alpha: 1
+                    )
                 ] as CFArray,
                 locations: [0, 1]
             )!
@@ -146,7 +153,10 @@ extension ColorSliderConfiguration {
         },
         valueToColor: { (value, color) in
             let hsb = color.hsb
-            return CGColor.make(hue: hsb.h, saturation: value, brightness: hsb.v, alpha: 1)
+            return CGColor.make(
+                hsv: HSV(h: hsb.h, s: value, v: hsb.v),
+                alpha: 1
+            )
         }
     )
     
@@ -156,8 +166,14 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: 0, alpha: 1),
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: 1, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hsb.h, s: hsb.s, v: 0),
+                        alpha: 1
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hsb.h, s: hsb.s, v: 1),
+                        alpha: 1
+                    )
                 ] as CFArray,
                 locations: [0, 1]
             )!
@@ -167,7 +183,10 @@ extension ColorSliderConfiguration {
         },
         valueToColor: { (value, color) in
             let hsb = color.hsb
-            return CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: value, alpha: 1)
+            return CGColor.make(
+                hsv: HSV(h: hsb.h, s: hsb.s, v: value),
+                alpha: 1
+            )
         }
     )
     
@@ -177,8 +196,14 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 0),
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hsb.h, s: hsb.s, v: hsb.v),
+                        alpha: 0
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hsb.h, s: hsb.s, v: hsb.v),
+                        alpha: 1
+                    ),
                 ] as CFArray,
                 locations: [0, 1]
             )!
@@ -189,9 +214,7 @@ extension ColorSliderConfiguration {
         valueToColor: { (value, color) in
             let hsb = color.hsb
             return CGColor.make(
-                hue: hsb.h,
-                saturation: hsb.s,
-                brightness: hsb.v,
+                hsv: HSV(h: hsb.h, s: hsb.s, v: hsb.v),
                 alpha: value
             )
         }

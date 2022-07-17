@@ -22,9 +22,7 @@ class ClassicColorView: UIView {
         let clampedSaturation = max(min(saturation, 1), 0)
         let clampedBrightness = max(min(brightness, 1), 0)
         return CGColor.make(
-            hue: hue,
-            saturation: clampedSaturation,
-            brightness: clampedBrightness,
+            hsv: HSV(h: hue, s: clampedSaturation, v: clampedBrightness),
             alpha: 1
         )
     }
