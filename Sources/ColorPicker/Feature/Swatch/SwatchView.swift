@@ -10,7 +10,7 @@ class SwatchView: UIControl {
     }
     let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
     
-    private var _selectedColor: HSVA = .white {
+    private var _selectedColor: HSVA = .noop {
         didSet {
             /// 逐次実行だと重いので遅延させる
             debounceAction { [weak self] in

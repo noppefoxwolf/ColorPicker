@@ -5,7 +5,9 @@ public struct HSV: Equatable, Hashable {
     var h: Double // Angle in degrees [0,1] or -1 as Undefined
     var s: Double // Percent [0,1]
     var v: Double // Percent [0,1]
-    
+}
+
+extension HSV {
     static func rgb(h: Double, s: Double, v: Double) -> RGB {
         if s == 0 { return RGB(r: v, g: v, b: v) } // Achromatic grey
         
@@ -65,6 +67,5 @@ extension HSVA {
 }
 
 extension HSVA {
-    @available(*, deprecated)
-    static var white: HSVA = .init(hsv: HSV(h: 1, s: 1, v: 1), a: 1)
+    static var noop: HSVA = HSVA(hsv: HSV(h: 0, s: 0, v: 0), a: 0)
 }

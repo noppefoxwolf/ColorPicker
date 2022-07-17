@@ -7,7 +7,7 @@ public class RGBHexSliderColorPicker: UIControl, ColorPicker {
     let rgbSlidersView = RGBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
-    private var _color: HSVA = .white
+    private var _color: HSVA = .noop
     
     public var color: HSVA {
         get { _color }

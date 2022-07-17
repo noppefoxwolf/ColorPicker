@@ -3,7 +3,7 @@ import UIKit
 class HexInputView: UIControl {
     var color: HSVA {
         get {
-            ColorFormatter().color(from: textField.text!) ?? .white
+            ColorFormatter().color(from: textField.text!) ?? .noop
         }
         set {
             textField.text = ColorFormatter().string(from: newValue)
@@ -40,7 +40,7 @@ class HexInputView: UIControl {
         }
         
         textField.addAction(UIAction { [unowned self] _ in
-            self.color = ColorFormatter().color(from: textField.text!) ?? .white
+            self.color = ColorFormatter().color(from: textField.text!) ?? .noop
             self.sendActions(for: [.editingDidEnd, .primaryActionTriggered])
         }, for: .editingDidEnd)
     }

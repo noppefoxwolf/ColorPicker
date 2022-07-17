@@ -6,7 +6,7 @@ public class AlphaColorPicker: UIControl {
     
     let alphaSlider = ColorSliderWithInputView()
     
-    private var _color: HSVA = .white
+    private var _color: HSVA = .noop
     
     var color: HSVA {
         get { _color }

@@ -3,7 +3,7 @@ import UIKit
 class ColorPreviewView: UIView {
     
     @Invalidating(.display)
-    var color: HSVA = .white
+    var color: HSVA = .noop
     
     override init(frame: CGRect) {
         super.init(frame: frame)

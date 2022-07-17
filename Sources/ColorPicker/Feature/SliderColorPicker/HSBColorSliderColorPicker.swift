@@ -8,7 +8,7 @@ public class HSBColorSliderColorPicker: UIControl, ColorPicker {
     let saturationSlider = ColorSliderWithInputView()
     let brightnessSlider = ColorSliderWithInputView()
     
-    private var _color: HSVA = .white
+    private var _color: HSVA = .noop
     
     public var color: HSVA {
         get { _color }

@@ -9,7 +9,7 @@ public class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
     let hsbSlidersView = HSBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
-    private var _color: HSVA = .white
+    private var _color: HSVA = .noop
     
     public var color: HSVA {
         get { _color }

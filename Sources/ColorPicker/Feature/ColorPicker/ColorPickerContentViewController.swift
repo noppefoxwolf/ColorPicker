@@ -21,7 +21,7 @@ class ColorPickerContentViewController: UIViewController {
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
     
-    private var _color: HSVA = .white {
+    private var _color: HSVA = .noop {
         didSet {
             onUpdate(_color)
         }

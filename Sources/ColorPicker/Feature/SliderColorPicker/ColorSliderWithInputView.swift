@@ -13,7 +13,7 @@ class ColorSliderWithInputView: UIControl {
     let textField = ColorSliderTextField(frame: .null)
     let titleLabel = ColorSliderTitleLabel(frame: .null)
     
-    private var _color: HSVA = .white
+    private var _color: HSVA = .noop
     
     var color: HSVA {
         get { _color }

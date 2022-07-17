@@ -31,7 +31,7 @@ class ColorCell: UICollectionViewCell {
 class ColorView: UIView {
     
     @Invalidating(.display)
-    var color: HSVA = .white
+    var color: HSVA = .noop
     
     enum Style {
         case normal

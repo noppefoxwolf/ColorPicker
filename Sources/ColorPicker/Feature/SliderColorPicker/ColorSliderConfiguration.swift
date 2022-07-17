@@ -12,7 +12,7 @@ extension ColorSliderConfiguration {
     } colorToValue: { _ in
         0
     } valueToColor: { _, _ in
-        .white
+        .noop
     }
     
     static var red: Self = .init(
@@ -88,11 +88,8 @@ extension ColorSliderConfiguration {
         gradientInvalidationHandler: { color in
             let locations = stride(from: 0, to: 1, by: 1.0 / 12.0)
             let colors = locations.map { hue in
-                CGColor.make(
-                    hsv: HSV(h: hue, s: 1, v: 1),
-                    alpha: 1
-                )
-            }
+                HSVA(hsv: HSV(h: hue, s: 1, v: 1), a: 1)
+            }.map({ $0.makeColor().cgColor })
             
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -116,14 +113,8 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(
-                        hsv: HSV(h: hue, s: 0, v: 1),
-                        alpha: 1
-                    ),
-                    CGColor.make(
-                        hsv: HSV(h: hue, s: 1, v: 1),
-                        alpha: 1
-                    )
+                    HSVA(hsv: HSV(h: hue, s: 0, v: 1), a: 1).makeColor().cgColor,
+                    HSVA(hsv: HSV(h: hue, s: 1, v: 1), a: 1).makeColor().cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
@@ -144,14 +135,8 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(
-                        hsv: HSV(h: hsv.h, s: hsv.s, v: 0),
-                        alpha: 1
-                    ),
-                    CGColor.make(
-                        hsv: HSV(h: hsv.h, s: hsv.s, v: 1),
-                        alpha: 1
-                    )
+                    HSVA(hsv: HSV(h: hsv.h, s: hsv.s, v: 0), a: 1).makeColor().cgColor,
+                    HSVA(hsv: HSV(h: hsv.h, s: hsv.s, v: 1), a: 1).makeColor().cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
@@ -172,14 +157,8 @@ extension ColorSliderConfiguration {
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(
-                        hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v),
-                        alpha: 0
-                    ),
-                    CGColor.make(
-                        hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v),
-                        alpha: 1
-                    ),
+                    HSVA(hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v), a: 0).makeColor().cgColor,
+                    HSVA(hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v), a: 1).makeColor().cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
