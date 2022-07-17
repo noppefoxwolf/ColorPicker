@@ -1,7 +1,7 @@
 import UIKit
 
 class HexInputView: UIControl {
-    var color: CGColor {
+    var color: HSVA {
         get {
             ColorFormatter().color(from: textField.text!) ?? .white
         }

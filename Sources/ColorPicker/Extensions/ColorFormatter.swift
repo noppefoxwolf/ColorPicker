@@ -3,7 +3,7 @@ import UIKit
 
 class ColorFormatter: Formatter {
     
-    func color(from string: String) -> CGColor? {
+    func color(from string: String) -> HSVA? {
         let hexString = string.trimmingCharacters(in: .whitespacesAndNewlines)
         let scanner = Scanner(string: hexString)
         
@@ -14,21 +14,19 @@ class ColorFormatter: Formatter {
         var rgbValue:UInt64 = 0
         scanner.scanHexInt64(&rgbValue)
         
-        return CGColor(
-            red: Double((rgbValue & 0xFF0000) >> 16) / 255.0,
-            green: Double((rgbValue & 0x00FF00) >> 8) / 255.0,
-            blue: Double(rgbValue & 0x0000FF) / 255.0,
-            alpha: 1.0
-        )
+        let r: Double = Double((rgbValue & 0xFF0000) >> 16) / 255.0
+        let g: Double = Double((rgbValue & 0x00FF00) >> 8) / 255.0
+        let b: Double = Double(rgbValue & 0x0000FF) / 255.0
+        let a: Double = 1
+        
+        return HSVA(hsv: RGB(r: r, g: g, b: b).hsv, a: a)
     }
     
-    func string(from color: CGColor) -> String {
-        var r: CGFloat = 0
-        var g: CGFloat = 0
-        var b: CGFloat = 0
-        var a: CGFloat = 0
-        
-        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+    func string(from color: HSVA) -> String {
+        var r: CGFloat = color.hsv.rgb.r
+        var g: CGFloat = color.hsv.rgb.g
+        var b: CGFloat = color.hsv.rgb.b
+        var a: CGFloat = color.a
         
         let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
         

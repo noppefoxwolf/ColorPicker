@@ -8,9 +8,9 @@ public class RGBColorSliderColorPicker: UIControl, ColorPicker {
     let greenSlider = ColorSliderWithInputView()
     let blueSlider = ColorSliderWithInputView()
     
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    public var color: CGColor {
+    public var color: HSVA {
         get { _color }
         set {
             _color = newValue

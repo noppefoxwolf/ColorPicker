@@ -8,9 +8,9 @@ public class GridColorPicker: UIControl, ColorPicker {
     let markerView: GridColorMarkerView = .init(frame: .null)
     
     @Invalidating(.constraints)
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    public var color: CGColor {
+    public var color: HSVA {
         get { _color }
         set {
             guard _color != newValue else { return }

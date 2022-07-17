@@ -2,7 +2,7 @@ import UIKit
 import SwiftUI
 
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
-    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: CGColor, continuously: Bool)
+    func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: HSVA, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerContentViewController)
     func colorPickerSwatchDidChanged(_ viewController: ColorPickerContentViewController)
     
@@ -21,13 +21,13 @@ class ColorPickerContentViewController: UIViewController {
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
     
-    private var _color: CGColor = .white {
+    private var _color: HSVA = .white {
         didSet {
             onUpdate(_color)
         }
     }
     
-    var color: CGColor {
+    var color: HSVA {
         get { _color }
         set {
             guard _color != newValue else { return }
@@ -125,7 +125,9 @@ class ColorPickerContentViewController: UIViewController {
             )
             
             let colorPickerAction = UIAction { [unowned self, unowned colorPicker, unowned alphaColorPicker] _ in
-                self.color = colorPicker.color.withAlphaComponent(alphaColorPicker.color.alpha)
+                var newColor = colorPicker.color
+                newColor.a = alphaColorPicker.color.a
+                self.color = newColor
                 self.delegate?.colorPickerViewController(
                     self,
                     didSelect: self.color,
@@ -202,7 +204,7 @@ class ColorPickerContentViewController: UIViewController {
         UserDefaults.standard.latestColorPickerID = colorPicker.id
     }
     
-    func onUpdate(_ color: CGColor) {
+    func onUpdate(_ color: HSVA) {
         swatchAndPreviewView.color = color
         alphaColorPicker.color = color
         configuration.colorPickers.forEach({ $0.color = color })

@@ -3,7 +3,7 @@ import UIKit
 open class ColorSlider: UIControl {
     
     @Invalidating(.constraints)
-    private var _color: CGColor = .white {
+    private var _color: HSVA = .white {
         didSet {
             thumbView.color = color
             trackView.grdient = configuration.gradientInvalidationHandler(color)
@@ -11,7 +11,7 @@ open class ColorSlider: UIControl {
         }
     }
     
-    var color: CGColor  {
+    var color: HSVA  {
         get { _color }
         set {
             guard _color != newValue else { return }
@@ -189,9 +189,9 @@ class ThumbView: UIView {
     }
     
     @Invalidating(.display)
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    var color: CGColor {
+    var color: HSVA {
         get { _color }
         set {
             guard _color != newValue else { return }
@@ -221,7 +221,7 @@ class ThumbView: UIView {
             let y = padding + padding2
             let h = rect.height - (padding + padding) - (padding2 + padding2) // top + bottom
             let w = h
-            context.setFillColor(color)
+            context.setFillColor(color.makeColor().cgColor)
             context.addEllipse(in: CGRect(x: x, y: y, width: w, height: h))
             context.fillPath()
         }

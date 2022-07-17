@@ -31,7 +31,7 @@ class ColorCell: UICollectionViewCell {
 class ColorView: UIView {
     
     @Invalidating(.display)
-    var color: CGColor = .white
+    var color: HSVA = .white
     
     enum Style {
         case normal
@@ -55,7 +55,7 @@ class ColorView: UIView {
         switch style {
         case .normal:
             let size = CGSize(width: 30, height: 30)
-            context.setFillColor(color)
+            context.setFillColor(color.makeColor().cgColor)
             let origin = CGPoint(
                 x: (rect.width - size.width) / 2,
                 y: (rect.height - size.height) / 2
@@ -64,7 +64,7 @@ class ColorView: UIView {
         case .outlined:
             do { // inner ellipse
                 let size = CGSize(width: 17, height: 17)
-                context.setFillColor(color)
+                context.setFillColor(color.makeColor().cgColor)
                 let origin = CGPoint(
                     x: (rect.width - size.width) / 2,
                     y: (rect.height - size.height) / 2
@@ -77,7 +77,7 @@ class ColorView: UIView {
                     x: (rect.width - size.width) / 2,
                     y: (rect.height - size.height) / 2
                 )
-                context.setStrokeColor(color)
+                context.setStrokeColor(color.makeColor().cgColor)
                 context.setLineWidth(3)
                 context.strokeEllipse(in: CGRect(origin: origin, size: size))
             }

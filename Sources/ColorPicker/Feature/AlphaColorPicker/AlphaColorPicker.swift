@@ -6,9 +6,9 @@ public class AlphaColorPicker: UIControl {
     
     let alphaSlider = ColorSliderWithInputView()
     
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    public var color: CGColor {
+    var color: HSVA {
         get { _color }
         set {
             guard _color != newValue else { return }

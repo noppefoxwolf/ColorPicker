@@ -16,26 +16,21 @@ class ClassicColorView: UIView {
         fatalError()
     }
     
-    func color(at location: CGPoint) -> CGColor {
+    func color(at location: CGPoint) -> HSVA {
         let saturation = location.x / bounds.width
         let brightness = 1.0 - (location.y / bounds.height)
         let clampedSaturation = max(min(saturation, 1), 0)
         let clampedBrightness = max(min(brightness, 1), 0)
-        return CGColor.make(
-            hue: hue,
-            saturation: clampedSaturation,
-            brightness: clampedBrightness,
-            alpha: 1
-        )
+        return HSVA(hsv: HSV(h: hue, s: clampedSaturation, v: clampedBrightness), a: 1)
     }
     
-    func location(by color: CGColor) -> CGPoint? {
-        let hsb = color.hsb
+    func location(by color: HSVA) -> CGPoint? {
+        let hsb = color.hsv
         return CGPoint(x: hsb.s * bounds.width, y: (1.0 - hsb.v) * bounds.height)
     }
     
-    func locationMultiply(by color: CGColor) -> CGSize {
-        let hsb = color.hsb
+    func locationMultiply(by color: HSVA) -> CGSize {
+        let hsb = color.hsv
         return CGSize(width: hsb.s, height: (1.0 - hsb.v))
     }
     

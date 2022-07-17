@@ -41,17 +41,6 @@ class InnerDiskColorView: UIView {
             UIColor(hue: 1, saturation: sat, brightness: 1, alpha: 1).cgColor
         })
         layer.addSublayer(gradientLayer)
-        
-        //        maskLayer2.type = .axial
-        //        maskLayer2.startPoint = CGPoint(x: 0.5, y: 0)
-        //        maskLayer2.endPoint = CGPoint(x: 0.5, y: 1)
-        //        maskLayer2.colors = [UIColor.white.cgColor, UIColor.clear.cgColor]
-        //        maskLayer2.locations = [0, 1]
-        //        maskLayer2.allowsGroupOpacity = false
-        //
-        //        gradientLayer.mask = maskLayer2
-        
-        //        gradientLayer.mask = maskLayer
     }
     
     required init?(coder: NSCoder) {

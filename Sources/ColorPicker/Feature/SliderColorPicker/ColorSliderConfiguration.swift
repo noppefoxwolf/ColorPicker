@@ -1,9 +1,9 @@
 import UIKit
 
 struct ColorSliderConfiguration {
-    let gradientInvalidationHandler: (CGColor) -> CGGradient
-    let colorToValue: (CGColor) -> Double
-    let valueToColor: (Double, CGColor) -> CGColor
+    let gradientInvalidationHandler: (HSVA) -> CGGradient
+    let colorToValue: (HSVA) -> Double
+    let valueToColor: (Double, HSVA) -> HSVA
 }
 
 extension ColorSliderConfiguration {
@@ -17,88 +17,70 @@ extension ColorSliderConfiguration {
     
     static var red: Self = .init(
         gradientInvalidationHandler: { color in
-            var green: CGFloat = 0
-            var blue: CGFloat = 0
-            color.getRed(nil, green: &green, blue: &blue, alpha: nil)
-            return CGGradient(
+            CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
                     // Use sRBG
-                    UIColor(red: 0, green: green, blue: blue, alpha: 1).cgColor,
-                    UIColor(red: 1, green: green, blue: blue, alpha: 1).cgColor,
+                    UIColor(red: 0, green: color.hsv.rgb.g, blue: color.hsv.rgb.b, alpha: 1).cgColor,
+                    UIColor(red: 1, green: color.hsv.rgb.g, blue: color.hsv.rgb.b, alpha: 1).cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            var red: CGFloat = 0
-            color.getRed(&red, green: nil, blue: nil, alpha: nil)
-            return red
+            color.hsv.rgb.r
         },
         valueToColor: { (value, color) in
-            var green: CGFloat = 0
-            var blue: CGFloat = 0
-            var alpha: CGFloat = 0
-            color.getRed(nil, green: &green, blue: &blue, alpha: &alpha)
-            return CGColor(red: value, green: green, blue: blue, alpha: alpha)
+            let color = color
+            var rgb = color.hsv.rgb
+            rgb.r = value
+            return HSVA(hsv: rgb.hsv, a: color.a)
         }
     )
     
     static var green: Self = .init(
         gradientInvalidationHandler: { color in
-            var red: CGFloat = 0
-            var blue: CGFloat = 0
-            color.getRed(&red, green: nil, blue: &blue, alpha: nil)
-            return CGGradient(
+            CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
                     // Use sRBG
-                    UIColor(red: red, green: 0, blue: blue, alpha: 1).cgColor,
-                    UIColor(red: red, green: 1, blue: blue, alpha: 1).cgColor,
+                    UIColor(red: color.hsv.rgb.r, green: 0, blue: color.hsv.rgb.b, alpha: 1).cgColor,
+                    UIColor(red: color.hsv.rgb.r, green: 1, blue: color.hsv.rgb.b, alpha: 1).cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            var green: CGFloat = 0
-            color.getRed(nil, green: &green, blue: nil, alpha: nil)
-            return green
+            color.hsv.rgb.g
         },
         valueToColor: { (value, color) in
-            var red: CGFloat = 0
-            var blue: CGFloat = 0
-            var alpha: CGFloat = 0
-            color.getRed(&red, green: nil, blue: &blue, alpha: &alpha)
-            return CGColor(red: red, green: value, blue: blue, alpha: alpha)
+            let color = color
+            var rgb = color.hsv.rgb
+            rgb.g = value
+            return HSVA(hsv: rgb.hsv, a: color.a)
         }
     )
     
     static var blue: Self = .init(
         gradientInvalidationHandler: { color in
-            var red: CGFloat = 0
-            var green: CGFloat = 0
-            color.getRed(&red, green: &green, blue: nil, alpha: nil)
-            return CGGradient(
+            CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
                     // Use sRBG
-                    UIColor(red: red, green: green, blue: 0, alpha: 1).cgColor,
-                    UIColor(red: red, green: green, blue: 1, alpha: 1).cgColor,
+                    UIColor(red: color.hsv.rgb.r, green: color.hsv.rgb.g, blue: 0, alpha: 1).cgColor,
+                    UIColor(red: color.hsv.rgb.r, green: color.hsv.rgb.g, blue: 1, alpha: 1).cgColor,
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            var blue: CGFloat = 0
-            color.getRed(nil, green: nil, blue: &blue, alpha: nil)
-            return blue
+            color.hsv.rgb.b
         },
         valueToColor: { (value, color) in
-            var red: CGFloat = 0
-            var green: CGFloat = 0
-            var alpha: CGFloat = 0
-            color.getRed(&red, green: &green, blue: nil, alpha: &alpha)
-            return CGColor(red: red, green: green, blue: value, alpha: alpha)
+            let color = color
+            var rgb = color.hsv.rgb
+            rgb.b = value
+            return HSVA(hsv: rgb.hsv, a: color.a)
         }
     )
 
@@ -107,9 +89,7 @@ extension ColorSliderConfiguration {
             let locations = stride(from: 0, to: 1, by: 1.0 / 12.0)
             let colors = locations.map { hue in
                 CGColor.make(
-                    hue: hue,
-                    saturation: 1,
-                    brightness: 1,
+                    hsv: HSV(h: hue, s: 1, v: 1),
                     alpha: 1
                 )
             }
@@ -121,79 +101,96 @@ extension ColorSliderConfiguration {
             )!
         },
         colorToValue: { color in
-            color.hsb.h
+            color.hsv.h
         },
         valueToColor: { (value, color) in
-            let hsb = color.hsb
-            return CGColor.make(hue: value, saturation: hsb.s, brightness: hsb.v, alpha: 1)
+            var color = color
+            color.hsv.h = value
+            return color
         }
     )
     
     static var saturation: Self = .init(
         gradientInvalidationHandler: { color in
-            let hue: CGFloat = color.hsb.h
+            let hue: CGFloat = color.hsv.h
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hue, saturation: 0, brightness: 1, alpha: 1),
-                    CGColor.make(hue: hue, saturation: 1, brightness: 1, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hue, s: 0, v: 1),
+                        alpha: 1
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hue, s: 1, v: 1),
+                        alpha: 1
+                    )
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            color.hsb.s
+            color.hsv.s
         },
         valueToColor: { (value, color) in
-            let hsb = color.hsb
-            return CGColor.make(hue: hsb.h, saturation: value, brightness: hsb.v, alpha: 1)
+            var color = color
+            color.hsv.s = value
+            return color
         }
     )
     
     static var brightness: Self = .init(
         gradientInvalidationHandler: { color in
-            let hsb = color.hsb
+            let hsv = color.hsv
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: 0, alpha: 1),
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: 1, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hsv.h, s: hsv.s, v: 0),
+                        alpha: 1
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hsv.h, s: hsv.s, v: 1),
+                        alpha: 1
+                    )
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            color.hsb.v
+            color.hsv.v
         },
         valueToColor: { (value, color) in
-            let hsb = color.hsb
-            return CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: value, alpha: 1)
+            var color = color
+            color.hsv.v = value
+            return color
         }
     )
     
     static var alpha: Self = .init(
         gradientInvalidationHandler: { color in
-            let hsb = color.hsb
+            let hsv = color.hsv
             return CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
                 colors: [
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 0),
-                    CGColor.make(hue: hsb.h, saturation: hsb.s, brightness: hsb.v, alpha: 1)
+                    CGColor.make(
+                        hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v),
+                        alpha: 0
+                    ),
+                    CGColor.make(
+                        hsv: HSV(h: hsv.h, s: hsv.s, v: hsv.v),
+                        alpha: 1
+                    ),
                 ] as CFArray,
                 locations: [0, 1]
             )!
         },
         colorToValue: { color in
-            color.alpha
+            color.a
         },
         valueToColor: { (value, color) in
-            let hsb = color.hsb
-            return CGColor.make(
-                hue: hsb.h,
-                saturation: hsb.s,
-                brightness: hsb.v,
-                alpha: value
-            )
+            var color = color
+            color.a = value
+            return color
         }
     )
 
