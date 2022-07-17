@@ -9,15 +9,15 @@ public class ClassicColorPicker: UIControl, ColorPicker {
     let thumbView: ThumbView = .init(frame: .null)
     
     @Invalidating(.constraints)
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    public var color: CGColor {
+    public var color: HSVA {
         get { _color }
         set {
             _color = newValue
             thumbView.color = newValue
             hueSlider.color = newValue
-            colorView.hue = newValue.hsb.h
+            colorView.hue = newValue.hsv.h
         }
     }
     

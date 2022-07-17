@@ -13,9 +13,9 @@ class ColorSliderWithInputView: UIControl {
     let textField = ColorSliderTextField(frame: .null)
     let titleLabel = ColorSliderTitleLabel(frame: .null)
     
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    var color: CGColor {
+    var color: HSVA {
         get { _color }
         set {
             _color = newValue

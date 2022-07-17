@@ -1,6 +1,7 @@
 import Darwin
+import UIKit
 
-struct HSV {
+public struct HSV: Equatable, Hashable {
     var h: Double // Angle in degrees [0,1] or -1 as Undefined
     var s: Double // Percent [0,1]
     var v: Double // Percent [0,1]
@@ -40,4 +41,30 @@ struct HSV {
     var rgb: RGB {
         HSV.rgb(hsv: self)
     }
+}
+
+public struct HSVA: Equatable, Hashable {
+    var hsv: HSV
+    var a: Double
+}
+
+extension HSVA {
+    public init(_ color: UIColor) {
+        var h: CGFloat = 0
+        var s: CGFloat = 0
+        var v: CGFloat = 0
+        var a: CGFloat = 0
+        color.getHue(&h, saturation: &s, brightness: &v, alpha: &a)
+        self.hsv = HSV(h: h, s: s, v: v)
+        self.a = a
+    }
+    
+    func makeColor() -> UIColor {
+        UIColor(hue: hsv.h, saturation: hsv.s, brightness: hsv.v, alpha: a)
+    }
+}
+
+extension HSVA {
+    @available(*, deprecated)
+    static var white: HSVA = .init(hsv: HSV(h: 1, s: 1, v: 1), a: 1)
 }

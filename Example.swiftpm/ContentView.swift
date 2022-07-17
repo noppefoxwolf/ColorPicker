@@ -20,7 +20,7 @@ class ContentViewController: UIViewController {
         
         let colorPickerButton = UIButton(primaryAction: UIAction(title: "noppefoxwolf/ColorPicker", handler: { _ in
             self.presentColorPicker(
-                CGColor(red: 1, green: 0, blue: 0, alpha: 0.5)
+                UIColor(red: 1, green: 0, blue: 0, alpha: 0.5)
             )
         }))
         let uiColorPickerButton = UIButton(primaryAction: UIAction(title: "apple/UIColorPicker", handler: { _ in
@@ -88,14 +88,14 @@ class ContentViewController: UIViewController {
         }
     }
     
-    func presentColorPicker(_ color: CGColor) {
+    func presentColorPicker(_ color: UIColor) {
         let vc = ColorPickerViewController()
         vc.supportsAlpha = true
         let configuration = ColorPickerConfiguration.default
         configuration.initialColorItems = [
-            .init(id: UUID(), color: CGColor(red: 1, green: 0, blue: 0, alpha: 1)),
-            .init(id: UUID(), color: CGColor(red: 0, green: 1, blue: 0, alpha: 1)),
-            .init(id: UUID(), color: CGColor(red: 0, green: 0, blue: 1, alpha: 1)),
+            .init(id: UUID(), color: HSVA(UIColor(red: 1, green: 0, blue: 0, alpha: 1))),
+            .init(id: UUID(), color: HSVA(UIColor(red: 0, green: 1, blue: 0, alpha: 1))),
+            .init(id: UUID(), color: HSVA(UIColor(red: 0, green: 0, blue: 1, alpha: 1))),
         ]
 //        configuration.colorPickers = [HSBHexSliderColorPicker(frame: .null)]
 //        configuration.usesSwatchTool = false
@@ -121,7 +121,7 @@ extension ContentViewController: ColorPickerViewControllerDelegate {
         print(#function, viewController.selectedColor)
     }
     
-    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: CGColor, continuously: Bool) {
+    func colorPickerViewController(_ viewController: ColorPickerViewController, didSelect color: UIColor, continuously: Bool) {
         print(#function, color, continuously)
     }
 }

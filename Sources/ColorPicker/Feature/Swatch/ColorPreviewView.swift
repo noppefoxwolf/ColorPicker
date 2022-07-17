@@ -3,7 +3,7 @@ import UIKit
 class ColorPreviewView: UIView {
     
     @Invalidating(.display)
-    var color: CGColor = .white
+    var color: HSVA = .white
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -32,7 +32,7 @@ class ColorPreviewView: UIView {
         context.addLine(to: CGPoint(x: 0, y: rect.height))
         context.fillPath()
         
-        context.setFillColor(color)
+        context.setFillColor(color.makeColor().cgColor)
         context.fill(rect)
     }
 }

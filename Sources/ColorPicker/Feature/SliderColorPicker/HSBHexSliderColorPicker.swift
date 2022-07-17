@@ -7,9 +7,9 @@ public class HSBHexSliderColorPicker: UIControl, ColorPicker {
     let hsbSlidersView = HSBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
     
-    private var _color: CGColor = .white
+    private var _color: HSVA = .white
     
-    public var color: CGColor {
+    public var color: HSVA {
         get { _color }
         set {
             _color = newValue

@@ -3,7 +3,7 @@ import UIKit
 class ReticleView: UIView {
     // shadow and internal
     let internalReticleView: InternalReticleView = .init(frame: .null)
-    var color: CGColor {
+    var color: UIColor {
         get { internalReticleView.color }
         set { internalReticleView.color = newValue }
     }
@@ -56,7 +56,7 @@ class ReticleView: UIView {
             fromByteOffset: MemoryLayout<Pixel>.size * 40,
             as: Pixel.self
         )
-        self.color = CGColor(
+        self.color = UIColor(
             red: Double(centerColor.r) / 255,
             green: Double(centerColor.g) / 255,
             blue: Double(centerColor.b) / 255,
@@ -74,7 +74,7 @@ class InternalReticleView: UIView {
     let gridView: ReticleGridView = .init(frame: .null)
     let outlineView: ReticleOutlineView = .init(frame: .null)
     
-    var color: CGColor {
+    var color: UIColor {
         get { outlineView.color }
         set {
             outlineView.color = newValue
@@ -105,7 +105,7 @@ class InternalReticleView: UIView {
 
 class ReticleOutlineView: UIView {
     @Invalidating(.display)
-    var color: CGColor = .white
+    var color: UIColor = .white
     
     @Invalidating(.display)
     var gridColor: UIColor = .gray
@@ -142,7 +142,7 @@ class ReticleOutlineView: UIView {
     private func drawOuterLine(rect: CGRect, context: CGContext) {
         let width: Double = 10
         context.setLineWidth(width)
-        context.setStrokeColor(color)
+        context.setStrokeColor(color.cgColor)
         
         let newRect = CGRect(
             x: width / 2,
