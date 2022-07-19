@@ -22,4 +22,5 @@ enum LocalizedString {
     static var classic: String { localize("Classic") }
     static var rgb: String { uikitLocalize("RGB") }
     static var hsb: String { uikitLocalize("HSB") }
+    static var opacity: String { uikitLocalize("Opacity") }
 }

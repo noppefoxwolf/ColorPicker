@@ -26,7 +26,7 @@ public class AlphaColorPicker: UIControl {
         
         alphaSlider.slider.configuration = .alpha
         alphaSlider.textField.configuration = .percent
-        alphaSlider.titleLabel.text = "不透明度"
+        alphaSlider.titleLabel.text = LocalizedString.opacity
         
         let vStack = UIStackView(arrangedSubviews: [alphaSlider])
         vStack.axis = .vertical
