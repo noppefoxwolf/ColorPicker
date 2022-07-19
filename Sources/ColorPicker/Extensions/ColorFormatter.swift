@@ -23,10 +23,9 @@ class ColorFormatter: Formatter {
     }
     
     func string(from color: HSVA) -> String {
-        var r: CGFloat = color.hsv.rgb.r
-        var g: CGFloat = color.hsv.rgb.g
-        var b: CGFloat = color.hsv.rgb.b
-        var a: CGFloat = color.a
+        let r: CGFloat = color.hsv.rgb.r
+        let g: CGFloat = color.hsv.rgb.g
+        let b: CGFloat = color.hsv.rgb.b
         
         let rgb: Int = (Int)(r * 255) << 16 | (Int)(g * 255) << 8 | (Int)(b * 255) << 0
         
