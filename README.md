@@ -59,3 +59,7 @@ extension ContentViewController: ColorPickerViewControllerDelegate {
 # License
 
 ColorPicker is available under the MIT license. See the LICENSE file for more info.
+
+# Prohibited matter 🚫
+
+Forking or contributing in order to disguise the activity of spam accounts as legitimate accounts is prohibited.
