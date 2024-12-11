@@ -6,9 +6,9 @@
 
 # Requirements
 
-- Swift5.6
+- Swift 6
 
-- iOS15
+- iOS 15
 
 # Installation
 
