@@ -1,4 +1,5 @@
 import UIKit
+import Combine
 
 final class SwatchView: UIControl {
     enum CellItem: Hashable {
@@ -8,14 +9,14 @@ final class SwatchView: UIControl {
     enum Section {
         case items
     }
-    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
+    
+    let actionSubject = PassthroughSubject<Void, Never>()
+    var cancellables: Set<AnyCancellable> = []
     
     private var _selectedColor: HSVA = .noop {
         didSet {
             /// 逐次実行だと重いので遅延させる
-            debounceAction { [weak self] in
-                self?.reconfigureCells()
-            }
+            actionSubject.send()
         }
     }
     
@@ -160,6 +161,13 @@ final class SwatchView: UIControl {
         collectionView.addGestureRecognizer(longPress)
         
         snapshot.appendSections([.items])
+        
+        actionSubject
+            .debounce(for: .milliseconds(160), scheduler: DispatchQueue.main)
+            .sink { [weak self] _ in
+                self?.reconfigureCells()
+            }
+            .store(in: &cancellables)
         
         becomeFirstResponder()
     }
