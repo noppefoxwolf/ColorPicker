@@ -1,12 +1,12 @@
 import UIKit
 
-struct ColorSliderTextFieldConfiguration {
-    let textToValue: (String) -> Double
-    let valueToText: (Double) -> String
+struct ColorSliderTextFieldConfiguration: Sendable {
+    let textToValue: @Sendable (String) -> Double
+    let valueToText: @Sendable (Double) -> String
 }
 
 extension ColorSliderTextFieldConfiguration {
-    static var hex: Self = .init(
+    static let hex: Self = .init(
         textToValue: { text in
             (Double(text) ?? 0) / 255.0
         },
@@ -15,7 +15,7 @@ extension ColorSliderTextFieldConfiguration {
         }
     )
     
-    static var radius: Self = .init(
+    static let radius: Self = .init(
         textToValue: { text in
             (Double(text) ?? 0) / 360.0
         },
@@ -24,7 +24,7 @@ extension ColorSliderTextFieldConfiguration {
         }
     )
     
-    static var percent: Self = .init(
+    static let percent: Self = .init(
         textToValue: { text in
             (Double(text) ?? 0) / 100.0
         },
@@ -34,7 +34,7 @@ extension ColorSliderTextFieldConfiguration {
     )
 }
 
-class ColorSliderTextField: UITextField {
+final class ColorSliderTextField: UITextField {
     var configuration: ColorSliderTextFieldConfiguration!
     
     override init(frame: CGRect) {

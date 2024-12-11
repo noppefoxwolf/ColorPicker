@@ -1,7 +1,7 @@
 import UIKit
 
 /// Viewの外に出た時に初めてbeganになるPanジェスチャ
-public class GoOutPanGestureRecognizer: UIPanGestureRecognizer {
+public final class GoOutPanGestureRecognizer: UIPanGestureRecognizer {
     
     public override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
         

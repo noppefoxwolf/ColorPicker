@@ -1,7 +1,7 @@
 import XCTest
 @testable import ColorPicker
 
-class ColorFormatterTests: XCTestCase {
+final class ColorFormatterTests: XCTestCase {
     func testEncodeDecodeWithHash() {
         let string = "#123456"
         let color = ColorFormatter().color(from: string)!

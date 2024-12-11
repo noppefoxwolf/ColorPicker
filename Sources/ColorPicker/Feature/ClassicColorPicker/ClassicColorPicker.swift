@@ -1,6 +1,6 @@
 import UIKit
 
-public class ClassicColorPicker: UIControl, ColorPicker {
+public final class ClassicColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public var title: String = LocalizedString.classic
     

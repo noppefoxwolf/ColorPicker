@@ -1,6 +1,7 @@
 import UIKit
 import SwiftUI
 
+@MainActor
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerViewController(_ viewController: ColorPickerContentViewController, didSelect color: HSVA, continuously: Bool)
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerContentViewController)
@@ -9,7 +10,7 @@ protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerDropperDidSelect(_ viewController: ColorPickerContentViewController)
 }
 
-class ColorPickerContentViewController: UIViewController {
+final class ColorPickerContentViewController: UIViewController {
     weak var delegate: ColorPickerContentViewControllerDelegate? = nil
     let scrollView = UIScrollView()
     let segmentControl = UISegmentedControl(items: nil)

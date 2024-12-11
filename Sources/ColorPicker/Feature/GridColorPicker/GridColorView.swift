@@ -1,6 +1,6 @@
 import UIKit
 
-class GridColorView: UIView {
+final class GridColorView: UIView {
     
     let column = 12
     let row = 10

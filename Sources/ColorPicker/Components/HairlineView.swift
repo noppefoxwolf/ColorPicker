@@ -1,6 +1,6 @@
 import UIKit
 
-class HairlineView: UIVisualEffectView {
+final class HairlineView: UIVisualEffectView {
     init() {
         let effect = UIVibrancyEffect(
             blurEffect: UIBlurEffect(

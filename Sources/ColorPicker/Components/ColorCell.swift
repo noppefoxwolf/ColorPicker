@@ -1,6 +1,6 @@
 import UIKit
 
-class ColorCell: UICollectionViewCell {
+final class ColorCell: UICollectionViewCell {
     
     let colorView: ColorView = .init(frame: .null)
     
@@ -28,7 +28,7 @@ class ColorCell: UICollectionViewCell {
     }
 }
 
-class ColorView: UIView {
+final class ColorView: UIView {
     
     @Invalidating(.display)
     var color: HSVA = .noop

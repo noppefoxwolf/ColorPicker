@@ -1,7 +1,7 @@
 import UIKit
 
 /// RGBHSBHextSliderColorPicker
-public class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
+public final class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public var title: String = LocalizedString.sliders
     

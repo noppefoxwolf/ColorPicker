@@ -1,6 +1,6 @@
 import UIKit
 
-class ClassicColorView: UIView {    
+final class ClassicColorView: UIView {    
     @Invalidating(.display)
     var hue: Double = 0
     

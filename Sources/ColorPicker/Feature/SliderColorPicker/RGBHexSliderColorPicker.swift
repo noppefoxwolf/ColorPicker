@@ -1,6 +1,6 @@
 import UIKit
 
-public class RGBHexSliderColorPicker: UIControl, ColorPicker {
+public final class RGBHexSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
     

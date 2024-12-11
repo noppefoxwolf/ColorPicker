@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class ColorFormatter: Formatter {
+final class ColorFormatter: Formatter {
     
     func color(from string: String) -> HSVA? {
         let hexString = string.trimmingCharacters(in: .whitespacesAndNewlines)

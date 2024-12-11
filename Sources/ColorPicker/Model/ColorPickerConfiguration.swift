@@ -1,6 +1,7 @@
 import UIKit
 
-public class ColorPickerConfiguration {
+@MainActor
+public final class ColorPickerConfiguration {
     public static var `default`: ColorPickerConfiguration { ColorPickerConfiguration() }
     
     public var colorPickers: [UIControl & ColorPicker] = [

@@ -8,7 +8,7 @@
 import Foundation
 import UIKit
 
-class ColorSliderWithInputView: UIControl {
+final class ColorSliderWithInputView: UIControl {
     let slider = ColorSlider(frame: .null)
     let textField = ColorSliderTextField(frame: .null)
     let titleLabel = ColorSliderTitleLabel(frame: .null)

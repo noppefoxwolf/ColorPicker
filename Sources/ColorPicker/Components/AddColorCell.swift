@@ -1,7 +1,7 @@
 import UIKit
 import SnapKit
 
-class AddColorCell: UICollectionViewCell {
+final class AddColorCell: UICollectionViewCell {
     let backgroundColorView: UIView = .init(frame: .null)
     let imageView: UIImageView = .init(frame: .null)
     

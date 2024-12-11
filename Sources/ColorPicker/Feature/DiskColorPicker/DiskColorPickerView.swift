@@ -1,6 +1,6 @@
 import UIKit
 
-class DiskColorPickerView: UIView {
+final class DiskColorPickerView: UIView {
     let outerDiskColorView: OuterDiskColorView = .init(frame: .null)
     let innerDiskColorView: InnerDiskColorView = .init(frame: .null)
     
@@ -23,7 +23,7 @@ class DiskColorPickerView: UIView {
     }
 }
 
-class InnerDiskColorView: UIView {
+final class InnerDiskColorView: UIView {
     let gradientLayer = CAGradientLayer()
     
     let maskLayer = CAShapeLayer()
@@ -62,7 +62,7 @@ class InnerDiskColorView: UIView {
     }
 }
 
-class OuterDiskColorView: UIView {
+final class OuterDiskColorView: UIView {
     let gradientLayer = CAGradientLayer()
     let maskLayer = CAShapeLayer()
     

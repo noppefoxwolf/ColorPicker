@@ -97,7 +97,7 @@ open class ColorSlider: UIControl {
         self.sendActions(for: [.valueChanged, .primaryActionTriggered])
     }
     
-    open override func setNeedsUpdateConstraints() {
+    public override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
 
         trackValueLayoutGuide.snp.remakeConstraints { make in
@@ -107,7 +107,7 @@ open class ColorSlider: UIControl {
     }
 }
 
-class TrackView: UIView {
+final class TrackView: UIView {
     @Invalidating(.display)
     var grdient: CGGradient = CGGradient(
         colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -178,7 +178,7 @@ class TrackView: UIView {
     }
 }
 
-class ThumbView: UIView {
+final class ThumbView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear

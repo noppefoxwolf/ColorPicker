@@ -1,6 +1,6 @@
 import UIKit
 
-class ColorPreviewView: UIView {
+final class ColorPreviewView: UIView {
     
     @Invalidating(.display)
     var color: HSVA = .noop

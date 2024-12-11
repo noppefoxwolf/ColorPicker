@@ -1,6 +1,6 @@
 import UIKit
 
-class SwatchAndPreviewView: UIControl {
+final class SwatchAndPreviewView: UIControl {
     
     let swatchView = SwatchView(frame: .null)
     let colorPreviewView = ColorPreviewView(frame: .null)

@@ -1,6 +1,6 @@
 import UIKit
 
-class ReticleView: UIView {
+final class ReticleView: UIView {
     // shadow and internal
     let internalReticleView: InternalReticleView = .init(frame: .null)
     var color: UIColor {
@@ -66,7 +66,7 @@ class ReticleView: UIView {
     }
 }
 
-class InternalReticleView: UIView {
+final class InternalReticleView: UIView {
     // image
     // grid
     // outline
@@ -103,7 +103,7 @@ class InternalReticleView: UIView {
     }
 }
 
-class ReticleOutlineView: UIView {
+final class ReticleOutlineView: UIView {
     @Invalidating(.display)
     var color: UIColor = .white
     
@@ -154,7 +154,7 @@ class ReticleOutlineView: UIView {
     }
 }
 
-class ReticleGridView: UIView {
+final class ReticleGridView: UIView {
     @Invalidating(.display)
     var strokeColor: UIColor = .gray
     

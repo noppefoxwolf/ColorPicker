@@ -1,6 +1,6 @@
 import UIKit
 
-public class AlphaColorPicker: UIControl {
+public final class AlphaColorPicker: UIControl {
     public let id: String = #function
     public var title: String = ""
     

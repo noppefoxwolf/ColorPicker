@@ -1,6 +1,6 @@
 import UIKit
 
-public struct HSV: Equatable, Hashable {
+public struct HSV: Equatable, Hashable, Sendable {
     var h, s, v: Double
 }
 
@@ -14,7 +14,7 @@ extension HSV {
     }
 }
 
-public struct HSVA: Equatable, Hashable {
+public struct HSVA: Equatable, Hashable, Sendable {
     var hsv: HSV
     var a: Double
 }
@@ -36,5 +36,5 @@ extension HSVA {
 }
 
 extension HSVA {
-    static var noop: HSVA = HSVA(hsv: HSV(h: 0, s: 0, v: 0), a: 0)
+    static let noop: HSVA = HSVA(hsv: HSV(h: 0, s: 0, v: 0), a: 0)
 }

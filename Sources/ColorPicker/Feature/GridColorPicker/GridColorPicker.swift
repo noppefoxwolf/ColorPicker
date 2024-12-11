@@ -1,6 +1,6 @@
 import UIKit
 
-public class GridColorPicker: UIControl, ColorPicker {
+public final class GridColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public var title: String = LocalizedString.grid
     
@@ -92,7 +92,7 @@ public class GridColorPicker: UIControl, ColorPicker {
     }
 }
 
-class GridColorMarkerView: UIView {
+final class GridColorMarkerView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
