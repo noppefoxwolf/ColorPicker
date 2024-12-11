@@ -54,8 +54,8 @@ extension ContentViewController: ColorPickerViewControllerDelegate {
 
 # Apps using ColorPicker
 
-- [WebSSH - SysAdmin Tools](https://apps.apple.com/us/app/webssh-sysadmin-tools/id497714887)
-- [Editormode](https://apps.apple.com/jp/app/%E3%83%89%E3%83%83%E3%83%88%E7%B5%B5%E3%83%A1%E3%83%BC%E3%82%AB%E3%83%BC-editormode/id1586258429)
+- [WebSSH - SysAdmin Tools](https://apps.apple.com/us/app/id497714887)
+- [Editormode](https://apps.apple.com/jp/app/id1586258429)
 
 # Maintainer
 
