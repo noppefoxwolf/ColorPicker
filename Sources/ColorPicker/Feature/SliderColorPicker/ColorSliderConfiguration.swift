@@ -7,15 +7,14 @@ struct ColorSliderConfiguration {
 }
 
 extension ColorSliderConfiguration {
-    static var noop: Self = .init { _ in
-        fatalError()
-    } colorToValue: { _ in
-        0
-    } valueToColor: { _, _ in
-        .noop
+    static var noop: Self {
+        .init(gradientInvalidationHandler: { _ in fatalError() },
+              colorToValue: { _ in 0 },
+              valueToColor: { _, _ in .noop }
+        )
     }
     
-    static var red: Self = .init(
+    static var red: Self { .init(
         gradientInvalidationHandler: { color in
             CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -36,9 +35,9 @@ extension ColorSliderConfiguration {
             rgb.r = value
             return HSVA(hsv: rgb.hsv, a: color.a)
         }
-    )
+    ) }
     
-    static var green: Self = .init(
+    static var green: Self { .init(
         gradientInvalidationHandler: { color in
             CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -59,9 +58,9 @@ extension ColorSliderConfiguration {
             rgb.g = value
             return HSVA(hsv: rgb.hsv, a: color.a)
         }
-    )
+    ) }
     
-    static var blue: Self = .init(
+    static var blue: Self { .init(
         gradientInvalidationHandler: { color in
             CGGradient(
                 colorsSpace: CGColorSpaceCreateDeviceRGB(),
@@ -82,9 +81,9 @@ extension ColorSliderConfiguration {
             rgb.b = value
             return HSVA(hsv: rgb.hsv, a: color.a)
         }
-    )
+    ) }
 
-    static var hue: Self = .init(
+    static var hue: Self { .init(
         gradientInvalidationHandler: { color in
             let locations = stride(from: 0, to: 1, by: 1.0 / 12.0)
             let colors = locations.map { hue in
@@ -105,9 +104,9 @@ extension ColorSliderConfiguration {
             color.hsv.h = value
             return color
         }
-    )
+    ) }
     
-    static var saturation: Self = .init(
+    static var saturation: Self { .init(
         gradientInvalidationHandler: { color in
             let hue: CGFloat = color.hsv.h
             return CGGradient(
@@ -127,9 +126,9 @@ extension ColorSliderConfiguration {
             color.hsv.s = value
             return color
         }
-    )
+    ) }
     
-    static var brightness: Self = .init(
+    static var brightness: Self { .init(
         gradientInvalidationHandler: { color in
             let hsv = color.hsv
             return CGGradient(
@@ -149,9 +148,9 @@ extension ColorSliderConfiguration {
             color.hsv.v = value
             return color
         }
-    )
+    ) }
     
-    static var alpha: Self = .init(
+    static var alpha: Self { .init(
         gradientInvalidationHandler: { color in
             let hsv = color.hsv
             return CGGradient(
@@ -171,6 +170,6 @@ extension ColorSliderConfiguration {
             color.a = value
             return color
         }
-    )
+    ) }
 
 }

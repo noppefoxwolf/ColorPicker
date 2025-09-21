@@ -6,7 +6,7 @@ struct ColorSliderTextFieldConfiguration {
 }
 
 extension ColorSliderTextFieldConfiguration {
-    static var hex: Self = .init(
+    static var hex: Self { .init(
         textToValue: { text in
             (Double(text) ?? 0) / 255.0
         },
@@ -14,9 +14,9 @@ extension ColorSliderTextFieldConfiguration {
             let v = (value * 255.0).rounded()
             return "\(max(0, min(255, Int(v))))"
         }
-    )
+    ) }
 
-    static var radius: Self = .init(
+    static var radius: Self { .init(
         textToValue: { text in
             (Double(text) ?? 0) / 360.0
         },
@@ -24,9 +24,9 @@ extension ColorSliderTextFieldConfiguration {
             let v = (value * 360.0).rounded()
             return "\(max(0, min(360, Int(v))))"
         }
-    )
+    ) }
 
-    static var percent: Self = .init(
+    static var percent: Self { .init(
         textToValue: { text in
             (Double(text) ?? 0) / 100.0
         },
@@ -34,7 +34,7 @@ extension ColorSliderTextFieldConfiguration {
             let v = (value * 100.0).rounded()
             return "\(max(0, min(100, Int(v))))"
         }
-    )
+    ) }
 }
 
 class ColorSliderTextField: UITextField {
