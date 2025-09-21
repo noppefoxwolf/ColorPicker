@@ -36,5 +36,5 @@ extension HSVA {
 }
 
 extension HSVA {
-    static var noop: HSVA = HSVA(hsv: HSV(h: 0, s: 0, v: 0), a: 0)
+    static var noop: HSVA { HSVA(hsv: HSV(h: 0, s: 0, v: 0), a: 0) }
 }
