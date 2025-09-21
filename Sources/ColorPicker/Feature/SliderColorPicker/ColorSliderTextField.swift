@@ -11,25 +11,28 @@ extension ColorSliderTextFieldConfiguration {
             (Double(text) ?? 0) / 255.0
         },
         valueToText: { value in
-            "\(Int(value * 255.0))"
+            let v = (value * 255.0).rounded()
+            return "\(max(0, min(255, Int(v))))"
         }
     )
-    
+
     static var radius: Self = .init(
         textToValue: { text in
             (Double(text) ?? 0) / 360.0
         },
         valueToText: { value in
-            "\(Int(value * 360.0))"
+            let v = (value * 360.0).rounded()
+            return "\(max(0, min(360, Int(v))))"
         }
     )
-    
+
     static var percent: Self = .init(
         textToValue: { text in
             (Double(text) ?? 0) / 100.0
         },
         valueToText: { value in
-            "\(Int(value * 100.0))"
+            let v = (value * 100.0).rounded()
+            return "\(max(0, min(100, Int(v))))"
         }
     )
 }
