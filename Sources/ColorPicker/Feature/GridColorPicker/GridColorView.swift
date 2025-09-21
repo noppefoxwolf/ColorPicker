@@ -1,14 +1,14 @@
 import UIKit
 
 class GridColorView: UIView {
-    
+
     let column = 12
     let row = 10
     var cellSize: CGSize {
         let length = bounds.width / Double(column)
         return CGSize(width: length, height: length)
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .clear
@@ -16,11 +16,11 @@ class GridColorView: UIView {
             make.height.equalTo(self.snp.width).multipliedBy(10.0 / 12.0)
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     func point(location: CGPoint) -> (x: Int, y: Int) {
         let x = Int(location.x / bounds.width * Double(column))
         let y = Int(location.y / bounds.height * Double(row))
@@ -28,28 +28,28 @@ class GridColorView: UIView {
         let clampedY = max(min(y, row - 1), 0)
         return (clampedX, clampedY)
     }
-    
+
     func rect(forX x: Int, y: Int) -> CGRect {
         let x = Double(x) * cellSize.width
         let y = Double(y) * cellSize.height
         return CGRect(x: x, y: y, width: cellSize.width, height: cellSize.height).integral
     }
-    
+
     func color(atX x: Int, y: Int) -> HSVA {
         let i = x + column * y
         return gridColors[i]
     }
-    
+
     func index(forColor color: HSVA) -> Int? {
         gridColors.firstIndex(of: color)
     }
-    
+
     func point(for index: Int) -> (x: Int, y: Int) {
         let x = index % column
         let y = index / column
         return (x, y)
     }
-    
+
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
         let maskPath = UIBezierPath(roundedRect: rect, cornerRadius: 8).cgPath
@@ -64,7 +64,8 @@ class GridColorView: UIView {
                 y: y,
                 width: cellSize.width,
                 height: cellSize.height
-            ).integral
+            )
+            .integral
             context.fill(rect)
         }
     }

@@ -3,7 +3,7 @@ import UIKit
 public class ScopeColorPicker {
     let pickerWindow: ScopeColorPickerWindow
     var continuation: CheckedContinuation<UIColor, Never>? = nil
-    
+
     public init(
         windowScene: UIWindowScene,
         gestureRecognizer: UIGestureRecognizer? = nil
@@ -15,7 +15,7 @@ public class ScopeColorPicker {
         pickerWindow.delegate = self
         pickerWindow.dataSource = self
     }
-    
+
     public func pickColor() async -> UIColor {
         await withCheckedContinuation { [weak self] continuation in
             self?.continuation = continuation

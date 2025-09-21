@@ -3,12 +3,12 @@ import UIKit
 public class RGBHexSliderColorPicker: UIControl, ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
-    
+
     let rgbSlidersView = RGBColorSliderColorPicker(frame: .null)
     let hexInputView = HexInputView(frame: .null)
-    
+
     private var _color: HSVA = .noop
-    
+
     public var color: HSVA {
         get { _color }
         set {
@@ -17,17 +17,17 @@ public class RGBHexSliderColorPicker: UIControl, ColorPicker {
             hexInputView.color = newValue
         }
     }
-    
+
     public var continuously: Bool {
         [
-            rgbSlidersView.continuously,
-        ].contains(true)
+            rgbSlidersView.continuously
+        ]
+        .contains(true)
     }
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        
-        
+
         let vStack = UIStackView(arrangedSubviews: [rgbSlidersView, hexInputView])
         vStack.axis = .vertical
         vStack.spacing = 32
@@ -35,18 +35,24 @@ public class RGBHexSliderColorPicker: UIControl, ColorPicker {
         vStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
-        rgbSlidersView.addAction(UIAction { [unowned self] _ in
-            self.color = self.rgbSlidersView.color
-            self.sendActions(for: [.valueChanged, .primaryActionTriggered])
-        }, for: .primaryActionTriggered)
-        
-        hexInputView.addAction(UIAction { [unowned self] _ in
-            self.color = self.hexInputView.color
-            self.sendActions(for: [.valueChanged, .primaryActionTriggered])
-        }, for: .primaryActionTriggered)
+
+        rgbSlidersView.addAction(
+            UIAction { [unowned self] _ in
+                self.color = self.rgbSlidersView.color
+                self.sendActions(for: [.valueChanged, .primaryActionTriggered])
+            },
+            for: .primaryActionTriggered
+        )
+
+        hexInputView.addAction(
+            UIAction { [unowned self] _ in
+                self.color = self.hexInputView.color
+                self.sendActions(for: [.valueChanged, .primaryActionTriggered])
+            },
+            for: .primaryActionTriggered
+        )
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
