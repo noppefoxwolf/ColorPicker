@@ -61,6 +61,10 @@ extension ContentViewController: ColorPickerViewControllerDelegate {
 
 [@noppefoxwolf](https://twitter.com/noppefoxwolf)
 
+## Code format
+
+`$(xcrun --find swift-format) --recursive --parallel . -i`
+
 # License
 
 ColorPicker is available under the MIT license. See the LICENSE file for more info.

@@ -8,7 +8,7 @@ extension RGB {
     func makeColor() -> UIColor {
         UIColor(red: r, green: g, blue: b, alpha: 1)
     }
-    
+
     var hsv: HSV {
         HSVA(makeColor()).hsv
     }
@@ -29,9 +29,8 @@ extension RGBA {
         self.rgb = RGB(r: r, g: g, b: b)
         self.a = a
     }
-    
+
     func makeColor() -> UIColor {
         rgb.makeColor().withAlphaComponent(a)
     }
 }
-

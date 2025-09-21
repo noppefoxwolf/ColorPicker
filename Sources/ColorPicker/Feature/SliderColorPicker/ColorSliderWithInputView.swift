@@ -12,9 +12,9 @@ class ColorSliderWithInputView: UIControl {
     let slider = ColorSlider(frame: .null)
     let textField = ColorSliderTextField(frame: .null)
     let titleLabel = ColorSliderTitleLabel(frame: .null)
-    
+
     private var _color: HSVA = .noop
-    
+
     var color: HSVA {
         get { _color }
         set {
@@ -23,13 +23,13 @@ class ColorSliderWithInputView: UIControl {
             textField.value = slider.value
         }
     }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         let hStack = UIStackView(arrangedSubviews: [slider, textField])
         hStack.spacing = 14
-        
+
         let vStack = UIStackView(arrangedSubviews: [titleLabel, hStack])
         vStack.spacing = 6
         vStack.axis = .vertical
@@ -37,22 +37,28 @@ class ColorSliderWithInputView: UIControl {
         vStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         textField.snp.makeConstraints { make in
             make.width.equalTo(74)
         }
-        
-        slider.addAction(UIAction { [unowned self] _ in
-            self.color = slider.color
-            self.sendActions(for: [.valueChanged, .primaryActionTriggered])
-        }, for: .primaryActionTriggered)
-        
-        textField.addAction(UIAction { [unowned self] _ in
-            self.slider.value = self.textField.value
-            self.sendActions(for: [.valueChanged, .primaryActionTriggered])
-        }, for: .editingDidEnd)
+
+        slider.addAction(
+            UIAction { [unowned self] _ in
+                self.color = slider.color
+                self.sendActions(for: [.valueChanged, .primaryActionTriggered])
+            },
+            for: .primaryActionTriggered
+        )
+
+        textField.addAction(
+            UIAction { [unowned self] _ in
+                self.slider.value = self.textField.value
+                self.sendActions(for: [.valueChanged, .primaryActionTriggered])
+            },
+            for: .editingDidEnd
+        )
     }
-    
+
     required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

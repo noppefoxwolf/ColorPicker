@@ -13,21 +13,21 @@ class ScopeColorPickerWindow: UIWindow {
     let viewSize: Double = 156
     weak var delegate: ScopeColorPickerDelegate? = nil
     weak var dataSource: ScopeColorPickerDataSource? = nil
-    
+
     var initialLocation: CGPoint = .zero
     var offset: CGPoint = .zero
-    
+
     let isContinuePan: Bool
     let continuePanOffsetY: Double = -44
     weak var gestureRecognizer: UIGestureRecognizer? = nil
-    
+
     init(
         windowScene: UIWindowScene,
         gestureRecognizer: UIGestureRecognizer? = nil
     ) {
         isContinuePan = gestureRecognizer != nil
         super.init(windowScene: windowScene)
-        
+
         addSubview(reticleView)
         reticleView.snp.makeConstraints { make in
             // タップで出した時はpanではなくdragで移動するためtranslationを扱う
@@ -35,44 +35,44 @@ class ScopeColorPickerWindow: UIWindow {
             make.centerY.equalToSuperview()
             make.size.equalTo(viewSize)
         }
-        
+
         let gestureRecognizer: UIGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
         gestureRecognizer.addTarget(self, action: #selector(onChangedLocation(_:)))
         if !isContinuePan {
             addGestureRecognizer(gestureRecognizer)
         }
         self.gestureRecognizer = gestureRecognizer
-        
+
         isHidden = false
-        
+
         DispatchQueue.main.async { [weak self] in
             guard let self = self else { return }
             self.updateScopeContent(at: self.center)
         }
-        
+
         if isContinuePan {
             self.initialLocation = gestureRecognizer.location(in: self)
-            
+
             let offsetX = self.initialLocation.x - self.center.x
             let offsetY = self.initialLocation.y - self.center.y + continuePanOffsetY
             self.offset = CGPoint(x: offsetX, y: offsetY)
-            
+
             reticleView.isHidden = true
-            
+
             gestureRecognizer.state = .began
             onChangedLocation(gestureRecognizer)
         }
     }
-    
+
     public required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     public override func makeKey() {
         // workaround: KeyWindowにしたくない
         // https://stackoverflow.com/a/64758605/1131587
     }
-    
+
     @objc private func onChangedLocation(_ gesture: UIGestureRecognizer) {
         switch gesture.state {
         case .began:
@@ -88,7 +88,6 @@ class ScopeColorPickerWindow: UIWindow {
                 make.centerY.equalToSuperview().offset(translationY)
             }
 
-            
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true
             gestureRecognizer?.removeTarget(self, action: #selector(onChangedLocation))
@@ -97,18 +96,18 @@ class ScopeColorPickerWindow: UIWindow {
             break
         }
     }
-    
+
     override func layoutSubviews() {
         super.layoutSubviews()
         updateScopeContent(at: reticleView.center)
     }
-    
+
     func updateScopeContent(at location: CGPoint) {
         reticleView.render { context in
             dataSource?.colors(at: location, context: context)
         }
     }
-    
+
     // UIPanGestureRecognizerとUILongPressGestureRecognizerを受け入れるために自作のtranslationを使う
     private func translationInView(_ gesture: UIGestureRecognizer) -> CGPoint {
         let newLocation = gesture.location(in: self)

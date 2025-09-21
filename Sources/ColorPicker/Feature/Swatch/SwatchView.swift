@@ -9,7 +9,7 @@ class SwatchView: UIControl {
         case items
     }
     let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
-    
+
     private var _selectedColor: HSVA = .noop {
         didSet {
             /// 逐次実行だと重いので遅延させる
@@ -18,7 +18,7 @@ class SwatchView: UIControl {
             }
         }
     }
-    
+
     var selectedColor: HSVA {
         get { _selectedColor }
         set {
@@ -26,7 +26,7 @@ class SwatchView: UIControl {
             _selectedColor = newValue
         }
     }
-    
+
     let configuration: UICollectionViewCompositionalLayoutConfiguration = {
         let configuration = UICollectionViewCompositionalLayoutConfiguration()
         configuration.scrollDirection = .vertical
@@ -39,12 +39,12 @@ class SwatchView: UIControl {
                 heightDimension: .fractionalHeight(1)
             )
             let item = NSCollectionLayoutItem(layoutSize: itemSize)
-            
+
             let hGroupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1)
             )
-            
+
             let count: Int
             switch environment.traitCollection.horizontalSizeClass {
             case .regular:
@@ -53,28 +53,37 @@ class SwatchView: UIControl {
                 count = 5
             }
             let hGroup = NSCollectionLayoutGroup.horizontal(
-                layoutSize: hGroupSize, subitem: item, count: count)
+                layoutSize: hGroupSize,
+                subitem: item,
+                count: count
+            )
             //            hGroup.interItemSpacing = .flexible(16)
             let vGroupSize = NSCollectionLayoutSize(
                 widthDimension: .fractionalWidth(1),
                 heightDimension: .fractionalHeight(1)
             )
             let vGroup = NSCollectionLayoutGroup.vertical(
-                layoutSize: vGroupSize, subitem: hGroup, count: 2)
+                layoutSize: vGroupSize,
+                subitem: hGroup,
+                count: 2
+            )
             vGroup.interItemSpacing = .flexible(-4)
             let section = NSCollectionLayoutSection(group: vGroup)
             section.orthogonalScrollingBehavior = .groupPaging
-            section.visibleItemsInvalidationHandler = { [unowned self]
+            section.visibleItemsInvalidationHandler = {
+                [unowned self]
                 (visibleItems, point, environment: NSCollectionLayoutEnvironment) in
                 guard self.pageControl.interactionState == .none else { return }
-                self.pageControl.currentPage = Int(point.x / environment.container.contentSize.width)
+                self.pageControl.currentPage = Int(
+                    point.x / environment.container.contentSize.width
+                )
             }
             return section
         },
         configuration: configuration
     )
     lazy var collectionView = UICollectionView(frame: .null, collectionViewLayout: layout)
-    
+
     struct ColorCellConfiguration {
         let color: HSVA
         let isSelected: Bool
@@ -112,15 +121,15 @@ class SwatchView: UIControl {
             }
         }
     )
-    
+
     let pageControl: UIPageControl = .init(frame: .null)
     var snapshot = NSDiffableDataSourceSnapshot<Section, CellItem>()
     var longPressedItem: CellItem? = nil
     var onChanged: (([ColorItem]) -> Void) = { _ in }
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         backgroundColor = .clear
         collectionView.backgroundColor = .clear
         collectionView.allowsSelection = true
@@ -131,43 +140,49 @@ class SwatchView: UIControl {
         collectionView.dragInteractionEnabled = true
         // FIXME: ドラッグ時の影がクリップされてしまう
         // collectionView.clipsToBounds = false
-        
+
         pageControl.pageIndicatorTintColor = .systemGray
         pageControl.currentPageIndicatorTintColor = .label
         // hiddenするとレイアウトに影響が出るのでしない
         pageControl.hidesForSinglePage = false
-        
+
         let stackView = UIStackView(arrangedSubviews: [collectionView, pageControl])
         stackView.axis = .vertical
         addSubview(stackView)
         stackView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         collectionView.snp.makeConstraints { make in
             make.height.equalTo(76)
         }
         pageControl.snp.makeConstraints { make in
             make.height.equalTo(20)
         }
-        
-        pageControl.addAction(UIAction { [unowned self] action in
-            let pageControl = action.sender as! UIPageControl
-            self.scrollTo(page: pageControl.currentPage, animated: true)
-        }, for: .valueChanged)
-        
-        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(onLongPress(_:)))
+
+        pageControl.addAction(
+            UIAction { [unowned self] action in
+                let pageControl = action.sender as! UIPageControl
+                self.scrollTo(page: pageControl.currentPage, animated: true)
+            },
+            for: .valueChanged
+        )
+
+        let longPress = UILongPressGestureRecognizer(
+            target: self,
+            action: #selector(onLongPress(_:))
+        )
         collectionView.addGestureRecognizer(longPress)
-        
+
         snapshot.appendSections([.items])
-        
+
         becomeFirstResponder()
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     @objc func onLongPress(_ gesture: UILongPressGestureRecognizer) {
         guard gesture.state == .began else { return }
         let menu = UIMenuController.shared
@@ -178,17 +193,18 @@ class SwatchView: UIControl {
         menu.showMenu(from: cell, rect: cell.bounds)
         longPressedItem = dataSource.itemIdentifier(for: indexPath)
     }
-    
+
     override var canBecomeFirstResponder: Bool {
         true
     }
-    
+
     override func canPerformAction(_ action: Selector, withSender sender: Any?) -> Bool {
         [
             #selector(UIResponderStandardEditActions.delete)
-        ].contains(action)
+        ]
+        .contains(action)
     }
-    
+
     override func delete(_ sender: Any?) {
         if let longPressedItem = longPressedItem {
             snapshot.deleteItems([longPressedItem])
@@ -196,7 +212,7 @@ class SwatchView: UIControl {
             apply(snapshot)
         }
     }
-    
+
     func setColorItems(_ colorItems: [ColorItem]) {
         snapshot.deleteAllItems()
         snapshot.appendSections([.items])
@@ -204,19 +220,20 @@ class SwatchView: UIControl {
         snapshot.appendItems([.add], toSection: .items)
         apply(snapshot)
     }
-    
+
     var colorItems: [ColorItem] {
-        snapshot.itemIdentifiers(inSection: .items).compactMap({
-            guard case let .color(colorItem) = $0 else { return nil }
-            return colorItem
-        })
+        snapshot.itemIdentifiers(inSection: .items)
+            .compactMap({
+                guard case let .color(colorItem) = $0 else { return nil }
+                return colorItem
+            })
     }
-    
+
     private func apply(_ snapshot: NSDiffableDataSourceSnapshot<Section, CellItem>) {
         let itemCount = snapshot.numberOfItems(inSection: .items)
         pageControl.numberOfPages = Int(ceil(Double(itemCount) / 10.0))
         dataSource.apply(snapshot)
-        
+
         let colorItems = snapshot.itemIdentifiers.compactMap({ (cellItem) -> ColorItem? in
             switch cellItem {
             case .add:
@@ -227,7 +244,7 @@ class SwatchView: UIControl {
         })
         onChanged(colorItems)
     }
-    
+
     private func reconfigureCells() {
         snapshot.reconfigureItems(snapshot.itemIdentifiers)
         dataSource.apply(snapshot)
@@ -242,7 +259,7 @@ extension SwatchView: UICollectionViewDelegate {
             animated: animated
         )
     }
-    
+
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         guard let item = dataSource.itemIdentifier(for: indexPath) else { return }
         switch item {
@@ -251,9 +268,12 @@ extension SwatchView: UICollectionViewDelegate {
             reconfigureCells()
             sendActions(for: .primaryActionTriggered)
         case .add:
-            snapshot.insertItems([
-                .color(ColorItem(id: UUID(), color: selectedColor))
-            ], beforeItem: .add)
+            snapshot.insertItems(
+                [
+                    .color(ColorItem(id: UUID(), color: selectedColor))
+                ],
+                beforeItem: .add
+            )
             apply(snapshot)
         }
     }
@@ -261,7 +281,8 @@ extension SwatchView: UICollectionViewDelegate {
 
 extension SwatchView: UICollectionViewDragDelegate {
     func collectionView(
-        _ collectionView: UICollectionView, itemsForBeginning session: UIDragSession,
+        _ collectionView: UICollectionView,
+        itemsForBeginning session: UIDragSession,
         at indexPath: IndexPath
     ) -> [UIDragItem] {
         guard let itemIdentifier = dataSource.itemIdentifier(for: indexPath) else {
@@ -278,7 +299,8 @@ extension SwatchView: UICollectionViewDragDelegate {
     }
 
     func collectionView(
-        _ collectionView: UICollectionView, dragPreviewParametersForItemAt indexPath: IndexPath
+        _ collectionView: UICollectionView,
+        dragPreviewParametersForItemAt indexPath: IndexPath
     ) -> UIDragPreviewParameters? {
         guard let cell = collectionView.cellForItem(at: indexPath) as? ColorCell else {
             return nil
@@ -291,15 +313,17 @@ extension SwatchView: UICollectionViewDragDelegate {
 }
 
 extension SwatchView: UICollectionViewDropDelegate {
-    
+
     func collectionView(
-        _ collectionView: UICollectionView, dropSessionDidUpdate session: UIDropSession,
+        _ collectionView: UICollectionView,
+        dropSessionDidUpdate session: UIDropSession,
         withDestinationIndexPath destinationIndexPath: IndexPath?
     ) -> UICollectionViewDropProposal {
         if session.localDragSession != nil {
             if let destinationIndexPath = destinationIndexPath {
                 if let item = dataSource.itemIdentifier(for: destinationIndexPath),
-                   case .add = item {
+                    case .add = item
+                {
                     return UICollectionViewDropProposal(
                         operation: .cancel
                     )
@@ -343,15 +367,15 @@ extension SwatchView: UICollectionViewDropDelegate {
             }
             let sourceItem = snapshot.itemIdentifiers(inSection: .items)[sourceIndexPath.row]
             let destItem = snapshot.itemIdentifiers(inSection: .items)[destinationIndexPath.row]
-            
+
             if destinationIndexPath > sourceIndexPath {
                 snapshot.moveItem(sourceItem, afterItem: destItem)
             } else {
                 snapshot.moveItem(sourceItem, beforeItem: destItem)
             }
-            
+
             apply(snapshot)
-            
+
             coordinator.items.forEach { item in
                 coordinator.drop(item.dragItem, toItemAt: destinationIndexPath)
             }

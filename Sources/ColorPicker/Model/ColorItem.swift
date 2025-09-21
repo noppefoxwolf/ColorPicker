@@ -5,7 +5,7 @@ public struct ColorItem: Hashable {
         self.id = id
         self.color = color
     }
-    
+
     public var id: UUID
     public var color: HSVA
 }

@@ -1,9 +1,9 @@
 import UIKit
 
-class ClassicColorView: UIView {    
+class ClassicColorView: UIView {
     @Invalidating(.display)
     var hue: Double = 0
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
@@ -11,11 +11,11 @@ class ClassicColorView: UIView {
             make.height.equalTo(self.snp.width).multipliedBy(3.0 / 4.0)
         }
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError()
     }
-    
+
     func color(at location: CGPoint) -> HSVA {
         let saturation = location.x / bounds.width
         let brightness = 1.0 - (location.y / bounds.height)
@@ -23,23 +23,23 @@ class ClassicColorView: UIView {
         let clampedBrightness = max(min(brightness, 1), 0)
         return HSVA(hsv: HSV(h: hue, s: clampedSaturation, v: clampedBrightness), a: 1)
     }
-    
+
     func location(by color: HSVA) -> CGPoint? {
         let hsb = color.hsv
         return CGPoint(x: hsb.s * bounds.width, y: (1.0 - hsb.v) * bounds.height)
     }
-    
+
     func locationMultiply(by color: HSVA) -> CGSize {
         let hsb = color.hsv
         return CGSize(width: hsb.s, height: (1.0 - hsb.v))
     }
-    
+
     override func draw(_ rect: CGRect) {
         let context = UIGraphicsGetCurrentContext()!
         let maskPath = UIBezierPath(roundedRect: rect, cornerRadius: 8).cgPath
         context.addPath(maskPath)
         context.clip()
-        
+
         let grayGradient = CGGradient(
             colorsSpace: CGColorSpaceCreateDeviceRGB(),
             colors: [UIColor.white.cgColor, UIColor.black.cgColor] as CFArray,
@@ -66,4 +66,3 @@ class ClassicColorView: UIView {
         )
     }
 }
-

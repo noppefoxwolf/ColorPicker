@@ -7,7 +7,7 @@ class ColorSliderTitleLabel: UILabel {
         adjustsFontForContentSizeCategory = true
         textColor = .secondaryLabel
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

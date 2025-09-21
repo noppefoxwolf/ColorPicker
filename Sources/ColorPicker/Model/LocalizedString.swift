@@ -9,7 +9,7 @@ enum LocalizedString {
     static func localize(_ key: String) -> String {
         Bundle.module.localizedString(forKey: key, value: nil, table: nil)
     }
-    
+
     static var color: String { uikitLocalize("Color") }
     static var grid: String { uikitLocalize("Grid") }
     static var sliders: String { uikitLocalize("Sliders") }

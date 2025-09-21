@@ -3,11 +3,11 @@ import UIKit
 public class AlphaColorPicker: UIControl {
     public let id: String = #function
     public var title: String = ""
-    
+
     let alphaSlider = ColorSliderWithInputView()
-    
+
     private var _color: HSVA = .noop
-    
+
     var color: HSVA {
         get { _color }
         set {
@@ -16,26 +16,26 @@ public class AlphaColorPicker: UIControl {
             alphaSlider.color = newValue
         }
     }
-    
+
     public var continuously: Bool {
         alphaSlider.slider.panGestureRecognizer.state == .changed
     }
-    
+
     public override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         alphaSlider.slider.configuration = .alpha
         alphaSlider.textField.configuration = .percent
         alphaSlider.titleLabel.text = LocalizedString.opacity
-        
+
         let vStack = UIStackView(arrangedSubviews: [alphaSlider])
         vStack.axis = .vertical
         addSubview(vStack)
-        
+
         vStack.snp.makeConstraints { make in
             make.edges.equalToSuperview()
         }
-        
+
         let valueSyncAction = UIAction { [unowned self] action in
             let slider = (action.sender as! ColorSliderWithInputView).slider
             self.color = slider.color
@@ -43,7 +43,7 @@ public class AlphaColorPicker: UIControl {
         }
         alphaSlider.addAction(valueSyncAction, for: .primaryActionTriggered)
     }
-    
+
     @available(*, unavailable)
     required init?(coder: NSCoder) {
         fatalError()
