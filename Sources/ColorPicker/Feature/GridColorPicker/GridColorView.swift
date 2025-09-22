@@ -12,9 +12,10 @@ class GridColorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         self.backgroundColor = .clear
-        self.snp.makeConstraints { make in
-            make.height.equalTo(self.snp.width).multipliedBy(10.0 / 12.0)
-        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalTo: widthAnchor, multiplier: 10.0 / 12.0)
+        ])
     }
 
     required init?(coder: NSCoder) {

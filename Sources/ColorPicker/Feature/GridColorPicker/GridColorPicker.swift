@@ -18,6 +18,10 @@ public struct GridColorPicker: ColorPicker {
 public final class GridColorPickerView: UIControl, ColorPickerView {
     let gridColorView: GridColorView = .init(frame: .null)
     let markerView: GridColorMarkerView = .init(frame: .null)
+    private var markerLeftConstraint: NSLayoutConstraint? = nil
+    private var markerTopConstraint: NSLayoutConstraint? = nil
+    private var markerWidthConstraint: NSLayoutConstraint? = nil
+    private var markerHeightConstraint: NSLayoutConstraint? = nil
 
     @Invalidating(.constraints)
     private var _color: HSVA = .noop
@@ -39,15 +43,25 @@ public final class GridColorPickerView: UIControl, ColorPickerView {
     public override init(frame: CGRect) {
         super.init(frame: frame)
         addSubview(gridColorView)
-        gridColorView.snp.makeConstraints { make in
-            make.edges.equalToSuperview().inset(1.5)
-        }
+        gridColorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            gridColorView.topAnchor.constraint(equalTo: topAnchor, constant: 1.5),
+            gridColorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 1.5),
+            gridColorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1.5),
+            gridColorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1.5)
+        ])
 
         gridColorView.addSubview(markerView)
-        markerView.snp.makeConstraints { make in
-            make.left.top.equalTo(0)
-            make.size.equalTo(0)
-        }
+        markerView.translatesAutoresizingMaskIntoConstraints = false
+        let left = markerView.leftAnchor.constraint(equalTo: gridColorView.leftAnchor, constant: 0)
+        let top = markerView.topAnchor.constraint(equalTo: gridColorView.topAnchor, constant: 0)
+        let width = markerView.widthAnchor.constraint(equalToConstant: 0)
+        let height = markerView.heightAnchor.constraint(equalToConstant: 0)
+        NSLayoutConstraint.activate([left, top, width, height])
+        markerLeftConstraint = left
+        markerTopConstraint = top
+        markerWidthConstraint = width
+        markerHeightConstraint = height
 
         panGestureRecognizer.addTarget(self, action: #selector(onPan))
         gridColorView.addGestureRecognizer(panGestureRecognizer)
@@ -91,11 +105,10 @@ public final class GridColorPickerView: UIControl, ColorPickerView {
                 height: to.size.height + lineWidth
             )
 
-            markerView.snp.updateConstraints { make in
-                make.left.equalTo(newRect.origin.x)
-                make.top.equalTo(newRect.origin.y)
-                make.size.equalTo(newRect.size)
-            }
+            markerLeftConstraint?.constant = newRect.origin.x
+            markerTopConstraint?.constant = newRect.origin.y
+            markerWidthConstraint?.constant = newRect.size.width
+            markerHeightConstraint?.constant = newRect.size.height
             markerView.setNeedsDisplay()
             markerView.isHidden = false
         } else {

@@ -46,9 +46,13 @@ public final class RGBHexSliderColorPickerControl: UIControl, ColorPickerView {
         vStack.axis = .vertical
         vStack.spacing = 32
         addSubview(vStack)
-        vStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
         rgbSlidersView.addAction(
             UIAction { [unowned self] _ in

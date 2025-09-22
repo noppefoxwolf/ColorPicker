@@ -7,9 +7,10 @@ class ClassicColorView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
-        self.snp.makeConstraints { make in
-            make.height.equalTo(self.snp.width).multipliedBy(3.0 / 4.0)
-        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalTo: widthAnchor, multiplier: 3.0 / 4.0)
+        ])
     }
 
     required init?(coder: NSCoder) {

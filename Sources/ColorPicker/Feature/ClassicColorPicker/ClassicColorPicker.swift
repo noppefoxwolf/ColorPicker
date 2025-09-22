@@ -22,6 +22,9 @@ public final class ClassicColorPickerControl: UIControl, ColorPickerView {
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
     let thumbView: ThumbView = .init(frame: .null)
 
+    private var thumbCenterXConstraint: NSLayoutConstraint? = nil
+    private var thumbCenterYConstraint: NSLayoutConstraint? = nil
+
     @Invalidating(.constraints)
     private var _color: HSVA = .noop
 
@@ -55,15 +58,33 @@ public final class ClassicColorPickerControl: UIControl, ColorPickerView {
         let vStack = UIStackView(arrangedSubviews: [colorView, hueSlider])
         vStack.axis = .vertical
         addSubview(vStack)
-        vStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         colorView.addSubview(thumbView)
-        thumbView.snp.makeConstraints { make in
-            make.centerX.equalTo(colorView.snp.right).multipliedBy(1.0)
-            make.centerY.equalTo(colorView.snp.bottom).multipliedBy(1.0)
-            make.size.equalTo(36)
-        }
+        thumbView.translatesAutoresizingMaskIntoConstraints = false
+        // Initial constraints: centerX = right * 1.0, centerY = bottom * 1.0, size = 36
+        let cX = NSLayoutConstraint(
+            item: thumbView, attribute: .centerX,
+            relatedBy: .equal,
+            toItem: colorView, attribute: .right,
+            multiplier: 1.0, constant: 0
+        )
+        let cY = NSLayoutConstraint(
+            item: thumbView, attribute: .centerY,
+            relatedBy: .equal,
+            toItem: colorView, attribute: .bottom,
+            multiplier: 1.0, constant: 0
+        )
+        let w = thumbView.widthAnchor.constraint(equalToConstant: 36)
+        let h = thumbView.heightAnchor.constraint(equalToConstant: 36)
+        NSLayoutConstraint.activate([cX, cY, w, h])
+        thumbCenterXConstraint = cX
+        thumbCenterYConstraint = cY
 
         hueSlider.addAction(
             UIAction { [unowned self] _ in
@@ -105,10 +126,23 @@ public final class ClassicColorPickerControl: UIControl, ColorPickerView {
         let multiply = colorView.locationMultiply(by: color)
         let multiplyX = max(multiply.width, .leastNonzeroMagnitude)
         let multiplyY = max(multiply.height, .leastNonzeroMagnitude)
-        thumbView.snp.remakeConstraints { make in
-            make.centerX.equalTo(colorView.snp.right).multipliedBy(multiplyX)
-            make.centerY.equalTo(colorView.snp.bottom).multipliedBy(multiplyY)
-            make.size.equalTo(36)
-        }
+        // Update constraints with new multipliers
+        if let oldCX = thumbCenterXConstraint { oldCX.isActive = false }
+        if let oldCY = thumbCenterYConstraint { oldCY.isActive = false }
+        let newCX = NSLayoutConstraint(
+            item: thumbView, attribute: .centerX,
+            relatedBy: .equal,
+            toItem: colorView, attribute: .right,
+            multiplier: multiplyX, constant: 0
+        )
+        let newCY = NSLayoutConstraint(
+            item: thumbView, attribute: .centerY,
+            relatedBy: .equal,
+            toItem: colorView, attribute: .bottom,
+            multiplier: multiplyY, constant: 0
+        )
+        NSLayoutConstraint.activate([newCX, newCY])
+        thumbCenterXConstraint = newCX
+        thumbCenterYConstraint = newCY
     }
 }

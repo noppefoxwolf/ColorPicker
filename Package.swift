@@ -14,14 +14,11 @@ let package = Package(
         )
     ],
     dependencies: [
-        .package(url: "https://github.com/SnapKit/SnapKit", from: "5.6.0")
     ],
     targets: [
         .target(
             name: "ColorPicker",
-            dependencies: [
-                "SnapKit"
-            ]
+            dependencies: []
         ),
         .testTarget(
             name: "ColorPickerTests",

@@ -14,6 +14,9 @@ class ScopeColorPickerWindow: UIWindow {
     weak var delegate: ScopeColorPickerDelegate? = nil
     weak var dataSource: ScopeColorPickerDataSource? = nil
 
+    private var reticleCenterXConstraint: NSLayoutConstraint? = nil
+    private var reticleCenterYConstraint: NSLayoutConstraint? = nil
+
     var initialLocation: CGPoint = .zero
     var offset: CGPoint = .zero
 
@@ -29,12 +32,17 @@ class ScopeColorPickerWindow: UIWindow {
         super.init(windowScene: windowScene)
 
         addSubview(reticleView)
-        reticleView.snp.makeConstraints { make in
-            // タップで出した時はpanではなくdragで移動するためtranslationを扱う
-            make.centerX.equalToSuperview()
-            make.centerY.equalToSuperview()
-            make.size.equalTo(viewSize)
-        }
+        reticleView.translatesAutoresizingMaskIntoConstraints = false
+        let cX = reticleView.centerXAnchor.constraint(equalTo: centerXAnchor)
+        let cY = reticleView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        NSLayoutConstraint.activate([
+            cX,
+            cY,
+            reticleView.widthAnchor.constraint(equalToConstant: viewSize),
+            reticleView.heightAnchor.constraint(equalToConstant: viewSize)
+        ])
+        reticleCenterXConstraint = cX
+        reticleCenterYConstraint = cY
 
         let gestureRecognizer: UIGestureRecognizer = gestureRecognizer ?? UIPanGestureRecognizer()
         gestureRecognizer.addTarget(self, action: #selector(onChangedLocation(_:)))
@@ -83,10 +91,8 @@ class ScopeColorPickerWindow: UIWindow {
             let translation = translationInView(gesture)
             let translationX = translation.x + offset.x
             let translationY = translation.y + offset.y
-            reticleView.snp.updateConstraints { make in
-                make.centerX.equalToSuperview().offset(translationX)
-                make.centerY.equalToSuperview().offset(translationY)
-            }
+            reticleCenterXConstraint?.constant = translationX
+            reticleCenterYConstraint?.constant = translationY
 
         case .ended, .failed, .cancelled:
             reticleView.isHidden = true

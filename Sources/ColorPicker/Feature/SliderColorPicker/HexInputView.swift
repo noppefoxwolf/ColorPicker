@@ -31,13 +31,18 @@ class HexInputView: UIControl {
 
         let hStack = UIStackView(arrangedSubviews: [UIView(), textField])
         addSubview(hStack)
-        hStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hStack.topAnchor.constraint(equalTo: topAnchor),
+            hStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            hStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            hStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
-        textField.snp.makeConstraints { make in
-            make.width.equalTo(96)
-        }
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.widthAnchor.constraint(equalToConstant: 96)
+        ])
 
         textField.addAction(
             UIAction { [unowned self] _ in

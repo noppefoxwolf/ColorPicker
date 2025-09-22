@@ -65,10 +65,13 @@ public final class RGBColorSliderColorPickerControl: UIControl, ColorPickerView 
         vStack.axis = .vertical
         vStack.spacing = 16
         addSubview(vStack)
-
-        vStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
         let valueSyncAction = UIAction { [unowned self] action in
             let slider = (action.sender as! ColorSliderWithInputView).slider

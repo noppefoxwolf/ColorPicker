@@ -8,10 +8,13 @@ class ColorCell: UICollectionViewCell {
         super.init(frame: frame)
         backgroundColor = .clear
         contentView.addSubview(colorView)
-        colorView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(36)
-        }
+        colorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            colorView.widthAnchor.constraint(equalToConstant: 36),
+            colorView.heightAnchor.constraint(equalToConstant: 36)
+        ])
     }
 
     required init?(coder: NSCoder) {

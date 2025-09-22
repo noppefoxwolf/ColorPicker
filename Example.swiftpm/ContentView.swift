@@ -1,6 +1,5 @@
 import ColorPicker
 import Combine
-import SnapKit
 import SwiftUI
 
 struct ContentView: UIViewControllerRepresentable {
@@ -94,12 +93,16 @@ class ContentViewController: UIViewController {
         ])
         stackView.axis = .vertical
         view.addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-        }
-        imageView.snp.makeConstraints { make in
-            make.size.equalTo(260)
-        }
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.widthAnchor.constraint(equalToConstant: 260),
+            imageView.heightAnchor.constraint(equalToConstant: 260)
+        ])
     }
 
     func presentColorPicker(_ color: UIColor) {

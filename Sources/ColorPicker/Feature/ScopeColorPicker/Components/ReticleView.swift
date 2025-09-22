@@ -12,9 +12,13 @@ class ReticleView: UIView {
         super.init(frame: frame)
 
         addSubview(internalReticleView)
-        internalReticleView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        internalReticleView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            internalReticleView.topAnchor.constraint(equalTo: topAnchor),
+            internalReticleView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            internalReticleView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            internalReticleView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
 
     required init?(coder: NSCoder) {
@@ -99,9 +103,23 @@ class InternalReticleView: UIView {
         addSubview(imageView)
         addSubview(gridView)
         addSubview(outlineView)
-        imageView.snp.makeConstraints({ $0.edges.equalToSuperview().inset(15) })
-        gridView.snp.makeConstraints({ $0.edges.equalToSuperview().inset(15) })
-        outlineView.snp.makeConstraints({ $0.edges.equalToSuperview() })
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        gridView.translatesAutoresizingMaskIntoConstraints = false
+        outlineView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            imageView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            imageView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            imageView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
+            gridView.topAnchor.constraint(equalTo: topAnchor, constant: 15),
+            gridView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 15),
+            gridView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -15),
+            gridView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -15),
+            outlineView.topAnchor.constraint(equalTo: topAnchor),
+            outlineView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            outlineView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            outlineView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
     }
 
     required init?(coder: NSCoder) {

@@ -10,9 +10,10 @@ class HairlineView: UIVisualEffectView {
         )
         super.init(effect: effect)
         contentView.backgroundColor = .systemBackground
-        self.snp.makeConstraints { make in
-            make.height.equalTo(1)
-        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 1)
+        ])
     }
 
     required init?(coder: NSCoder) {
