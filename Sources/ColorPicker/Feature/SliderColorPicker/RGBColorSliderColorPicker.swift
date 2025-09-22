@@ -1,8 +1,25 @@
 import UIKit
 
-public class RGBColorSliderColorPicker: UIControl, ColorPicker {
+public struct RGBColorSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
+    
+    public init() {}
+    
+    public typealias ColorPickerControl = RGBColorSliderColorPickerControl
+    
+    public func makeUIControl(_ color: HSVA) -> ColorPickerControl {
+        RGBColorSliderColorPickerControl(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: ColorPickerControl, color: HSVA) {
+        uiView.color = color
+    }
+}
+
+public final class RGBColorSliderColorPickerControl: UIControl, ColorPickerView {
+    let id: String = #function
+    let title: String = LocalizedString.rgb
 
     let redSlider = ColorSliderWithInputView()
     let greenSlider = ColorSliderWithInputView()

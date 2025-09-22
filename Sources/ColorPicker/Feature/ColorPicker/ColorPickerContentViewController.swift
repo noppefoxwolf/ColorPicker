@@ -25,6 +25,8 @@ class ColorPickerContentViewController: UIViewController {
     let tabStackView: UIStackView = UIStackView()
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
+    
+    var colorPickers: [String : (colorPicker: any ColorPicker, view: UIControl & ColorPickerView)] = [:]
 
     private var _color: HSVA = .noop {
         didSet {
@@ -41,7 +43,7 @@ class ColorPickerContentViewController: UIViewController {
     }
 
     var continuously: Bool {
-        configuration.colorPickers.map(\.continuously).contains(true)
+        colorPickers.values.map(\.view.continuously).contains(true)
     }
 
     var colorItems: [ColorItem] {
@@ -119,6 +121,8 @@ class ColorPickerContentViewController: UIViewController {
         tabStackView.addArrangedSubview(colorPickersStackView)
 
         for colorPicker in configuration.colorPickers {
+            let control = colorPicker.makeUIControl(.noop)
+            
             let segmentAction = UIAction(
                 title: colorPicker.title,
                 handler: { [unowned self] action in
@@ -132,8 +136,8 @@ class ColorPickerContentViewController: UIViewController {
             )
 
             let colorPickerAction = UIAction {
-                [unowned self, unowned colorPicker, unowned alphaColorPicker] _ in
-                var newColor = colorPicker.color
+                [unowned self, unowned control, unowned alphaColorPicker] _ in
+                var newColor = control.color
                 newColor.a = alphaColorPicker.color.a
                 self.color = newColor
                 self.delegate?
@@ -143,7 +147,9 @@ class ColorPickerContentViewController: UIViewController {
                         continuously: self.continuously
                     )
             }
-            colorPicker.addAction(colorPickerAction, for: .primaryActionTriggered)
+            control.addAction(colorPickerAction, for: .primaryActionTriggered)
+            
+            colorPickers[colorPicker.id] = (colorPicker, control)
         }
 
         alphaColorPicker.addAction(
@@ -211,21 +217,29 @@ class ColorPickerContentViewController: UIViewController {
 
     func updateCurrentColorPicker() {
         let index = segmentControl.selectedSegmentIndex
-        colorPickersStackView
-            .arrangedSubviews
-            .filter({ ($0 is ColorPicker) })
-            .forEach({ $0.removeFromSuperview() })
-        let colorPicker = configuration.colorPickers[index]
+        guard configuration.colorPickers.indices.contains(index) else {
+            return
+        }
+        let colorPickerID = configuration.colorPickers[index].id
+        colorPickers.values.forEach({ $0.1.removeFromSuperview() })
+        let colorPicker = colorPickers[colorPickerID]!.view
         colorPickersStackView.insertArrangedSubview(
             colorPicker,
             at: 0
         )
-        UserDefaults.standard.latestColorPickerID = colorPicker.id
+        UserDefaults.standard.latestColorPickerID = colorPickerID
     }
 
     func onUpdate(_ color: HSVA) {
         swatchAndPreviewView.color = color
         alphaColorPicker.color = color
-        configuration.colorPickers.forEach({ $0.color = color })
+        for (colorPicker, view) in colorPickers.values {
+            update(colorPicker: colorPicker, view: view, color: color)
+        }
+    }
+    
+    func update<T: ColorPicker>(colorPicker: T, view: UIView, color: HSVA) {
+        guard let control = view as? T.ColorPickerControl else { return }
+        colorPicker.updateUIControl(control, color: color)
     }
 }

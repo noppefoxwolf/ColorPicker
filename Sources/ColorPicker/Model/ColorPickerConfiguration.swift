@@ -1,13 +1,14 @@
 import UIKit
 
-public class ColorPickerConfiguration {
+public struct ColorPickerConfiguration {
     public static var `default`: ColorPickerConfiguration { ColorPickerConfiguration() }
-
-    public var colorPickers: [UIControl & ColorPicker] = [
-        GridColorPicker(frame: .null),
-        ClassicColorPicker(frame: .null),
-        RGBHexSliderColorPicker(frame: .null),
-        HSBColorSliderColorPicker(frame: .null),
+    
+    public var colorPickers: [any ColorPicker] = [
+        RGBColorSliderColorPicker(),
+        GridColorPicker(),
+        ClassicColorPicker(),
+        RGBHexSliderColorPicker(),
+        HSBColorSliderColorPicker(),
     ]
 
     public var initialColorItems: [ColorItem]? = nil

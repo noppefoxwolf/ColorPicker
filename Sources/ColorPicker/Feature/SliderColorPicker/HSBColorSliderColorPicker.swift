@@ -1,9 +1,23 @@
 import UIKit
 
-public class HSBColorSliderColorPicker: UIControl, ColorPicker {
+public struct HSBColorSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.hsb
+    
+    public init() {}
+    
+    public typealias ColorPickerView = HSBColorSliderColorPickerControl
+    
+    public func makeUIControl(_ color: HSVA) -> ColorPickerView {
+        ColorPickerView(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: ColorPickerView, color: HSVA) {
+        uiView.color = color
+    }
+}
 
+public class HSBColorSliderColorPickerControl: UIControl, ColorPickerView {
     let hueSlider = ColorSliderWithInputView()
     let saturationSlider = ColorSliderWithInputView()
     let brightnessSlider = ColorSliderWithInputView()

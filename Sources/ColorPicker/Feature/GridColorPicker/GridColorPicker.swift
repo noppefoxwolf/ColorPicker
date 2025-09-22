@@ -1,9 +1,21 @@
 import UIKit
 
-public class GridColorPicker: UIControl, ColorPicker {
+public struct GridColorPicker: ColorPicker {
     public let id: String = #function
-    public var title: String = LocalizedString.grid
+    public let title: String = LocalizedString.grid
+    
+    public init() {}
+    
+    public func makeUIControl(_ color: HSVA) -> GridColorPickerView {
+        GridColorPickerView(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: GridColorPickerView, color: HSVA) {
+        uiView.color = color
+    }
+}
 
+public class GridColorPickerView: UIControl, ColorPickerView {
     let gridColorView: GridColorView = .init(frame: .null)
     let markerView: GridColorMarkerView = .init(frame: .null)
 

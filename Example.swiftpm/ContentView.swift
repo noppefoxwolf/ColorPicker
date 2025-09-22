@@ -105,7 +105,7 @@ class ContentViewController: UIViewController {
     func presentColorPicker(_ color: UIColor) {
         let vc = ColorPickerViewController()
         vc.supportsAlpha = true
-        let configuration = ColorPickerConfiguration.default
+        var configuration = ColorPickerConfiguration.default
         configuration.initialColorItems = [
             .init(id: UUID(), color: HSVA(UIColor(red: 1, green: 0, blue: 0, alpha: 1))),
             .init(id: UUID(), color: HSVA(UIColor(red: 0, green: 1, blue: 0, alpha: 1))),
