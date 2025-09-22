@@ -1,12 +1,26 @@
 import UIKit
 
-/// RGBHSBHextSliderColorPicker
-public class RGBHSBHextSliderColorPicker: UIControl, ColorPicker {
+public struct RGBHSBHextSliderColorPicker: ColorPicker {
     public let id: String = #function
-    public var title: String = LocalizedString.sliders
+    public let title: String = LocalizedString.sliders
+    
+    public init() {}
+    
+    public typealias ColorPickerControl = RGBHSBHextSliderColorPickerControl
+    
+    public func makeUIControl(_ color: HSVA) -> ColorPickerControl {
+        RGBHSBHextSliderColorPickerControl(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: ColorPickerControl, color: HSVA) {
+        uiView.color = color
+    }
+}
 
-    let rgbSlidersView = RGBColorSliderColorPicker(frame: .null)
-    let hsbSlidersView = HSBColorSliderColorPicker(frame: .null)
+/// RGBHSBHextSliderColorPicker
+public class RGBHSBHextSliderColorPickerControl: UIControl, ColorPickerView {
+    let rgbSlidersView = RGBColorSliderColorPickerControl(frame: .null)
+    let hsbSlidersView = HSBColorSliderColorPickerControl(frame: .null)
     let hexInputView = HexInputView(frame: .null)
 
     private var _color: HSVA = .noop

@@ -1,7 +1,7 @@
 import UIKit
 
 class SwatchView: UIControl {
-    enum CellItem: Hashable {
+    enum CellItem: Hashable, Sendable {
         case color(ColorItem)
         case add
     }

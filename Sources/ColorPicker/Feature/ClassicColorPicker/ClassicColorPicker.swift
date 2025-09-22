@@ -1,9 +1,23 @@
 import UIKit
 
-public class ClassicColorPicker: UIControl, ColorPicker {
+public struct ClassicColorPicker: ColorPicker {
     public let id: String = #function
-    public var title: String = LocalizedString.classic
+    public let title: String = LocalizedString.classic
+    
+    public init() {}
+    
+    public typealias ColorPickerControl = ClassicColorPickerControl
+    
+    public func makeUIControl(_ color: HSVA) -> ColorPickerControl {
+        ClassicColorPickerControl(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: ColorPickerControl, color: HSVA) {
+        uiView.color = color
+    }
+}
 
+public class ClassicColorPickerControl: UIControl, ColorPickerView {
     let colorView: ClassicColorView = .init(frame: .null)
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
     let thumbView: ThumbView = .init(frame: .null)

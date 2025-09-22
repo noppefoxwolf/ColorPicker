@@ -1,10 +1,24 @@
 import UIKit
 
-public class RGBHexSliderColorPicker: UIControl, ColorPicker {
+public struct RGBHexSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
+    
+    public init() {}
+    
+    public typealias ColorPickerView = RGBHexSliderColorPickerControl
+    
+    public func makeUIControl(_ color: HSVA) -> ColorPickerView {
+        RGBHexSliderColorPickerControl(frame: .null)
+    }
+    
+    public func updateUIControl(_ uiView: ColorPickerView, color: HSVA) {
+        uiView.color = color
+    }
+}
 
-    let rgbSlidersView = RGBColorSliderColorPicker(frame: .null)
+public class RGBHexSliderColorPickerControl: UIControl, ColorPickerView {
+    let rgbSlidersView = RGBColorSliderColorPickerControl(frame: .null)
     let hexInputView = HexInputView(frame: .null)
 
     private var _color: HSVA = .noop

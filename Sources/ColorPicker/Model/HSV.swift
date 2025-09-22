@@ -1,6 +1,6 @@
 import UIKit
 
-public struct HSV: Equatable, Hashable {
+public struct HSV: Equatable, Hashable, Sendable {
     var h, s, v: Double
 }
 
@@ -14,7 +14,7 @@ extension HSV {
     }
 }
 
-public struct HSVA: Equatable, Hashable {
+public struct HSVA: Equatable, Hashable, Sendable {
     var hsv: HSV
     var a: Double
 }
