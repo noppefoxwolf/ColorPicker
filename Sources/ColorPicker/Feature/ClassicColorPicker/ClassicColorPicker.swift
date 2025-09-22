@@ -17,7 +17,7 @@ public struct ClassicColorPicker: ColorPicker {
     }
 }
 
-public class ClassicColorPickerControl: UIControl, ColorPickerView {
+public final class ClassicColorPickerControl: UIControl, ColorPickerView {
     let colorView: ClassicColorView = .init(frame: .null)
     let hueSlider: ColorSliderWithInputView = .init(frame: .null)
     let thumbView: ThumbView = .init(frame: .null)
