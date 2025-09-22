@@ -13,8 +13,6 @@ let package = Package(
             targets: ["ColorPicker"]
         )
     ],
-    dependencies: [
-    ],
     targets: [
         .target(
             name: "ColorPicker",
