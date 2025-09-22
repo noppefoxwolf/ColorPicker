@@ -5,7 +5,7 @@ class SwatchView: UIControl {
         case color(ColorItem)
         case add
     }
-    enum Section {
+    enum Section: Sendable {
         case items
     }
     
