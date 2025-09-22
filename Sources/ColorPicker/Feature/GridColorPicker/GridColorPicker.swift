@@ -15,7 +15,7 @@ public struct GridColorPicker: ColorPicker {
     }
 }
 
-public class GridColorPickerView: UIControl, ColorPickerView {
+public final class GridColorPickerView: UIControl, ColorPickerView {
     let gridColorView: GridColorView = .init(frame: .null)
     let markerView: GridColorMarkerView = .init(frame: .null)
 

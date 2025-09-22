@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 public protocol ColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewController(
         _ viewController: ColorPickerViewController,
@@ -9,17 +10,19 @@ public protocol ColorPickerViewControllerDelegate: AnyObject {
     func colorPickerViewControllerDidFinish(_ viewController: ColorPickerViewController)
 }
 
+@MainActor
 public protocol ColorPickerViewControllerSwatchDelegate: AnyObject {
     func colorPickerViewControllerSwatchDidChanged(_ viewController: ColorPickerViewController)
 }
 
+@MainActor
 public protocol ColorPickerViewControllerActionDelegate: AnyObject {
     func colorPickerViewControllerDidSelectScreenColorPicker(
         _ viewController: ColorPickerViewController
     )
 }
 
-public class ColorPickerViewController: UINavigationController {
+public final class ColorPickerViewController: UINavigationController {
     public init() {
         let vc = ColorPickerContentViewController()
         super.init(rootViewController: vc)

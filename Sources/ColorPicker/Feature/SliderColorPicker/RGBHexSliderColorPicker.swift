@@ -17,7 +17,7 @@ public struct RGBHexSliderColorPicker: ColorPicker {
     }
 }
 
-public class RGBHexSliderColorPickerControl: UIControl, ColorPickerView {
+public final class RGBHexSliderColorPickerControl: UIControl, ColorPickerView {
     let rgbSlidersView = RGBColorSliderColorPickerControl(frame: .null)
     let hexInputView = HexInputView(frame: .null)
 

@@ -17,7 +17,7 @@ public struct HSBColorSliderColorPicker: ColorPicker {
     }
 }
 
-public class HSBColorSliderColorPickerControl: UIControl, ColorPickerView {
+public final class HSBColorSliderColorPickerControl: UIControl, ColorPickerView {
     let hueSlider = ColorSliderWithInputView()
     let saturationSlider = ColorSliderWithInputView()
     let brightnessSlider = ColorSliderWithInputView()
