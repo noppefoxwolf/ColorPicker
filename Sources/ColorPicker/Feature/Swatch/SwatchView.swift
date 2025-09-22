@@ -399,7 +399,6 @@ extension SwatchView: @MainActor UIEditMenuInteractionDelegate {
         let location = interaction.location(in: collectionView)
         guard let indexPath = collectionView.indexPathForItem(at: location) else { return nil }
         guard dataSource.itemIdentifier(for: indexPath) != .add else { return nil }
-        guard let cell = collectionView.cellForItem(at: indexPath) else { return nil }
 
         // Remember which item was long-pressed for the Delete action
         let item = dataSource.itemIdentifier(for: indexPath)
