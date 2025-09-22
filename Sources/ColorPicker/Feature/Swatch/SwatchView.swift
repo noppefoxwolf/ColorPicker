@@ -378,7 +378,7 @@ extension SwatchView: UICollectionViewDropDelegate {
 
             if destinationIndexPath > sourceIndexPath {
                 snapshot.moveItem(sourceItem, afterItem: destItem)
-            } else {
+            } else if destinationIndexPath < sourceIndexPath {
                 snapshot.moveItem(sourceItem, beforeItem: destItem)
             }
 
