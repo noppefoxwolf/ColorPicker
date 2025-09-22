@@ -149,16 +149,20 @@ class SwatchView: UIControl {
         let stackView = UIStackView(arrangedSubviews: [collectionView, pageControl])
         stackView.axis = .vertical
         addSubview(stackView)
-        stackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            stackView.topAnchor.constraint(equalTo: topAnchor),
+            stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
-        collectionView.snp.makeConstraints { make in
-            make.height.equalTo(76)
-        }
-        pageControl.snp.makeConstraints { make in
-            make.height.equalTo(20)
-        }
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        pageControl.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            collectionView.heightAnchor.constraint(equalToConstant: 76),
+            pageControl.heightAnchor.constraint(equalToConstant: 20)
+        ])
 
         pageControl.addAction(
             UIAction { [unowned self] action in

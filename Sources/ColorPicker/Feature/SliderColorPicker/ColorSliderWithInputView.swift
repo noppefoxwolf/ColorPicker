@@ -34,13 +34,18 @@ class ColorSliderWithInputView: UIControl {
         vStack.spacing = 6
         vStack.axis = .vertical
         addSubview(vStack)
-        vStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        vStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            vStack.topAnchor.constraint(equalTo: topAnchor),
+            vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
-        textField.snp.makeConstraints { make in
-            make.width.equalTo(74)
-        }
+        textField.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            textField.widthAnchor.constraint(equalToConstant: 74)
+        ])
 
         slider.addAction(
             UIAction { [unowned self] _ in

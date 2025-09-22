@@ -8,14 +8,21 @@ class DiskColorPickerView: UIView {
         super.init(frame: frame)
         backgroundColor = UIColor.clear
         addSubview(outerDiskColorView)
-        outerDiskColorView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        outerDiskColorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            outerDiskColorView.topAnchor.constraint(equalTo: topAnchor),
+            outerDiskColorView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            outerDiskColorView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            outerDiskColorView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         addSubview(innerDiskColorView)
-        innerDiskColorView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(250)
-        }
+        innerDiskColorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            innerDiskColorView.centerXAnchor.constraint(equalTo: centerXAnchor),
+            innerDiskColorView.centerYAnchor.constraint(equalTo: centerYAnchor),
+            innerDiskColorView.widthAnchor.constraint(equalToConstant: 250),
+            innerDiskColorView.heightAnchor.constraint(equalToConstant: 250)
+        ])
     }
 
     required init?(coder: NSCoder) {

@@ -82,19 +82,27 @@ class ColorPickerContentViewController: UIViewController {
         )
 
         view.addSubview(scrollView)
-        scrollView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
-        view.keyboardLayoutGuide.snp.makeConstraints { make in
-            make.top.equalTo(scrollView.snp.bottom)
-        }
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            scrollView.topAnchor.constraint(equalTo: view.topAnchor),
+            scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        NSLayoutConstraint.activate([
+            view.keyboardLayoutGuide.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
+        ])
 
         let contentView = UIView()
         scrollView.addSubview(contentView)
-        contentView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-            make.width.equalToSuperview()
-        }
+        contentView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
+            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
+            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
+            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+        ])
 
         let hairlineView = HairlineView()
         let swatchStack = UIStackView(arrangedSubviews: [hairlineView, swatchAndPreviewView])
@@ -114,9 +122,13 @@ class ColorPickerContentViewController: UIViewController {
         tabStackView.layoutMargins = .init(top: 20, left: 20, bottom: 20, right: 20)
         tabStackView.isLayoutMarginsRelativeArrangement = true
         contentView.addSubview(tabStackView)
-        tabStackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        tabStackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            tabStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            tabStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            tabStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            tabStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+        ])
         tabStackView.addArrangedSubview(segmentControl)
         tabStackView.addArrangedSubview(colorPickersStackView)
 

@@ -24,9 +24,13 @@ class SwatchAndPreviewView: UIControl {
         hStack.axis = .horizontal
         hStack.alignment = .top
         addSubview(hStack)
-        hStack.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        hStack.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            hStack.topAnchor.constraint(equalTo: topAnchor),
+            hStack.leadingAnchor.constraint(equalTo: leadingAnchor),
+            hStack.trailingAnchor.constraint(equalTo: trailingAnchor),
+            hStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
 
         swatchView.addAction(
             UIAction { [unowned self] _ in

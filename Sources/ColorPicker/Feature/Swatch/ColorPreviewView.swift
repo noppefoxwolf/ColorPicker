@@ -8,9 +8,11 @@ class ColorPreviewView: UIView {
     override init(frame: CGRect) {
         super.init(frame: frame)
         backgroundColor = .clear
-        self.snp.makeConstraints { make in
-            make.size.equalTo(76)
-        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            widthAnchor.constraint(equalToConstant: 76),
+            heightAnchor.constraint(equalToConstant: 76)
+        ])
     }
 
     required init?(coder: NSCoder) {

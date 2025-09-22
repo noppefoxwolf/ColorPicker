@@ -47,31 +47,43 @@ open class ColorSlider: UIControl {
     public override init(frame: CGRect) {
         super.init(frame: frame)
 
-        self.snp.makeConstraints { make in
-            make.height.equalTo(33)
-        }
+        translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            heightAnchor.constraint(equalToConstant: 33)
+        ])
 
         addSubview(trackView)
-        trackView.snp.makeConstraints { make in
-            make.edges.equalToSuperview()
-        }
+        trackView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            trackView.topAnchor.constraint(equalTo: topAnchor),
+            trackView.leadingAnchor.constraint(equalTo: leadingAnchor),
+            trackView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            trackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+        ])
         trackView.addLayoutGuide(trackableLayoutGuide)
-        trackableLayoutGuide.snp.makeConstraints { make in
-            make.horizontalEdges.equalToSuperview().inset(34 / 2)
-            make.verticalEdges.equalToSuperview()
-        }
+        trackableLayoutGuide.leadingAnchor.constraint(equalTo: trackView.leadingAnchor, constant: 34 / 2).isActive = true
+        trackableLayoutGuide.trailingAnchor.constraint(equalTo: trackView.trailingAnchor, constant: -(34 / 2)).isActive = true
+        trackableLayoutGuide.topAnchor.constraint(equalTo: trackView.topAnchor).isActive = true
+        trackableLayoutGuide.bottomAnchor.constraint(equalTo: trackView.bottomAnchor).isActive = true
+
         trackView.addLayoutGuide(trackValueLayoutGuide)
-        trackValueLayoutGuide.snp.makeConstraints { make in
-            make.verticalEdges.left.equalTo(trackableLayoutGuide)
-            make.width.equalTo(trackableLayoutGuide).multipliedBy(0)
-        }
+        trackValueLayoutGuide.leadingAnchor.constraint(equalTo: trackableLayoutGuide.leadingAnchor).isActive = true
+        trackValueLayoutGuide.topAnchor.constraint(equalTo: trackableLayoutGuide.topAnchor).isActive = true
+        trackValueLayoutGuide.bottomAnchor.constraint(equalTo: trackableLayoutGuide.bottomAnchor).isActive = true
+        // width will be set in setNeedsUpdateConstraints using a stored reference
 
         addSubview(thumbView)
-        thumbView.snp.makeConstraints { make in
-            make.centerY.equalToSuperview()
-            make.centerX.equalTo(trackValueLayoutGuide.snp.right)
-            make.size.equalTo(snp.height)
-        }
+        thumbView.translatesAutoresizingMaskIntoConstraints = false
+        let centerY = thumbView.centerYAnchor.constraint(equalTo: centerYAnchor)
+        let centerX = NSLayoutConstraint(
+            item: thumbView, attribute: .centerX,
+            relatedBy: .equal,
+            toItem: trackValueLayoutGuide, attribute: .right,
+            multiplier: 1.0, constant: 0
+        )
+        let width = thumbView.widthAnchor.constraint(equalTo: heightAnchor)
+        let height = thumbView.heightAnchor.constraint(equalTo: heightAnchor)
+        NSLayoutConstraint.activate([centerY, centerX, width, height])
 
         // touchesを使うとスクロールが干渉するのでPanGestureを使う
         panGestureRecognizer.addTarget(self, action: #selector(onPan))
@@ -97,13 +109,18 @@ open class ColorSlider: UIControl {
         self.sendActions(for: [.valueChanged, .primaryActionTriggered])
     }
 
+    private var trackValueWidthConstraint: NSLayoutConstraint? = nil
+
     open override func setNeedsUpdateConstraints() {
         super.setNeedsUpdateConstraints()
-
-        trackValueLayoutGuide.snp.remakeConstraints { make in
-            make.verticalEdges.left.equalTo(trackableLayoutGuide)
-            make.width.equalTo(trackableLayoutGuide).multipliedBy(value)
-        }
+        // Recreate width constraint to apply new multiplier
+        if let old = trackValueWidthConstraint { old.isActive = false }
+        let new = trackValueLayoutGuide.widthAnchor.constraint(
+            equalTo: trackableLayoutGuide.widthAnchor,
+            multiplier: value
+        )
+        new.isActive = true
+        trackValueWidthConstraint = new
     }
 }
 

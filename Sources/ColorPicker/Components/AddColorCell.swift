@@ -1,4 +1,3 @@
-import SnapKit
 import UIKit
 
 class AddColorCell: UICollectionViewCell {
@@ -9,18 +8,24 @@ class AddColorCell: UICollectionViewCell {
         super.init(frame: frame)
 
         contentView.addSubview(backgroundColorView)
-        backgroundColorView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(30)
-        }
+        backgroundColorView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            backgroundColorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            backgroundColorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            backgroundColorView.widthAnchor.constraint(equalToConstant: 30),
+            backgroundColorView.heightAnchor.constraint(equalToConstant: 30)
+        ])
         backgroundColorView.backgroundColor = .lightGray
         backgroundColorView.layer.cornerRadius = 15
 
         backgroundColorView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.center.equalToSuperview()
-            make.size.equalTo(16)
-        }
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            imageView.centerXAnchor.constraint(equalTo: backgroundColorView.centerXAnchor),
+            imageView.centerYAnchor.constraint(equalTo: backgroundColorView.centerYAnchor),
+            imageView.widthAnchor.constraint(equalToConstant: 16),
+            imageView.heightAnchor.constraint(equalToConstant: 16)
+        ])
         imageView.image = UIImage(
             systemName: "plus",
             withConfiguration: UIImage.SymbolConfiguration(weight: .bold)
