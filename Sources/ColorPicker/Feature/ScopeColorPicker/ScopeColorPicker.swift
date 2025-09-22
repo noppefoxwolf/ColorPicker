@@ -1,5 +1,6 @@
 import UIKit
 
+@MainActor
 public final class ScopeColorPicker {
     let pickerWindow: ScopeColorPickerWindow
     var continuation: CheckedContinuation<UIColor, Never>? = nil

@@ -3,15 +3,15 @@ import UIKit
 public struct RGBHexSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.rgb
-    
+
     public init() {}
-    
+
     public typealias ColorPickerView = RGBHexSliderColorPickerControl
-    
+
     public func makeUIControl(_ color: HSVA) -> ColorPickerView {
         RGBHexSliderColorPickerControl(frame: .null)
     }
-    
+
     public func updateUIControl(_ uiView: ColorPickerView, color: HSVA) {
         uiView.color = color
     }
@@ -51,7 +51,7 @@ public final class RGBHexSliderColorPickerControl: UIControl, ColorPickerView {
             vStack.topAnchor.constraint(equalTo: topAnchor),
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
 
         rgbSlidersView.addAction(

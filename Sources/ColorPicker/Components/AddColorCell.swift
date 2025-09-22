@@ -13,7 +13,7 @@ class AddColorCell: UICollectionViewCell {
             backgroundColorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             backgroundColorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             backgroundColorView.widthAnchor.constraint(equalToConstant: 30),
-            backgroundColorView.heightAnchor.constraint(equalToConstant: 30)
+            backgroundColorView.heightAnchor.constraint(equalToConstant: 30),
         ])
         backgroundColorView.backgroundColor = .lightGray
         backgroundColorView.layer.cornerRadius = 15
@@ -24,7 +24,7 @@ class AddColorCell: UICollectionViewCell {
             imageView.centerXAnchor.constraint(equalTo: backgroundColorView.centerXAnchor),
             imageView.centerYAnchor.constraint(equalTo: backgroundColorView.centerYAnchor),
             imageView.widthAnchor.constraint(equalToConstant: 16),
-            imageView.heightAnchor.constraint(equalToConstant: 16)
+            imageView.heightAnchor.constraint(equalToConstant: 16),
         ])
         imageView.image = UIImage(
             systemName: "plus",

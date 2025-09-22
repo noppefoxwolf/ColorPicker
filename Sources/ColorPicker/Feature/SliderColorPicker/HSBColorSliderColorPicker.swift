@@ -3,15 +3,15 @@ import UIKit
 public struct HSBColorSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.hsb
-    
+
     public init() {}
-    
+
     public typealias ColorPickerView = HSBColorSliderColorPickerControl
-    
+
     public func makeUIControl(_ color: HSVA) -> ColorPickerView {
         ColorPickerView(frame: .null)
     }
-    
+
     public func updateUIControl(_ uiView: ColorPickerView, color: HSVA) {
         uiView.color = color
     }
@@ -67,7 +67,7 @@ public final class HSBColorSliderColorPickerControl: UIControl, ColorPickerView 
             vStack.topAnchor.constraint(equalTo: topAnchor),
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
 
         let valueSyncAction = UIAction { [unowned self] action in

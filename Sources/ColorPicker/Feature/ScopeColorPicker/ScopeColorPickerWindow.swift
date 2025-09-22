@@ -1,14 +1,16 @@
 import UIKit
 
+@MainActor
 protocol ScopeColorPickerDelegate: AnyObject {
     func scopePickerDidFinishColorPick(_ color: UIColor)
 }
 
+@MainActor
 protocol ScopeColorPickerDataSource: AnyObject {
     func colors(at location: CGPoint, context: CGContext)
 }
 
-class ScopeColorPickerWindow: UIWindow {
+final class ScopeColorPickerWindow: UIWindow {
     let reticleView = ReticleView(frame: .null)
     let viewSize: Double = 156
     weak var delegate: ScopeColorPickerDelegate? = nil
@@ -39,7 +41,7 @@ class ScopeColorPickerWindow: UIWindow {
             cX,
             cY,
             reticleView.widthAnchor.constraint(equalToConstant: viewSize),
-            reticleView.heightAnchor.constraint(equalToConstant: viewSize)
+            reticleView.heightAnchor.constraint(equalToConstant: viewSize),
         ])
         reticleCenterXConstraint = cX
         reticleCenterYConstraint = cY

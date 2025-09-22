@@ -17,7 +17,7 @@ class ReticleView: UIView {
             internalReticleView.topAnchor.constraint(equalTo: topAnchor),
             internalReticleView.leadingAnchor.constraint(equalTo: leadingAnchor),
             internalReticleView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            internalReticleView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            internalReticleView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 
@@ -118,7 +118,7 @@ class InternalReticleView: UIView {
             outlineView.topAnchor.constraint(equalTo: topAnchor),
             outlineView.leadingAnchor.constraint(equalTo: leadingAnchor),
             outlineView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            outlineView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            outlineView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
     }
 

@@ -3,15 +3,15 @@ import UIKit
 public struct ClassicColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.classic
-    
+
     public init() {}
-    
+
     public typealias ColorPickerControl = ClassicColorPickerControl
-    
+
     public func makeUIControl(_ color: HSVA) -> ColorPickerControl {
         ClassicColorPickerControl(frame: .null)
     }
-    
+
     public func updateUIControl(_ uiView: ColorPickerControl, color: HSVA) {
         uiView.color = color
     }
@@ -63,22 +63,28 @@ public final class ClassicColorPickerControl: UIControl, ColorPickerView {
             vStack.topAnchor.constraint(equalTo: topAnchor),
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         colorView.addSubview(thumbView)
         thumbView.translatesAutoresizingMaskIntoConstraints = false
         // Initial constraints: centerX = right * 1.0, centerY = bottom * 1.0, size = 36
         let cX = NSLayoutConstraint(
-            item: thumbView, attribute: .centerX,
+            item: thumbView,
+            attribute: .centerX,
             relatedBy: .equal,
-            toItem: colorView, attribute: .right,
-            multiplier: 1.0, constant: 0
+            toItem: colorView,
+            attribute: .right,
+            multiplier: 1.0,
+            constant: 0
         )
         let cY = NSLayoutConstraint(
-            item: thumbView, attribute: .centerY,
+            item: thumbView,
+            attribute: .centerY,
             relatedBy: .equal,
-            toItem: colorView, attribute: .bottom,
-            multiplier: 1.0, constant: 0
+            toItem: colorView,
+            attribute: .bottom,
+            multiplier: 1.0,
+            constant: 0
         )
         let w = thumbView.widthAnchor.constraint(equalToConstant: 36)
         let h = thumbView.heightAnchor.constraint(equalToConstant: 36)
@@ -130,16 +136,22 @@ public final class ClassicColorPickerControl: UIControl, ColorPickerView {
         if let oldCX = thumbCenterXConstraint { oldCX.isActive = false }
         if let oldCY = thumbCenterYConstraint { oldCY.isActive = false }
         let newCX = NSLayoutConstraint(
-            item: thumbView, attribute: .centerX,
+            item: thumbView,
+            attribute: .centerX,
             relatedBy: .equal,
-            toItem: colorView, attribute: .right,
-            multiplier: multiplyX, constant: 0
+            toItem: colorView,
+            attribute: .right,
+            multiplier: multiplyX,
+            constant: 0
         )
         let newCY = NSLayoutConstraint(
-            item: thumbView, attribute: .centerY,
+            item: thumbView,
+            attribute: .centerY,
             relatedBy: .equal,
-            toItem: colorView, attribute: .bottom,
-            multiplier: multiplyY, constant: 0
+            toItem: colorView,
+            attribute: .bottom,
+            multiplier: multiplyY,
+            constant: 0
         )
         NSLayoutConstraint.activate([newCX, newCY])
         thumbCenterXConstraint = newCX

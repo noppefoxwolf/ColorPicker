@@ -3,15 +3,15 @@ import UIKit
 public struct RGBHSBHextSliderColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.sliders
-    
+
     public init() {}
-    
+
     public typealias ColorPickerControl = RGBHSBHextSliderColorPickerControl
-    
+
     public func makeUIControl(_ color: HSVA) -> ColorPickerControl {
         RGBHSBHextSliderColorPickerControl(frame: .null)
     }
-    
+
     public func updateUIControl(_ uiView: ColorPickerControl, color: HSVA) {
         uiView.color = color
     }
@@ -55,7 +55,7 @@ public final class RGBHSBHextSliderColorPickerControl: UIControl, ColorPickerVie
             vStack.topAnchor.constraint(equalTo: topAnchor),
             vStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             vStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            vStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            vStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
 
         rgbSlidersView.addAction(

@@ -5,15 +5,19 @@ class SwatchView: UIControl {
         case color(ColorItem)
         case add
     }
-    enum Section {
+    enum Section: Sendable {
         case items
     }
-    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
+
+    let debounceAction = Debounce<() -> Void>(
+        duration: .milliseconds(160),
+        output: { $0() }
+    )
 
     private var _selectedColor: HSVA = .noop {
         didSet {
             /// 逐次実行だと重いので遅延させる
-            debounceAction { [weak self] in
+            debounceAction.emit { [weak self] in
                 self?.reconfigureCells()
             }
         }
@@ -154,14 +158,14 @@ class SwatchView: UIControl {
             stackView.topAnchor.constraint(equalTo: topAnchor),
             stackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             stackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            stackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            stackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
 
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         pageControl.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             collectionView.heightAnchor.constraint(equalToConstant: 76),
-            pageControl.heightAnchor.constraint(equalToConstant: 20)
+            pageControl.heightAnchor.constraint(equalToConstant: 20),
         ])
 
         pageControl.addAction(

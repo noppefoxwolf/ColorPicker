@@ -96,12 +96,12 @@ class ContentViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             stackView.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+            stackView.centerYAnchor.constraint(equalTo: view.centerYAnchor),
         ])
         imageView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             imageView.widthAnchor.constraint(equalToConstant: 260),
-            imageView.heightAnchor.constraint(equalToConstant: 260)
+            imageView.heightAnchor.constraint(equalToConstant: 260),
         ])
     }
 

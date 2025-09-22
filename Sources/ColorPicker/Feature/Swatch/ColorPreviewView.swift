@@ -11,7 +11,7 @@ class ColorPreviewView: UIView {
         translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             widthAnchor.constraint(equalToConstant: 76),
-            heightAnchor.constraint(equalToConstant: 76)
+            heightAnchor.constraint(equalToConstant: 76),
         ])
     }
 

@@ -13,7 +13,7 @@ class ColorCell: UICollectionViewCell {
             colorView.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
             colorView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             colorView.widthAnchor.constraint(equalToConstant: 36),
-            colorView.heightAnchor.constraint(equalToConstant: 36)
+            colorView.heightAnchor.constraint(equalToConstant: 36),
         ])
     }
 

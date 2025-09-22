@@ -1,8 +1,8 @@
 import UIKit
 
-public struct ColorPickerConfiguration {
+public struct ColorPickerConfiguration: Sendable {
     public static var `default`: ColorPickerConfiguration { ColorPickerConfiguration() }
-    
+
     public var colorPickers: [any ColorPicker] = [
         RGBColorSliderColorPicker(),
         GridColorPicker(),
