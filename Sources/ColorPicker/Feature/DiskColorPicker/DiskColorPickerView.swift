@@ -13,7 +13,7 @@ class DiskColorPickerView: UIView {
             outerDiskColorView.topAnchor.constraint(equalTo: topAnchor),
             outerDiskColorView.leadingAnchor.constraint(equalTo: leadingAnchor),
             outerDiskColorView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            outerDiskColorView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            outerDiskColorView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         addSubview(innerDiskColorView)
         innerDiskColorView.translatesAutoresizingMaskIntoConstraints = false
@@ -21,7 +21,7 @@ class DiskColorPickerView: UIView {
             innerDiskColorView.centerXAnchor.constraint(equalTo: centerXAnchor),
             innerDiskColorView.centerYAnchor.constraint(equalTo: centerYAnchor),
             innerDiskColorView.widthAnchor.constraint(equalToConstant: 250),
-            innerDiskColorView.heightAnchor.constraint(equalToConstant: 250)
+            innerDiskColorView.heightAnchor.constraint(equalToConstant: 250),
         ])
     }
 

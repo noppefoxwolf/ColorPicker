@@ -4,11 +4,11 @@ struct StateMachine<T> {
     enum State {
         case idle
         case debouncing(value: T, dueTime: ContinuousClock.Instant, isValueDuringSleep: Bool)
-   }
+    }
 
     var state: State
     let duration: ContinuousClock.Duration
-    
+
     init(duration: ContinuousClock.Duration) {
         self.state = .idle
         self.duration = duration
@@ -57,23 +57,23 @@ struct StateMachine<T> {
 final class SafeStorage<T>: @unchecked Sendable {
     private let lock = NSRecursiveLock()
     private var stored: T
-    
+
     init(stored: T) {
         self.stored = stored
     }
-    
+
     func get() -> T {
         self.lock.lock()
         defer { self.lock.unlock() }
         return self.stored
     }
-    
+
     func set(stored: T) {
         self.lock.lock()
         defer { self.lock.unlock() }
         self.stored = stored
     }
-    
+
     func apply<R>(block: (inout T) -> R) -> R {
         self.lock.lock()
         defer { self.lock.unlock() }
@@ -85,7 +85,7 @@ public final class Debounce<T>: Sendable {
     private let output: @Sendable (T) async -> Void
     private let stateMachine: SafeStorage<StateMachine<T>>
     private let task: SafeStorage<Task<Void, Never>?>
-    
+
     public init(
         duration: ContinuousClock.Duration,
         output: @Sendable @escaping (T) async -> Void
@@ -94,35 +94,37 @@ public final class Debounce<T>: Sendable {
         self.task = SafeStorage(stored: nil)
         self.output = output
     }
-    
+
     public func emit(value: T) {
         let (shouldStartATask, dueTime) = self.stateMachine.apply { machine in
             machine.newValue(value)
         }
-        
+
         if shouldStartATask {
-            self.task.set(stored: Task { [output, stateMachine] in
-                var localDueTime = dueTime
-                loop: while true {
-                    try? await Task.sleep(until: localDueTime, clock: .continuous)
-                
-                    let action = stateMachine.apply { machine in
-                        machine.sleepIsOver()
-                    }
-                
-                    switch action {
-                    case .finishDebouncing(let value):
-                        await output(value)
-                        break loop
-                    case .continueDebouncing(let newDueTime):
-                        localDueTime = newDueTime
-                        continue loop
+            self.task.set(
+                stored: Task { [output, stateMachine] in
+                    var localDueTime = dueTime
+                    loop: while true {
+                        try? await Task.sleep(until: localDueTime, clock: .continuous)
+
+                        let action = stateMachine.apply { machine in
+                            machine.sleepIsOver()
+                        }
+
+                        switch action {
+                        case .finishDebouncing(let value):
+                            await output(value)
+                            break loop
+                        case .continueDebouncing(let newDueTime):
+                            localDueTime = newDueTime
+                            continue loop
+                        }
                     }
                 }
-            })
+            )
         }
     }
-    
+
     deinit {
         self.task.get()?.cancel()
     }

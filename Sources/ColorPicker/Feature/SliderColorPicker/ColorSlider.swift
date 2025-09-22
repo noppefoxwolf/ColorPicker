@@ -58,28 +58,37 @@ open class ColorSlider: UIControl {
             trackView.topAnchor.constraint(equalTo: topAnchor),
             trackView.leadingAnchor.constraint(equalTo: leadingAnchor),
             trackView.trailingAnchor.constraint(equalTo: trailingAnchor),
-            trackView.bottomAnchor.constraint(equalTo: bottomAnchor)
+            trackView.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
         trackView.addLayoutGuide(trackableLayoutGuide)
-        trackableLayoutGuide.leadingAnchor.constraint(equalTo: trackView.leadingAnchor, constant: 34 / 2).isActive = true
-        trackableLayoutGuide.trailingAnchor.constraint(equalTo: trackView.trailingAnchor, constant: -(34 / 2)).isActive = true
+        trackableLayoutGuide.leadingAnchor
+            .constraint(equalTo: trackView.leadingAnchor, constant: 34 / 2).isActive = true
+        trackableLayoutGuide.trailingAnchor
+            .constraint(equalTo: trackView.trailingAnchor, constant: -(34 / 2)).isActive = true
         trackableLayoutGuide.topAnchor.constraint(equalTo: trackView.topAnchor).isActive = true
-        trackableLayoutGuide.bottomAnchor.constraint(equalTo: trackView.bottomAnchor).isActive = true
+        trackableLayoutGuide.bottomAnchor.constraint(equalTo: trackView.bottomAnchor).isActive =
+            true
 
         trackView.addLayoutGuide(trackValueLayoutGuide)
-        trackValueLayoutGuide.leadingAnchor.constraint(equalTo: trackableLayoutGuide.leadingAnchor).isActive = true
-        trackValueLayoutGuide.topAnchor.constraint(equalTo: trackableLayoutGuide.topAnchor).isActive = true
-        trackValueLayoutGuide.bottomAnchor.constraint(equalTo: trackableLayoutGuide.bottomAnchor).isActive = true
+        trackValueLayoutGuide.leadingAnchor.constraint(equalTo: trackableLayoutGuide.leadingAnchor)
+            .isActive = true
+        trackValueLayoutGuide.topAnchor.constraint(equalTo: trackableLayoutGuide.topAnchor)
+            .isActive = true
+        trackValueLayoutGuide.bottomAnchor.constraint(equalTo: trackableLayoutGuide.bottomAnchor)
+            .isActive = true
         // width will be set in setNeedsUpdateConstraints using a stored reference
 
         addSubview(thumbView)
         thumbView.translatesAutoresizingMaskIntoConstraints = false
         let centerY = thumbView.centerYAnchor.constraint(equalTo: centerYAnchor)
         let centerX = NSLayoutConstraint(
-            item: thumbView, attribute: .centerX,
+            item: thumbView,
+            attribute: .centerX,
             relatedBy: .equal,
-            toItem: trackValueLayoutGuide, attribute: .right,
-            multiplier: 1.0, constant: 0
+            toItem: trackValueLayoutGuide,
+            attribute: .right,
+            multiplier: 1.0,
+            constant: 0
         )
         let width = thumbView.widthAnchor.constraint(equalTo: heightAnchor)
         let height = thumbView.heightAnchor.constraint(equalTo: heightAnchor)

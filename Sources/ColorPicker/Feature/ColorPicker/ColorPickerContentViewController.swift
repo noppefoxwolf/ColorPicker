@@ -25,8 +25,9 @@ class ColorPickerContentViewController: UIViewController {
     let tabStackView: UIStackView = UIStackView()
     /// colorPicker - Swatch
     let colorPickersStackView = UIStackView()
-    
-    var colorPickers: [String : (colorPicker: any ColorPicker, view: UIControl & ColorPickerView)] = [:]
+
+    var colorPickers: [String: (colorPicker: any ColorPicker, view: UIControl & ColorPickerView)] =
+        [:]
 
     private var _color: HSVA = .noop {
         didSet {
@@ -93,7 +94,7 @@ class ColorPickerContentViewController: UIViewController {
             scrollView.topAnchor.constraint(equalTo: view.topAnchor),
             scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             scrollView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+            scrollView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
         ])
         NSLayoutConstraint.activate([
             view.keyboardLayoutGuide.topAnchor.constraint(equalTo: scrollView.bottomAnchor)
@@ -104,10 +105,16 @@ class ColorPickerContentViewController: UIViewController {
         contentView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             contentView.topAnchor.constraint(equalTo: scrollView.contentLayoutGuide.topAnchor),
-            contentView.leadingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.leadingAnchor),
-            contentView.trailingAnchor.constraint(equalTo: scrollView.contentLayoutGuide.trailingAnchor),
-            contentView.bottomAnchor.constraint(equalTo: scrollView.contentLayoutGuide.bottomAnchor),
-            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor)
+            contentView.leadingAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.leadingAnchor
+            ),
+            contentView.trailingAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.trailingAnchor
+            ),
+            contentView.bottomAnchor.constraint(
+                equalTo: scrollView.contentLayoutGuide.bottomAnchor
+            ),
+            contentView.widthAnchor.constraint(equalTo: scrollView.frameLayoutGuide.widthAnchor),
         ])
 
         let hairlineView = HairlineView()
@@ -133,14 +140,14 @@ class ColorPickerContentViewController: UIViewController {
             tabStackView.topAnchor.constraint(equalTo: contentView.topAnchor),
             tabStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             tabStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            tabStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            tabStackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor),
         ])
         tabStackView.addArrangedSubview(segmentControl)
         tabStackView.addArrangedSubview(colorPickersStackView)
 
         for colorPicker in configuration.colorPickers {
             let control = colorPicker.makeUIControl(.noop)
-            
+
             let segmentAction = UIAction(
                 title: colorPicker.title,
                 handler: { [unowned self] action in
@@ -166,7 +173,7 @@ class ColorPickerContentViewController: UIViewController {
                     )
             }
             control.addAction(colorPickerAction, for: .primaryActionTriggered)
-            
+
             colorPickers[colorPicker.id] = (colorPicker, control)
         }
 
@@ -255,7 +262,7 @@ class ColorPickerContentViewController: UIViewController {
             update(colorPicker: colorPicker, view: view, color: color)
         }
     }
-    
+
     func update<T: ColorPicker>(colorPicker: T, view: UIView, color: HSVA) {
         guard let control = view as? T.ColorPickerControl else { return }
         colorPicker.updateUIControl(control, color: color)

@@ -3,13 +3,13 @@ import UIKit
 public struct GridColorPicker: ColorPicker {
     public let id: String = #function
     public let title: String = LocalizedString.grid
-    
+
     public init() {}
-    
+
     public func makeUIControl(_ color: HSVA) -> GridColorPickerView {
         GridColorPickerView(frame: .null)
     }
-    
+
     public func updateUIControl(_ uiView: GridColorPickerView, color: HSVA) {
         uiView.color = color
     }
@@ -48,7 +48,7 @@ public final class GridColorPickerView: UIControl, ColorPickerView {
             gridColorView.topAnchor.constraint(equalTo: topAnchor, constant: 1.5),
             gridColorView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 1.5),
             gridColorView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -1.5),
-            gridColorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1.5)
+            gridColorView.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -1.5),
         ])
 
         gridColorView.addSubview(markerView)

@@ -41,7 +41,7 @@ final class ScopeColorPickerWindow: UIWindow {
             cX,
             cY,
             reticleView.widthAnchor.constraint(equalToConstant: viewSize),
-            reticleView.heightAnchor.constraint(equalToConstant: viewSize)
+            reticleView.heightAnchor.constraint(equalToConstant: viewSize),
         ])
         reticleCenterXConstraint = cX
         reticleCenterYConstraint = cY

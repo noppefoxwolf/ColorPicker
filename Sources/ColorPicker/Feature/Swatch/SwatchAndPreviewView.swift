@@ -29,7 +29,7 @@ class SwatchAndPreviewView: UIControl {
             hStack.topAnchor.constraint(equalTo: topAnchor),
             hStack.leadingAnchor.constraint(equalTo: leadingAnchor),
             hStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            hStack.bottomAnchor.constraint(equalTo: bottomAnchor)
+            hStack.bottomAnchor.constraint(equalTo: bottomAnchor),
         ])
 
         swatchView.addAction(
