@@ -70,6 +70,9 @@ class ColorPickerContentViewController: UIViewController {
                     self.delegate?.colorPickerDropperDidSelect(self)
                 }
             )
+            if #available(iOS 26.0, *) {
+                navigationItem.leftBarButtonItem?.hidesSharedBackground = true
+            }
         }
 
         navigationItem.rightBarButtonItem = UIBarButtonItem(
@@ -80,6 +83,9 @@ class ColorPickerContentViewController: UIViewController {
                 }
             }
         )
+        if #available(iOS 26.0, *) {
+            navigationItem.rightBarButtonItem?.hidesSharedBackground = true
+        }
 
         view.addSubview(scrollView)
         scrollView.translatesAutoresizingMaskIntoConstraints = false
