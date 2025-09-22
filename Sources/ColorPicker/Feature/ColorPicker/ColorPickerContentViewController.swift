@@ -1,6 +1,7 @@
 import SwiftUI
 import UIKit
 
+@MainActor
 protocol ColorPickerContentViewControllerDelegate: AnyObject {
     func colorPickerViewController(
         _ viewController: ColorPickerContentViewController,
