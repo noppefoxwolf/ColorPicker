@@ -9,6 +9,11 @@ class SwatchView: UIControl {
         case items
     }
 
+    private lazy var editMenuInteraction: UIEditMenuInteraction = {
+        let interaction = UIEditMenuInteraction(delegate: self)
+        return interaction
+    }()
+
     let debounceAction = Debounce<() -> Void>(
         duration: .milliseconds(160),
         output: { $0() }
@@ -128,7 +133,6 @@ class SwatchView: UIControl {
 
     let pageControl: UIPageControl = .init(frame: .null)
     var snapshot = NSDiffableDataSourceSnapshot<Section, CellItem>()
-    var longPressedItem: CellItem? = nil
     var onChanged: (([ColorItem]) -> Void) = { _ in }
 
     override init(frame: CGRect) {
@@ -181,6 +185,7 @@ class SwatchView: UIControl {
             action: #selector(onLongPress(_:))
         )
         collectionView.addGestureRecognizer(longPress)
+        collectionView.addInteraction(editMenuInteraction)
 
         snapshot.appendSections([.items])
 
@@ -192,14 +197,12 @@ class SwatchView: UIControl {
     }
 
     @objc func onLongPress(_ gesture: UILongPressGestureRecognizer) {
-        guard gesture.state == .began else { return }
-        let menu = UIMenuController.shared
         let location = gesture.location(in: gesture.view)
         guard let indexPath = collectionView.indexPathForItem(at: location) else { return }
         guard dataSource.itemIdentifier(for: indexPath) != .add else { return }
         guard let cell = collectionView.cellForItem(at: indexPath) else { return }
-        menu.showMenu(from: cell, rect: cell.bounds)
-        longPressedItem = dataSource.itemIdentifier(for: indexPath)
+        let configuration = UIEditMenuConfiguration(identifier: nil, sourcePoint: cell.center)
+        editMenuInteraction.presentEditMenu(with: configuration)
     }
 
     override var canBecomeFirstResponder: Bool {
@@ -211,14 +214,6 @@ class SwatchView: UIControl {
             #selector(UIResponderStandardEditActions.delete)
         ]
         .contains(action)
-    }
-
-    override func delete(_ sender: Any?) {
-        if let longPressedItem = longPressedItem {
-            snapshot.deleteItems([longPressedItem])
-            self.longPressedItem = nil
-            apply(snapshot)
-        }
     }
 
     func setColorItems(_ colorItems: [ColorItem]) {
@@ -392,5 +387,35 @@ extension SwatchView: UICollectionViewDropDelegate {
         @unknown default:
             fatalError()
         }
+    }
+}
+
+extension SwatchView: @MainActor UIEditMenuInteractionDelegate {
+    func editMenuInteraction(
+        _ interaction: UIEditMenuInteraction,
+        menuFor configuration: UIEditMenuConfiguration,
+        suggestedActions: [UIMenuElement]
+    ) -> UIMenu? {
+        let location = interaction.location(in: collectionView)
+        guard let indexPath = collectionView.indexPathForItem(at: location) else { return nil }
+        guard dataSource.itemIdentifier(for: indexPath) != .add else { return nil }
+        guard let cell = collectionView.cellForItem(at: indexPath) else { return nil }
+
+        // Remember which item was long-pressed for the Delete action
+        let item = dataSource.itemIdentifier(for: indexPath)
+        
+        // Provide a Delete action when we have a valid long-pressed color item
+        let delete = UIAction(
+            title: LocalizedString.delete,
+            image: UIImage(systemName: "trash"),
+            attributes: [.destructive]
+        ) { [weak self] _ in
+            guard let self else { return }
+            if let item {
+                self.snapshot.deleteItems([item])
+                self.apply(self.snapshot)
+            }
+        }
+        return UIMenu(children: [delete])
     }
 }

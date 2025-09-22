@@ -23,6 +23,17 @@
         }
       }
     },
+    "Delete" : {
+      "comment" : "Delete color",
+      "localizations" : {
+        "ja" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "削除"
+          }
+        }
+      }
+    },
     "HSB" : {
       "extractionState" : "migrated",
       "localizations" : {
