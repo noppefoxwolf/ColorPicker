@@ -8,12 +8,13 @@ class SwatchView: UIControl {
     enum Section {
         case items
     }
-    let debounceAction = DispatchQueue.main.debounce(delay: .milliseconds(160))
+    
+    let debounceAction = Debounce<() -> Void>(duration: .milliseconds(160), output: { $0() })
 
     private var _selectedColor: HSVA = .noop {
         didSet {
             /// 逐次実行だと重いので遅延させる
-            debounceAction { [weak self] in
+            debounceAction.emit { [weak self] in
                 self?.reconfigureCells()
             }
         }
